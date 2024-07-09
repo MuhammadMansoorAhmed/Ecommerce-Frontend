@@ -1,0 +1,11 @@
+.btn-hover {
+  border: 1px solid #f9c231;
+  border-radius: 8px;
+  background-color: white;
+  transition: all 0.4s;
+}
+.btn-hover:hover {
+  background-color: #f9c231;
+  color: #000000;
+  border: 1px solid transparent;
+}

@@ -1,0 +1,91 @@
+.sidebarContent {
+  position: absolute;
+  padding-top: 10px;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  color: #000;
+  z-index: 2;
+  background-color: white;
+  transition: all 0.4s;
+}
+.sidebarContent div {
+  background-color: white;
+  animation: SubitemAnimation 0.4s;
+  color: #000;
+}
+.mainCategoryItem {
+  /* display: block; */
+  font-weight: 700;
+  text-transform: uppercase;
+  padding-left: 16px;
+  text-decoration: none;
+  font-size: 12px;
+  /* margin-bottom: 15px; */
+  cursor: pointer;
+  transition: all 0.4s;
+  color: #000;
+}
+.mainCategoryItem:hover {
+  background-color: white;
+  color: #afafaf;
+  transition: all 0.4s;
+}
+
+.subItem {
+  /* border: 1px solid #f8f9fa; */
+  animation: SubitemAnimation 0.4s;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.subItem:hover {
+  background-color: white;
+  color: #afafaf;
+}
+
+.mainDashboard {
+  padding-left: 300px;
+  z-index: 0;
+  background-color: #fff;
+  width: 100dvw;
+  height: 100%;
+  transition: all 0.4s;
+}
+.moboTextDisplay {
+  display: block;
+}
+.moboDisplay {
+  width: 280px;
+}
+.sidebarIconDisplay {
+  display: none;
+}
+
+@keyframes SubitemAnimation {
+  0% {
+    opacity: 0%;
+  }
+  50% {
+    opacity: 50%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+@media only screen and (max-width: 776px) {
+  .mainDashboard {
+    padding-left: 40px;
+  }
+  .moboDisplay {
+    width: 40px;
+  }
+  .moboTextDisplay {
+    display: none;
+  }
+  .sidebarIconDisplay {
+    display: block;
+  }
+}

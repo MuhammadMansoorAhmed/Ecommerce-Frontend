@@ -1,0 +1,49 @@
+.navActive {
+  color: #628281;
+  border-bottom: 1.5px solid #628281;
+  transition: all 0.4s;
+  border-width: 100%;
+}
+.navActive:hover {
+  color: #628281;
+}
+.navHover {
+  text-decoration: none;
+  color: #000;
+  transition: all 0.4s;
+  font-size: 18px;
+}
+.navHover:hover {
+  color: #628281;
+}
+.shopDropdownList {
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #f8f9fa;
+}
+.shopDropdownListPage {
+  width: 18%;
+  position: absolute;
+  top: 100%;
+  /* left: 10%; */
+  background-color: #fff;
+  border: 1px solid #f8f9fa;
+}
+
+.category-item {
+  cursor: pointer;
+  color: #000;
+  transition: all 0.4s;
+}
+.category-item:hover {
+  color: #afafaf;
+}
+
+@media only screen and (max-width: 991px) {
+  .shopDropdownListPage {
+    width: 75%;
+  }
+}

@@ -1,0 +1,24 @@
+/* #FFFFFF
+
+#DADDE2
+
+#B1BDC5
+
+#889FA5
+
+#628281
+
+#43655A */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Ubuntu, sans-serif;
+  font-weight: 600;
+}
+
+#root {
+  min-height: 100vh;
+}
