@@ -1,3 +1,8 @@
+.add-to-cart-container:hover{
+  
+  transition: all .4s;
+}
+
 .add-to-cart {
   background-color: #2a39ff;
   color: #fff;
@@ -6,10 +11,11 @@
   position: absolute;
   top: 85%;
   left: 8%;
-  padding: 8px 16px;
+  padding: 8px 40px;
   outline: none;
   border: none;
-  cursor: pointer;
+  cursor: pointer; 
+  animation: btnsContainer linear .4s;
   transition: all 0.4s;
 }
 
@@ -20,19 +26,32 @@
 
 .add-to-cart:hover {
   animation: btnAnimate 0.4s forwards;
+  transition: all .4s;
 }
 
 @keyframes btnAnimate {
   0% {
     background-color: #2a39ff;
   }
-  33% {
+  100% {
     background-color: #862dfc;
   }
-  66% {
-    background-color: #e431fc;
+ 
+}
+@keyframes btnsContainer {
+  0% {
+    display: none;
+    opacity: 0%;
+    
+  }
+  50%{
+    display: block;
+    opacity: 50%;
+    
   }
   100% {
-    background-color: #ff2768;
+    display: block;
+    opacity: 100%;
   }
+ 
 }

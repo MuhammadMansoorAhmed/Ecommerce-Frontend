@@ -1,0 +1,38 @@
+.productLeftList{
+    max-height: 530px;
+    overflow: none;
+    object-fit: cover;
+}
+.quantityBtnContainer{
+    padding: 18px 6px;
+    margin-inline: 18px;
+    border-radius: 32px;
+    border: 1px solid #e2e1e1;
+    width: 150px
+
+}
+.quantityBtnContainer > button{
+    border: none;
+    background-color: transparent;
+    margin: 8px;
+}
+.addToCartBtn{
+    
+    background-color: #0315ff;
+    border: 1px solid transparent;
+    
+    padding: 16px 24px;
+    border-radius: 32px;
+    color: white;
+    width: 150px;
+    transition: all .4s;
+}
+.addToCartBtn:hover{
+    color: white;
+    border: 1px solid rgb(180, 3, 3);
+    background-color: rgb(180, 3, 3);
+}
+.availability{
+    margin-top: 12px;
+    
+}

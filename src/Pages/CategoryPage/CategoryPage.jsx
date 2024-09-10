@@ -1,5 +1,5 @@
 import CategoryPageComponent from "../../Components/CategoryPageComponents/CategoryPageComponent";
-import NavbarComponent from "../../Components/Navbar/NavbarComponent";
+
 
 const CategoryPage = () => {
   // const pathName = window.location.pathname;

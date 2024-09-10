@@ -1,4 +1,3 @@
-import { Container } from "react-bootstrap";
 import ProductDisplayComponent from "../../Components/ProductDisplayComponent/ProductDisplayComponent";
 import NavbarComponent from "../../Components/Navbar/NavbarComponent";
 

@@ -71,14 +71,18 @@ const BlurHashImageComponent = ({ imgSrc, hash }) => {
           // className="mx-3 my-1"
         />
       </div>
-      <button
-        className={`add-to-cart ${hover ? "d-block" : "d-none"}`}
-        type="button"
+      <div
+        className="add-to-cart-container"
         onMouseEnter={() => setHover(true)}
-        onClick={() => navigate("/product/:id")}
       >
-        ADD TO CART
-      </button>
+        <button
+          className={`add-to-cart ${hover ? "d-block" : "d-none"}`}
+          type="button"
+          onClick={() => navigate("/product/:id")}
+        >
+          ADD TO CART
+        </button>
+      </div>
     </div>
   );
 };

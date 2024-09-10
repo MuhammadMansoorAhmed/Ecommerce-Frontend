@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PiDotOutlineFill } from "react-icons/pi";
 import "./SidebarOption.css";
-import { Container } from "react-bootstrap";
 import NavbarComponent from "../Navbar/NavbarComponent";
 import { MdDashboard } from "react-icons/md";
 import { GiClothes } from "react-icons/gi";

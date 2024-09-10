@@ -1,0 +1,31 @@
+.Card1{
+    height: 180px;
+    background: linear-gradient(to top right, #1c3f3d , #19706d);
+    border-radius: 14px;
+    text-align: center;
+    padding: 8px;
+    color: #B1BDC5;
+    
+}
+.Card2{
+    height: 180px;
+    background: linear-gradient(to top right, #004362 , #00379b);
+    border-radius: 14px;
+    text-align: center;
+    padding: 4px;
+    color: #B1BDC5;
+    
+}
+.Card3{
+    height: 180px;
+    background: linear-gradient(to top right, #670295 , #42299c);
+    border-radius: 14px;
+    text-align: center;
+    padding: 4px;
+    color: #B1BDC5;
+    
+}
+.tableLayout{
+    table-layout: fixed;
+    width: 100%;
+}
