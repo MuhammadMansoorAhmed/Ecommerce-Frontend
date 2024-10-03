@@ -6,7 +6,7 @@ const Sales = () => {
     <div className="p-5 d-flex justify-content-center rounded-5">
       <Row
         className=" rounded-5 d-flex justify-content-center    "
-        style={{ backgroundColor: "#889FA5", width: "85%" }}
+        style={{ backgroundColor: "#889FA580", width: "85%" }}
       >
         <Col sm={10} md={5} lg={5} xl={5} className="p-5">
           <img

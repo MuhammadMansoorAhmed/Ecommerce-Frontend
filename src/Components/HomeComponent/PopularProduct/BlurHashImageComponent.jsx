@@ -25,7 +25,14 @@ const BlurHashImageComponent = ({ imgSrc, hash }) => {
   });
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        overflow: "none",
+      }}
+    >
       {!imageLoaded && (
         <Blurhash
           hash={hash}
@@ -67,8 +74,6 @@ const BlurHashImageComponent = ({ imgSrc, hash }) => {
           }}
           onClick={handleFavoriteClick}
           onMouseEnter={() => setHover(true)}
-
-          // className="mx-3 my-1"
         />
       </div>
       <div

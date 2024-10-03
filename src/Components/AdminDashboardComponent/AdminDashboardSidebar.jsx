@@ -20,7 +20,7 @@ const AdminDashboardSidebar = ({ children }) => {
         // style={{ paddingInline: "12%" }}
       >
         <div
-          className="adminAidebarContent text-white flex-column vh-100 "
+          className="adminAidebarContent text-white flex-column h-100 "
           style={{ backgroundColor: "#43655A", width: "280px" }}
         >
           <div
@@ -666,7 +666,7 @@ const AdminDashboardSidebar = ({ children }) => {
             )}
           </div>
         </div>
-        <main className="adminMainDashboard w-100 h-100 ">{children}</main>
+        <main className="adminMainDashboard  ">{children}</main>
       </div>
     </>
   );

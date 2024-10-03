@@ -28,4 +28,5 @@
 .tableLayout{
     table-layout: fixed;
     width: 100%;
+    scroll-behavior: auto;
 }

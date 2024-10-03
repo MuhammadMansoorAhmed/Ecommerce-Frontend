@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Col, Container, Row } from "react-bootstrap";
 import product1 from "../../../assets/product1.jpg";
 import product2 from "../../../assets/product2.jpg";
@@ -5,39 +6,39 @@ import product3 from "../../../assets/product5.jpg";
 import product4 from "../../../assets/Product3.jpg";
 import BlurHashImageComponent from "./BlurHashImageComponent";
 
-const PopularProducts = () => {
+const PopularProducts = ({ popularProducts }) => {
   return (
     <Container>
       <Row className="d-flex justify-content-center mb-5">
         <h2 className="text-center my-5 fw-bold">Popular Products</h2>
-        <Col
-          sm={10}
-          md={3}
-          lg={3}
-          xl={3}
-          className="d-flex flex-column position-relative"
-        >
-          <BlurHashImageComponent
-            hash="LLC6okkCacs.~VocNHbH-VoxR+od"
-            imgSrc={product1}
-          />
-          <div className="position-absolute">
-            <span></span>
-          </div>
-          <div className="mt-3">
-            <p
-              className="m-0 text-secondary fw-bold"
-              style={{ fontSize: "14px" }}
-            >
-              Collection Name
-            </p>
-            <h6>Name</h6>
-            <p className="fw-bold" style={{ fontSize: "16px" }}>
-              Price
-            </p>
-          </div>
-        </Col>
-        <Col
+        {popularProducts.map((product) => (
+          <Col
+            sm={10}
+            md={3}
+            lg={3}
+            xl={3}
+            className="d-flex flex-column position-relative"
+            key={product?.id}
+          >
+            <BlurHashImageComponent
+              hash="LLC6okkCacs.~VocNHbH-VoxR+od"
+              imgSrc={product1}
+            />
+            <div className="mt-3">
+              {/* <p
+                className="m-0 text-secondary fw-bold"
+                style={{ fontSize: "14px" }}
+              >
+                Collection Name
+              </p> */}
+              <h6>{product?.name}</h6>
+              <p className="fw-bold" style={{ fontSize: "16px" }}>
+                {product.price}
+              </p>
+            </div>
+          </Col>
+        ))}
+        {/* <Col
           sm={10}
           md={3}
           lg={3}
@@ -109,7 +110,7 @@ const PopularProducts = () => {
               Price
             </p>
           </div>
-        </Col>
+        </Col> */}
       </Row>
     </Container>
   );

@@ -13,10 +13,10 @@ const CategoryCards = () => {
           md={4}
           lg={4}
           xl={4}
-          className="position-relative textHover"
+          className="position-relative textHover mb-2"
         >
           <img src={accessories} alt="Accessories" className="w-100 imgHover" />
-          <div className=" centerAlign">
+          <div className=" centerAlign  ">
             <h4 className="categoryHeading">Accessories</h4>
           </div>
         </Col>
@@ -25,11 +25,10 @@ const CategoryCards = () => {
           md={4}
           lg={4}
           xl={4}
-          className="position-relative textHover"
+          className="position-relative textHover mb-2"
         >
-          {" "}
           <img src={shirts} alt="shirts" className="w-100 imgHover" />
-          <div className=" centerAlign">
+          <div className=" centerAlign ">
             <h4 className="categoryHeading">Shirts</h4>
           </div>
         </Col>
@@ -38,11 +37,10 @@ const CategoryCards = () => {
           md={4}
           lg={4}
           xl={4}
-          className="position-relative textHover"
+          className="position-relative textHover mb-2"
         >
-          {" "}
           <img src={shoes} alt="Shoes" className="w-100 imgHover" />
-          <div className=" centerAlign">
+          <div className=" centerAlign ">
             <h4 className="categoryHeading">Shoes</h4>
           </div>
         </Col>
