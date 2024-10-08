@@ -5,7 +5,7 @@ const Sales = () => {
   return (
     <div className="p-5 d-flex justify-content-center rounded-5">
       <Row
-        className=" rounded-5 d-flex justify-content-center    "
+        className=" rounded-5 d-flex justify-content-center "
         style={{ backgroundColor: "#889FA580", width: "85%" }}
       >
         <Col sm={10} md={5} lg={5} xl={5} className="p-5">
@@ -13,9 +13,12 @@ const Sales = () => {
             src={salesImg}
             alt="sales"
             style={{
-              height: "600px",
+              height: "400px",
               width: "100%",
               borderRadius: "24px 2px 2px 24px",
+              objectFit: "cover",
+              boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+              border: "1px solid rgba(0, 0, 0, 0.125)",
             }}
           />
         </Col>

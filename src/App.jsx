@@ -14,6 +14,7 @@ import CategoriesAndTags from "./Pages/Category&Tags/CategoriesAndTags";
 import InventoryManagement from "./Pages/InventoryManagement/InventoryManagement";
 import DiscountAndPromotion from "./Pages/DiscountAndPromotion/DiscountAndPromotion";
 import OrderDisplay from "./Pages/OrderDetails/OrderDetails";
+import ViewAllOrders from "./Pages/AdminOrderManagement/ViewAllOrders";
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
           <Route path="/order/:id" element={<OrderDisplay />} />
 
           <Route
-            path="/category/:product-type/:categoryId"
+            path="/category/:product-type/:category"
             element={
               <Sidebar>
                 <Layout>
@@ -82,6 +83,16 @@ function App() {
               <AdminDashboardSidebar>
                 <Layout>
                   <DiscountAndPromotion />
+                </Layout>
+              </AdminDashboardSidebar>
+            }
+          />
+          <Route
+            path="/EBS-admin/view-all-orders"
+            element={
+              <AdminDashboardSidebar>
+                <Layout>
+                  <ViewAllOrders />
                 </Layout>
               </AdminDashboardSidebar>
             }

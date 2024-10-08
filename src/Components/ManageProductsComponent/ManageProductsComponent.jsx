@@ -1,17 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
 import {
   MdOutlineVisibility,
   MdOutlineVisibilityOff,
   MdOutlineDeleteOutline,
 } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteProduct,
+  getAllProducts,
+} from "../../Redux/Services/productServices";
+import { selectIsLoading } from "../../Redux/Features/productSlice";
+import { FaRegEdit } from "react-icons/fa";
+import AddProductForm from "./AddProductForm";
+import UpdateProductForm from "./updateProductForm";
 
 const ManageProductsComponent = () => {
+  const dispatch = useDispatch();
   const [visibility, setVisibility] = useState(false);
   const [show, setShow] = useState(false);
-  const [deleteProduct, setDeleteProduct] = useState(false);
+  const [addProductForm, setAddProductForm] = useState(false);
+  const [editProductForm, setEditProductForm] = useState(false);
+  const [products, setProducts] = useState(null);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const isLoading = useSelector(selectIsLoading);
 
-  const handleShow = () => {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await dispatch(getAllProducts());
+      setProducts(response.payload.data);
+    };
+    fetchProducts();
+  }, [dispatch]);
+  // console.log(products);
+
+  const handleShow = (id) => {
+    setSelectedProductId(id);
+    console.log(selectedProductId);
     setShow(!show);
   };
 
@@ -19,20 +45,44 @@ const ManageProductsComponent = () => {
     setVisibility(!visibility);
   };
 
-  const handleDeleteProduct = () => {
-    setDeleteProduct(true);
-    console.log("delete product", deleteProduct);
+  const handleEditProduct = (product) => {
+    setSelectedProductId(product._id);
+    setEditProductForm(true);
+    setAddProductForm(false); // Close add form if open
+  };
 
-    setShow(!show);
+  const handleDeleteProduct = async () => {
+    if (!selectedProductId) return;
+    try {
+      const result = await dispatch(deleteProduct(selectedProductId));
+      if (result.payload.success) {
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product._id !== selectedProductId)
+        );
+        setShow(false); // Close modal after successful deletion
+      } else {
+        console.error("Failed to delete product");
+      }
+    } catch (error) {
+      console.error("Error deleting product", error);
+    }
   };
 
   return (
-    <div>
+    <div
+      style={{
+        height: "100vh",
+        overflow: "auto",
+        paddingBottom: "12px",
+        paddingRight: "0px",
+        backgroundColor: "#212529",
+      }}
+    >
       {show ? (
         <>
-          <Modal show={show} onHide={handleShow} variant="dark">
+          <Modal show={show} onHide={() => setShow(false)} variant="dark">
             <Modal.Header
-              className=" "
+              className=""
               closeButton
               style={{
                 backgroundColor: "#1C4240",
@@ -53,7 +103,7 @@ const ManageProductsComponent = () => {
                 borderRadius: "0px 0px 0px 0px",
               }}
             >
-              <Button variant="secondary" onClick={handleShow}>
+              <Button variant="secondary" onClick={() => setShow(false)}>
                 Close
               </Button>
               <Button variant="danger" onClick={handleDeleteProduct}>
@@ -62,10 +112,30 @@ const ManageProductsComponent = () => {
             </Modal.Footer>
           </Modal>
         </>
+      ) : addProductForm ? (
+        <AddProductForm closeForm={() => setAddProductForm(false)} />
+      ) : editProductForm ? (
+        <UpdateProductForm
+          productId={selectedProductId}
+          closeForm={() => setEditProductForm(false)}
+        />
       ) : (
         <>
-          <h2 className="text-center mt-3 mb-4">Product Management</h2>
-          <table className="tableLayout">
+          <h2 className="text-center mt-3 mb-4 border-bottom pb-2">
+            Product Management
+          </h2>
+
+          <div className="d-flex justify-content-end my-3 mx-2 ">
+            <Button
+              style={{ borderRadius: "8px" }}
+              varient="primary"
+              onClick={() => setAddProductForm(true)}
+            >
+              Add Product
+            </Button>
+          </div>
+
+          <table className="tableLayout ">
             <thead>
               <tr>
                 <th className="border border-white p-1">ID</th>
@@ -77,33 +147,66 @@ const ManageProductsComponent = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="border border-white p-1">5628493075</td>
-                <td className="border border-white p-1">Iphone</td>
-                <td className="border border-white p-1">Electronics</td>
-                <td className="border border-white p-1">$800</td>
-                <td className="border border-white p-1">Yes</td>
-                <td className="border border-white p-1">
-                  {visibility ? (
-                    <MdOutlineVisibility
-                      size={20}
-                      style={{ color: "white", cursor: "pointer" }}
-                      onClick={handleVisibilityClick}
-                    />
-                  ) : (
-                    <MdOutlineVisibilityOff
-                      size={20}
-                      style={{ color: "#888", cursor: "pointer" }}
-                      onClick={handleVisibilityClick}
-                    />
-                  )}
-                  <MdOutlineDeleteOutline
-                    size={20}
-                    style={{ color: "white", cursor: "pointer" }}
-                    onClick={() => setShow(!show)}
-                  />
-                </td>
-              </tr>
+              {!isLoading ? (
+                Array.isArray(products) && products.length > 0 ? (
+                  products.map((product) => (
+                    <tr key={product._id}>
+                      <td
+                        className="border border-white p-1 "
+                        style={{ wordBreak: "break-all" }}
+                      >
+                        {product._id}
+                      </td>
+                      <td className="border border-white p-1">
+                        {product.name}
+                      </td>
+                      <td className="border border-white p-1">
+                        {product.categoryInfo.category}
+                      </td>
+                      <td className="border border-white p-1">
+                        PKR: {product.price}
+                      </td>
+                      <td className="border border-white p-1">
+                        {product.inStock ? "TRUE" : "FALSE"}
+                      </td>
+
+                      <td className="border border-white p-1 ">
+                        {visibility ? (
+                          <MdOutlineVisibility
+                            size={20}
+                            style={{ color: "white", cursor: "pointer" }}
+                            onClick={handleVisibilityClick}
+                          />
+                        ) : (
+                          <MdOutlineVisibilityOff
+                            size={20}
+                            style={{ color: "#888", cursor: "pointer" }}
+                            onClick={handleVisibilityClick}
+                          />
+                        )}
+                        <MdOutlineDeleteOutline
+                          size={20}
+                          style={{ color: "lightCoral", cursor: "pointer" }}
+                          onClick={() => {
+                            handleShow(product._id);
+                          }}
+                        />
+                        <FaRegEdit
+                          size={20}
+                          style={{ color: "seaGreen", cursor: "pointer" }}
+                          onClick={() => handleEditProduct(product)}
+                        />
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <p>No Poduct found</p>
+                )
+              ) : (
+                <div className="d-flex justify-content-center p-1">
+                  <Spinner animation="grow" />
+                </div>
+              )}
             </tbody>
           </table>
         </>

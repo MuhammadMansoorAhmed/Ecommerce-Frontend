@@ -22,7 +22,6 @@ const Home = () => {
   }, [dispatch]);
 
   const popularProducts = products.slice(0, 4);
-  console.log(popularProducts);
 
   return (
     <div>

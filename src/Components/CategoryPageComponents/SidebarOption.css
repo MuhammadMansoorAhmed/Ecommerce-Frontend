@@ -1,6 +1,6 @@
 .sidebarContent {
-  position: absolute;
-  padding-top: 10px;
+  position: fixed;
+  padding-top: 115px;
   top: 0;
   left: 0;
   height: 100vh;
@@ -15,13 +15,11 @@
   color: #000;
 }
 .mainCategoryItem {
-  /* display: block; */
   font-weight: 700;
   text-transform: uppercase;
   padding-left: 16px;
   text-decoration: none;
   font-size: 12px;
-  /* margin-bottom: 15px; */
   cursor: pointer;
   transition: all 0.4s;
   color: #000;

@@ -22,11 +22,11 @@ const Sidebar = ({ children }) => {
     <>
       <NavbarComponent />
       <div
-        className="d-flex position-relative w-100"
-        // style={{ paddingInline: "12%" }}
+        className="d-flex position-relative w-100 "
+        style={{ marginTop: "94px" }}
       >
         <div
-          className="sidebarContent text-white flex-column h-100 "
+          className="sidebarContent text-white flex-column vh-100 "
           style={{ backgroundColor: "#eee" }}
         >
           <div
@@ -139,7 +139,7 @@ const Sidebar = ({ children }) => {
                       : "d-none"
                   } `}
                   style={{ fontSize: "12px" }}
-                  onClick={() => navigate("/category/shoes/men")}
+                  onClick={() => navigate("/category/shoes/shoes-men")}
                 >
                   <PiDotOutlineFill size={20} className="moboTextDisplay" />
                   <span className="" style={{ fontWeight: 600 }}>
@@ -154,7 +154,7 @@ const Sidebar = ({ children }) => {
                       : "d-none"
                   } `}
                   style={{ fontSize: "12px" }}
-                  onClick={() => navigate("/category/shoes/women")}
+                  onClick={() => navigate("/category/shoes/shoes-women")}
                 >
                   <PiDotOutlineFill size={20} className="moboTextDisplay" />
                   <span className="" style={{ fontWeight: 600 }}>
@@ -168,7 +168,7 @@ const Sidebar = ({ children }) => {
                       : "d-none"
                   } `}
                   style={{ fontSize: "12px" }}
-                  onClick={() => navigate("/category/shoes/children")}
+                  onClick={() => navigate("/category/shoes/shoes-children")}
                 >
                   <PiDotOutlineFill size={20} className="moboTextDisplay" />
                   <span className="" style={{ fontWeight: 600 }}>
@@ -205,7 +205,9 @@ const Sidebar = ({ children }) => {
                       : "d-none"
                   } `}
                   style={{ fontSize: "12px" }}
-                  onClick={() => navigate("/category/accessories/men")}
+                  onClick={() =>
+                    navigate("/category/accessories/accessories-men")
+                  }
                 >
                   <PiDotOutlineFill size={20} className="moboTextDisplay" />
                   <span className="" style={{ fontWeight: 600 }}>
@@ -220,7 +222,9 @@ const Sidebar = ({ children }) => {
                       : "d-none"
                   } `}
                   style={{ fontSize: "12px" }}
-                  onClick={() => navigate("/category/accessories/women")}
+                  onClick={() =>
+                    navigate("/category/accessories/accessories-women")
+                  }
                 >
                   <PiDotOutlineFill size={20} className="moboTextDisplay" />
                   <span className="" style={{ fontWeight: 600 }}>
@@ -234,7 +238,9 @@ const Sidebar = ({ children }) => {
                       : "d-none"
                   } `}
                   style={{ fontSize: "12px" }}
-                  onClick={() => navigate("/category/accessories/children")}
+                  onClick={() =>
+                    navigate("/category/accessories/accessories-children")
+                  }
                 >
                   <PiDotOutlineFill size={20} className="moboTextDisplay" />
                   <span className="" style={{ fontWeight: 600 }}>

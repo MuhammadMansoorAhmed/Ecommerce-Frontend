@@ -1,5 +1,4 @@
 .add-to-cart-container:hover{
-  
   transition: all .4s;
 }
 
@@ -11,7 +10,7 @@
   position: absolute;
   top: 85%;
   left: 8%;
-  padding: 8px 40px;
+  padding: 8px ;
   outline: none;
   border: none;
   cursor: pointer; 
@@ -21,12 +20,27 @@
 
 .hoverIcon {
   cursor: pointer;
+  color: #dadde2;
+  margin: 4px 12px;
   transition: all 0.4s;
 }
 
 .add-to-cart:hover {
   animation: btnAnimate 0.4s forwards;
   transition: all .4s;
+}
+
+@media screen and (max-width: 800px){
+  .add-to-cart{
+    width: 100%;
+    padding: 8px 4px;
+    font-size: 16px;
+    left: 0;
+  }
+  .hoverIcon{
+    margin: 4px 8px;
+    font-size: 12px;  
+  }
 }
 
 @keyframes btnAnimate {

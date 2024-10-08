@@ -1,32 +1,53 @@
-.Card1{
-    height: 180px;
-    background: linear-gradient(to top right, #1c3f3d , #19706d);
-    border-radius: 14px;
-    text-align: center;
-    padding: 8px;
-    color: #B1BDC5;
-    
+.Card1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background: linear-gradient(to top right, #1c3f3d, #19706d);
+  border-radius: 14px;
+  padding: 8px;
+  color: #b1bdc5;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 6px;
 }
-.Card2{
-    height: 180px;
-    background: linear-gradient(to top right, #004362 , #00379b);
-    border-radius: 14px;
-    text-align: center;
-    padding: 4px;
-    color: #B1BDC5;
-    
+
+.Card2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background: linear-gradient(to top right, #004362, #00379b);
+  border-radius: 14px;
+  padding: 4px;
+  color: #b1bdc5;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 6px;
 }
-.Card3{
-    height: 180px;
-    background: linear-gradient(to top right, #670295 , #42299c);
-    border-radius: 14px;
-    text-align: center;
-    padding: 4px;
-    color: #B1BDC5;
-    
+.Card3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background: linear-gradient(to top right, #670295, #42299c);
+  border-radius: 14px;
+  padding: 4px;
+  color: #b1bdc5;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 6px;
 }
-.tableLayout{
-    table-layout: fixed;
-    width: 100%;
-    scroll-behavior: auto;
+.Card1:hover,
+.Card2:hover,
+.Card3:hover {
+  color: #fff;
+}
+.tableLayout {
+  table-layout: fixed;
+  width: 100%;
+  scroll-behavior: auto;
+}
+
+.tableLayout> * {
+    text-wrap: wrap;
+ word-wrap: wrap;  
+  
 }

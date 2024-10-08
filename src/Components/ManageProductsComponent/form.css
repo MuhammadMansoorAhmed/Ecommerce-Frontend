@@ -1,0 +1,33 @@
+.inputFields{
+    background-color: rgb(31, 58, 66);
+    padding: 3px;
+    outline: none;
+    border-radius: 4px;
+    width: 100%;
+    border: none;
+    color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.inputFields:focus{
+    border: 2px solid rgb(56, 106, 121);
+    transition: border-color 0.3s ease;
+}
+
+.addProductBtn{
+    
+    color: #53a1f5e0;
+}
+
+.error{
+    color: #f55353e0;
+}
+
+.closeBtn{
+    color: #53a1f5e0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.closeBtn:hover{
+    color: #fff;
+}

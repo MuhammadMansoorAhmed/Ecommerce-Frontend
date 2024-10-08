@@ -3,6 +3,9 @@ import {
   addProduct,
   deleteProduct,
   getAllProducts,
+  getProductsWithCategory,
+  getTotalProductsCategoryStats,
+  getTotalProductsStats,
   updateProduct,
   updateProductImages,
   updateProductStock,
@@ -31,6 +34,17 @@ const productSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.products = action.payload;
+      })
+      .addCase(getProductsWithCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProductsWithCategory.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getProductsWithCategory.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
       })
       .addCase(addProduct.pending, (state) => {
         state.isLoading = true;
@@ -86,8 +100,31 @@ const productSlice = createSlice({
       .addCase(deleteProduct.fulfilled, (state) => {
         state.isLoading = false;
         state.isError = false;
+      })
+      .addCase(getTotalProductsStats.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getTotalProductsStats.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getTotalProductsStats.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(getTotalProductsCategoryStats.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getTotalProductsCategoryStats.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getTotalProductsCategoryStats.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
       });
   },
 });
 
 export default productSlice.reducer;
+export const selectIsLoading = (state) => state.product.isLoading;

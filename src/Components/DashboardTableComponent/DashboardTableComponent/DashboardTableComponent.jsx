@@ -14,22 +14,25 @@ const DashboardTableComponent = ({ headers, rows }) => {
       </thead>
       <tbody>
         {console.log(rows)}
-        {rows.map((row, rowIndex) => (
-          <tr key={rowIndex} className="border-white border">
-            <td className="p-1 border border-white">{row?.name}</td>
-            <td className="p-1 border border-white">{row?.description}</td>
-            <td className="p-1 border border-white">{row?.price}</td>
-            <td className="p-1 border border-white">
-              {row?.inStock ? "Yes" : "No"}
-            </td>
-            <td className="p-1 border border-white">
-              {row?.categoryInfo?.category}
-            </td>
-            <td className="p-1 border border-white">
-              {row?.userInfo?.userName}
-            </td>
+        {Array.isArray(rows) && rows.length > 0 ? (
+          rows.map((row, rowIndex) => (
+            <tr key={rowIndex} className="border-white border">
+              <td className="p-1 border border-white ">{row?.category}</td>
+              <td className="p-1 border border-white">{row?.inStock}</td>
+              <td className="p-1 border border-white">{row?.outOfStock}</td>
+              <td className="p-1 border border-white">{row?.totalProducts}</td>
+              <td className="p-1 border border-white">{row?.totalSales}</td>
+            </tr>
+          ))
+        ) : (
+          <tr key={0} className="border-white border">
+            <td className="p-1 border border-white">No Data Found</td>
+            <td className="p-1 border border-white">No data found</td>
+            <td className="p-1 border border-white">No data found</td>
+            <td className="p-1 border border-white">No data found</td>
+            <td className="p-1 border border-white">No data found</td>
           </tr>
-        ))}
+        )}
       </tbody>
     </table>
   );
