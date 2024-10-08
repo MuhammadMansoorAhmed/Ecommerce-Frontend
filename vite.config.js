@@ -8,7 +8,10 @@ export default defineConfig({
     // port: 6000,
     proxy: {
       "/api": {
-        target: "http://localhost:6000",
+        target: [
+          "http://localhost:6000",
+          "https://ecommerce-backend-w6ul.onrender.com",
+        ],
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, "/api"),
       },

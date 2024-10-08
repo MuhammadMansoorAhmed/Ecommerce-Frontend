@@ -21,7 +21,7 @@ const Home = () => {
     fetchProducts();
   }, [dispatch]);
 
-  const popularProducts = products.slice(0, 4);
+  const popularProducts = products?.slice(0, 4);
 
   return (
     <div>
