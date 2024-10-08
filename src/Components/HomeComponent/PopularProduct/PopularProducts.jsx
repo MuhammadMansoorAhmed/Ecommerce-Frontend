@@ -9,7 +9,7 @@ const PopularProducts = ({ popularProducts }) => {
     <Container>
       <Row className="d-flex justify-content-center mb-5">
         <h2 className="text-center my-5 fw-bold">Popular Products</h2>
-        {popularProducts.map((product) => (
+        {popularProducts?.map((product) => (
           <Col
             sm={10}
             md={3}
