@@ -6,7 +6,7 @@ import "./CategoryCards.css";
 
 const CategoryCards = () => {
   return (
-    <div className="p-5 d-flex justify-content-center">
+    <div className="p-md-5 p-1 d-flex justify-content-center">
       <Row className="py-3">
         <Col
           sm={10}

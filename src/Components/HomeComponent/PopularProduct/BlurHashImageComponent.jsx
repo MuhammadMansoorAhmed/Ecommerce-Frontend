@@ -90,7 +90,7 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
           type="button"
           onClick={() => navigate(`/product/${productId}`)}
         >
-          ADD TO CART
+          Order Now
         </button>
       </div>
     </div>

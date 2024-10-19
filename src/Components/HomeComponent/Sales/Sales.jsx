@@ -3,10 +3,10 @@ import salesImg from "../../../assets/Sales.jpg";
 
 const Sales = () => {
   return (
-    <div className="p-5 d-flex justify-content-center rounded-5">
+    <div className="p-md-5 p-1 d-flex justify-content-center rounded-5">
       <Row
-        className=" rounded-5 d-flex justify-content-center "
-        style={{ backgroundColor: "#889FA580", width: "85%" }}
+        className=" rounded-md-5 d-flex justify-content-center "
+        style={{ backgroundColor: "#889FA580", width: "100%" }}
       >
         <Col sm={10} md={5} lg={5} xl={5} className="p-5">
           <img

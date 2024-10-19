@@ -33,7 +33,7 @@ const NavbarComponent = () => {
   return (
     <Navbar
       expand="lg"
-      className={`py-3 position-md-relative position-lg-relative position-fixed w-100 bg-light border-bottom sticky-top
+      className={`py-3 position-md-relative position-lg-relative position-md-fixed w-100 bg-light border-bottom sticky-top
       }`}
       style={{ top: 0, left: 0, transition: "top 0.3s" }}
     >

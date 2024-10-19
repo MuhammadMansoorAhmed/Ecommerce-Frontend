@@ -20,7 +20,7 @@ const ProductDisplayComponent = () => {
     }
   };
   return (
-    <Container style={{ marginTop: "100px" }}>
+    <Container className="marginStyle">
       <Row className="m-1 p-1">
         <Col sm={10} md={6} lg={6} xl={6} className="p-2">
           <Row className="p-2 h-100">
@@ -29,11 +29,11 @@ const ProductDisplayComponent = () => {
               md={3}
               lg={3}
               xl={3}
-              className="d-flex flex-column justify-content-center productLeftList h-100"
+              className="d-flex flex-md-column justify-content-md-center justify-content-evenly position-relative productLeftList h-md-100"
             >
               <div>
                 <img
-                  className="w-100 my-2"
+                  className="w-md-100 py-2"
                   style={{ height: "150px" }}
                   src={productImage}
                   alt="img not found"
@@ -41,7 +41,7 @@ const ProductDisplayComponent = () => {
               </div>
               <div>
                 <img
-                  className="w-100 my-2"
+                  className="w-md-100 py-2"
                   style={{ height: "150px" }}
                   src={productImage}
                   alt="img not found"
@@ -49,15 +49,15 @@ const ProductDisplayComponent = () => {
               </div>
               <div>
                 <img
-                  className="w-100 my-2"
+                  className="w-md-100 py-2"
                   style={{ height: "150px" }}
                   src={productImage}
                   alt="img not found"
                 />
               </div>
             </Col>
-            <Col sm={9} md={9} lg={9} xl={9}>
-              <div className="d-flex justify-content-center w-100">
+            <Col sm={7} md={9} lg={9} xl={9}>
+              <div className="d-flex justify-content-center w-md-100">
                 <img
                   src={productImage}
                   alt="Product Image Not Found"
