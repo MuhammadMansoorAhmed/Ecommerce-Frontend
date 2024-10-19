@@ -7,37 +7,32 @@ import {
   MdOutlineDeleteOutline,
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteProduct,
-  getAllProducts,
-} from "../../Redux/Services/productServices";
-import { selectIsLoading } from "../../Redux/Features/productSlice";
+import { deleteOrder, getAllOrders } from "../../Redux/Services/orderServices";
+import { selectIsLoading } from "../../Redux/Features/orderSlice";
 import { FaRegEdit } from "react-icons/fa";
-import AddProductForm from "./AddProductForm";
-import UpdateProductForm from "./updateProductForm";
+import AddOrderForm from "./AddOrderForm";
+import UpdateOrderForm from "./UpdateOrderForm";
 
-const ManageProductsComponent = () => {
+const ManageOrdersComponent = () => {
   const dispatch = useDispatch();
   const [visibility, setVisibility] = useState(false);
   const [show, setShow] = useState(false);
-  const [addProductForm, setAddProductForm] = useState(false);
-  const [editProductForm, setEditProductForm] = useState(false);
-  const [products, setProducts] = useState(null);
-  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [addOrderForm, setAddOrderForm] = useState(false);
+  const [editOrderForm, setEditOrderForm] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
   const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await dispatch(getAllProducts());
-      setProducts(response.payload.data);
+    const fetchOrders = async () => {
+      const response = await dispatch(getAllOrders());
+      setOrders(response.payload.data.orders);
     };
-    fetchProducts();
+    fetchOrders();
   }, [dispatch]);
-  // console.log(products);
 
   const handleShow = (id) => {
-    setSelectedProductId(id);
-    console.log(selectedProductId);
+    setSelectedOrderId(id);
     setShow(!show);
   };
 
@@ -45,26 +40,26 @@ const ManageProductsComponent = () => {
     setVisibility(!visibility);
   };
 
-  const handleEditProduct = (product) => {
-    setSelectedProductId(product._id);
-    setEditProductForm(true);
-    setAddProductForm(false); // Close add form if open
+  const handleEditOrder = (order) => {
+    setSelectedOrderId(order._id);
+    setEditOrderForm(true);
+    setAddOrderForm(false); // Close add form if open
   };
 
-  const handleDeleteProduct = async () => {
-    if (!selectedProductId) return;
+  const handleDeleteOrder = async () => {
+    if (!selectedOrderId) return;
     try {
-      const result = await dispatch(deleteProduct(selectedProductId));
+      const result = await dispatch(deleteOrder(selectedOrderId));
       if (result.payload.success) {
-        setProducts((prevProducts) =>
-          prevProducts.filter((product) => product._id !== selectedProductId)
+        setOrders((prevOrders) =>
+          prevOrders.filter((order) => order._id !== selectedOrderId)
         );
         setShow(false); // Close modal after successful deletion
       } else {
-        console.error("Failed to delete product");
+        console.error("Failed to delete order");
       }
     } catch (error) {
-      console.error("Error deleting product", error);
+      console.error("Error deleting order", error);
     }
   };
 
@@ -82,7 +77,6 @@ const ManageProductsComponent = () => {
         <>
           <Modal show={show} onHide={() => setShow(false)} variant="dark">
             <Modal.Header
-              className=""
               closeButton
               style={{
                 backgroundColor: "#1C4240",
@@ -95,7 +89,7 @@ const ManageProductsComponent = () => {
               className="text-white"
               style={{ backgroundColor: "#1C4240" }}
             >
-              Are you sure you want to delete this product
+              Are you sure you want to delete this order?
             </Modal.Body>
             <Modal.Footer
               style={{
@@ -106,71 +100,66 @@ const ManageProductsComponent = () => {
               <Button variant="secondary" onClick={() => setShow(false)}>
                 Close
               </Button>
-              <Button variant="danger" onClick={handleDeleteProduct}>
-                Delete Product
+              <Button variant="danger" onClick={handleDeleteOrder}>
+                Delete Order
               </Button>
             </Modal.Footer>
           </Modal>
         </>
-      ) : addProductForm ? (
-        <AddProductForm closeForm={() => setAddProductForm(false)} />
-      ) : editProductForm ? (
-        <UpdateProductForm
-          productId={selectedProductId}
-          closeForm={() => setEditProductForm(false)}
+      ) : addOrderForm ? (
+        <AddOrderForm closeForm={() => setAddOrderForm(false)} />
+      ) : editOrderForm ? (
+        <UpdateOrderForm
+          orderId={selectedOrderId}
+          closeForm={() => setEditOrderForm(false)}
         />
       ) : (
         <>
           <h2 className="text-center mt-3 mb-4 border-bottom pb-2">
-            Product Management
+            Order Management
           </h2>
 
           <div className="d-flex justify-content-end my-3 mx-2 ">
             <Button
               style={{ borderRadius: "8px" }}
-              varient="primary"
-              onClick={() => setAddProductForm(true)}
+              variant="primary"
+              onClick={() => setAddOrderForm(true)}
             >
-              Add Product
+              Add Order
             </Button>
           </div>
 
-          <table className="tableLayout ">
+          <table className="tableLayout">
             <thead>
               <tr>
-                <th className="border border-white p-1">ID</th>
-                <th className="border border-white p-1">Name</th>
-                <th className="border border-white p-1">Category</th>
-                <th className="border border-white p-1">Price</th>
-                <th className="border border-white p-1">Stock Status</th>
+                <th className="border border-white p-1">Product ID</th>
+                <th className="border border-white p-1">Customer Name</th>
+                <th className="border border-white p-1">Contact Number</th>
+                <th className="border border-white p-1">Order Status</th>
                 <th className="border border-white p-1">Options</th>
               </tr>
             </thead>
             <tbody>
               {!isLoading ? (
-                Array.isArray(products) && products.length > 0 ? (
-                  products?.map((product) => (
-                    <tr key={product._id}>
+                orders && Array.isArray(orders) && orders.length > 0 ? (
+                  orders.map((order) => (
+                    <tr key={order?._id}>
                       <td
-                        className="border border-white p-1 "
+                        className="border border-white p-1"
                         style={{ wordBreak: "break-all" }}
                       >
-                        {product?._id}
+                        {order?.productId}
                       </td>
                       <td className="border border-white p-1">
-                        {product?.name}
+                        {order?.firstName} {order?.lastName}
                       </td>
                       <td className="border border-white p-1">
-                        {product?.categoryInfo?.category}
+                        {order?.contactNumber}
                       </td>
                       <td className="border border-white p-1">
-                        PKR: {product?.price}
+                        {order?.status}
                       </td>
                       <td className="border border-white p-1">
-                        {product?.inStock ? "TRUE" : "FALSE"}
-                      </td>
-
-                      <td className="border border-white p-1 ">
                         {visibility ? (
                           <MdOutlineVisibility
                             size={20}
@@ -187,25 +176,29 @@ const ManageProductsComponent = () => {
                         <MdOutlineDeleteOutline
                           size={20}
                           style={{ color: "lightCoral", cursor: "pointer" }}
-                          onClick={() => {
-                            handleShow(product._id);
-                          }}
+                          onClick={() => handleShow(order._id)}
                         />
                         <FaRegEdit
                           size={20}
                           style={{ color: "seaGreen", cursor: "pointer" }}
-                          onClick={() => handleEditProduct(product)}
+                          onClick={() => handleEditOrder(order)}
                         />
                       </td>
                     </tr>
                   ))
                 ) : (
-                  <p>No Poduct found</p>
+                  <tr>
+                    <td colSpan="5" className="text-center text-white">
+                      No Orders found
+                    </td>
+                  </tr>
                 )
               ) : (
-                <div className="d-flex justify-content-center p-1">
-                  <Spinner animation="grow" />
-                </div>
+                <tr>
+                  <td colSpan="5" className="d-flex justify-content-center p-1">
+                    <Spinner animation="grow" />
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
@@ -215,4 +208,4 @@ const ManageProductsComponent = () => {
   );
 };
 
-export default ManageProductsComponent;
+export default ManageOrdersComponent;

@@ -128,3 +128,4 @@ const productSlice = createSlice({
 
 export default productSlice.reducer;
 export const selectIsLoading = (state) => state.product.isLoading;
+export const selectIsError = (state) => state.product.isError;
