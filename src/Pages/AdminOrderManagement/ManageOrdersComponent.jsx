@@ -11,7 +11,7 @@ import { deleteOrder, getAllOrders } from "../../Redux/Services/orderServices";
 import { selectIsLoading } from "../../Redux/Features/orderSlice";
 import { FaRegEdit } from "react-icons/fa";
 import AddOrderForm from "./AddOrderForm";
-import UpdateOrderForm from "./UpdateOrderForm";
+import UpdateOrderForm from "./updateOrderForm";
 
 
 const ManageOrdersComponent = () => {
