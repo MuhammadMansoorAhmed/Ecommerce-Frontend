@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import {
   getAllCategories,
   deleteCategory,
-  addCategory,
 } from "../../Redux/Services/categoryServices";
 import AddCategoryForm from "./AddCategoryForm";
 import AddSubcategoryForm from "./AddSubCategoryForm";
@@ -49,16 +48,16 @@ const CategoriesAndTagsComponent = () => {
     setAddCategoryTagForm(false);
   };
 
-  // Handle Adding Category
-  const handleAddCategory = async (categoryData) => {
-    await dispatch(addCategory(categoryData));
-    setAddCategoryForm(false);
-    // Re-fetch categories after addition
-    const response = await dispatch(getAllCategories());
-    if (response.meta.requestStatus === "fulfilled") {
-      setCategories(response.payload.data);
-    }
-  };
+  // // Handle Adding Category
+  // const handleAddCategory = async (categoryData) => {
+  //   await dispatch(addCategory(categoryData));
+  //   setAddCategoryForm(false);
+  //   // Re-fetch categories after addition
+  //   const response = await dispatch(getAllCategories());
+  //   if (response.meta.requestStatus === "fulfilled") {
+  //     setCategories(response.payload.data);
+  //   }
+  // };
 
   return (
     <div>
