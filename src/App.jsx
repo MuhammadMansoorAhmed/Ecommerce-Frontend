@@ -10,7 +10,7 @@ import ProductDisplay from "./Pages/ProductDisplay/ProductDisplay";
 import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 import AdminDashboardSidebar from "./Components/AdminDashboardComponent/AdminDashboardSidebar";
 import ManageProducts from "./Pages/ManageProducts/ManageProducts";
-import CategoriesAndTags from "./Pages/Category&Tags/CategoriesAndTags";
+import CategoriesAndTags from "./Pages/AdminCategory&Tags/CategoriesAndTags";
 import InventoryManagement from "./Pages/InventoryManagement/InventoryManagement";
 import DiscountAndPromotion from "./Pages/DiscountAndPromotion/DiscountAndPromotion";
 import OrderDisplay from "./Pages/OrderDetails/OrderDetails";

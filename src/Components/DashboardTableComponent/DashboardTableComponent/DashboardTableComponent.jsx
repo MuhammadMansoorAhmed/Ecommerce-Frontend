@@ -5,7 +5,7 @@ const DashboardTableComponent = ({ headers, rows }) => {
     <table className="tableLayout text-white my-4">
       <thead>
         <tr className="border-white border">
-          {headers.map((header, index) => (
+          {headers?.map((header, index) => (
             <th key={index} className="p-1 border border-white">
               {header}
             </th>
@@ -13,9 +13,8 @@ const DashboardTableComponent = ({ headers, rows }) => {
         </tr>
       </thead>
       <tbody>
-        {console.log(rows)}
         {Array.isArray(rows) && rows.length > 0 ? (
-          rows.map((row, rowIndex) => (
+          rows?.map((row, rowIndex) => (
             <tr key={rowIndex} className="border-white border">
               <td className="p-1 border border-white ">{row?.category}</td>
               <td className="p-1 border border-white">{row?.inStock}</td>

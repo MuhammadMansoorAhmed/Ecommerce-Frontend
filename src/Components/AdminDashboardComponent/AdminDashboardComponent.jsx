@@ -19,8 +19,8 @@ const AdminDashboardComponent = () => {
       const responseProductCategoryStates = await dispatch(
         getTotalProductsCategoryStats()
       );
-      setProductStates(responseProductStates.payload.data);
-      setProductCategoryStates(responseProductCategoryStates.payload.data);
+      setProductStates(responseProductStates?.payload?.data);
+      setProductCategoryStates(responseProductCategoryStates?.payload?.data);
     };
     getProducts();
   }, [dispatch]);
@@ -46,17 +46,17 @@ const AdminDashboardComponent = () => {
       <Row className="w-100  ">
         <Col sm={10} md={4} lg={4} xl={4} className="px-2 ">
           <div className="Card1 flex-column">
-            <h4>Total Products: {productStates.totalProducts}</h4>
+            <h4>Total Products: {productStates?.totalProducts}</h4>
           </div>
         </Col>
         <Col sm={10} md={4} lg={4} xl={4} className="px-2 ">
           <div className="Card2 flex-column">
-            <h4>Total Sales: {productStates.totalSales}</h4>
+            <h4>Total Sales: {productStates?.totalSales}</h4>
           </div>
         </Col>
         <Col sm={10} md={4} lg={4} xl={4} className="px-2 ">
           <div className="Card3 flex-column">
-            <h4>Total Revenue: {productStates.totalRevenue}</h4>
+            <h4>Total Revenue: {productStates?.totalRevenue}</h4>
           </div>
         </Col>
       </Row>
