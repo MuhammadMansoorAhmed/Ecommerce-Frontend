@@ -21,7 +21,7 @@ const PopularProducts = ({ popularProducts }) => {
             <BlurHashImageComponent
               hash={product?.images[0]?.blurHash}
               imgSrc={product?.images[0]?.url}
-              productId={product?.images[0]?._id}
+              productId={product?._id}
             />
             <div className="mt-3">
               <h6>{product?.name}</h6>

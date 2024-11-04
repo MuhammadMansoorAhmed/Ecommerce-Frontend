@@ -3,6 +3,7 @@ import {
   addProduct,
   deleteProduct,
   getAllProducts,
+  getProductById,
   getProductsWithCategory,
   getTotalProductsCategoryStats,
   getTotalProductsStats,
@@ -120,6 +121,17 @@ const productSlice = createSlice({
         state.isError = true;
       })
       .addCase(getTotalProductsCategoryStats.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(getProductById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProductById.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getProductById.fulfilled, (state) => {
         state.isLoading = false;
         state.isError = false;
       });

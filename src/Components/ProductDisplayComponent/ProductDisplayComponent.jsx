@@ -1,24 +1,38 @@
 import { Col, Container, Row } from "react-bootstrap";
-import productImage from "../../assets/product1.jpg";
 import "./ProductDisplayComponent.css";
 import RelatedProductsComponent from "../RelatedProductsComponent/RelatedProductsComponent";
 import HomeFooter from "../HomeComponent/HomeFooter/HomeFooter";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getProductById } from "../../Redux/Services/productServices";
 
 const ProductDisplayComponent = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(0);
   const params = useParams();
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const response = await dispatch(getProductById(params.id));
+      setProduct(response.payload.data);
+    };
+    fetchProduct();
+  }, [dispatch, params.id]);
 
   const handleIncrementQuantity = () => {
-    setQuantity(quantity + 1);
+    if (quantity < product?.totalStockRemaining) {
+      setQuantity(quantity + 1);
+    }
   };
   const handleDecrementQuantity = () => {
     if (quantity > 0) {
       setQuantity(quantity - 1);
     }
   };
+
   return (
     <Container className="marginStyle">
       <Row className="m-1 p-1">
@@ -35,31 +49,28 @@ const ProductDisplayComponent = () => {
                 <img
                   className="w-md-100 py-2"
                   style={{ height: "150px" }}
-                  src={productImage}
-                  alt="img not found"
+                  src={product?.images[0]?.url}
                 />
               </div>
               <div>
                 <img
                   className="w-md-100 py-2"
                   style={{ height: "150px" }}
-                  src={productImage}
-                  alt="img not found"
+                  src={product?.images[1]?.url}
                 />
               </div>
               <div>
                 <img
                   className="w-md-100 py-2"
                   style={{ height: "150px" }}
-                  src={productImage}
-                  alt="img not found"
+                  src={product?.images[2]?.url}
                 />
               </div>
             </Col>
             <Col sm={7} md={9} lg={9} xl={9}>
               <div className="d-flex justify-content-center w-md-100">
                 <img
-                  src={productImage}
+                  src={product?.images[0]?.url}
                   alt="Product Image Not Found"
                   className="rounded"
                   style={{ height: "500px", width: "400px" }}
@@ -80,9 +91,9 @@ const ProductDisplayComponent = () => {
                 marginBottom: "6px",
               }}
             >
-              ESSENTIAL STRUCTURED BLAZER
+              {product?.name}
             </p>
-            <p
+            {/* <p
               style={{
                 fontFamily: "font-family: Ubuntu, sans-serif",
                 color: "#666",
@@ -90,7 +101,7 @@ const ProductDisplayComponent = () => {
               }}
             >
               Brand Name
-            </p>
+            </p> */}
             <p
               style={{
                 fontSize: "40px",
@@ -99,7 +110,7 @@ const ProductDisplayComponent = () => {
                 marginBottom: "0px",
               }}
             >
-              $75
+              PKR: {product?.price}
             </p>
             <p
               style={{
@@ -110,14 +121,16 @@ const ProductDisplayComponent = () => {
                 marginTop: "10px",
               }}
             >
-              description
+              Category: {product?.category?.category}
             </p>
             <div className="d-flex justfy-content-evenly w-100 mt-4">
               <div className="w-100">
                 Quantity:
                 <span className=" quantityBtnContainer">
                   <button onClick={handleDecrementQuantity}>-</button>
-                  <p className="d-inline px-4">{quantity}</p>
+                  <p className="d-inline px-4">
+                    {quantity}/ {product?.totalStockRemaining}
+                  </p>
                   <button onClick={handleIncrementQuantity}>+</button>
                 </span>
                 <button
@@ -134,7 +147,7 @@ const ProductDisplayComponent = () => {
             <div className="d-flex  flex-column justify-content-center">
               <div className="availability">
                 <h6 className="d-inline ">Availability: </h6>
-                <span className="ms-3"> Values</span>
+                <span className="ms-3"> {product?.totalStock}</span>
               </div>
               <div className="availability">
                 <h6 className="d-inline ">Availability Colors: </h6>
@@ -156,18 +169,16 @@ const ProductDisplayComponent = () => {
         <Col>
           <hr className="text-secondary" />
 
-          <h5>description</h5>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore ex
-            ipsam mollitia, tenetur sint quibusdam cupiditate! Earum commodi
-            consequuntur voluptas culpa suscipit officiis. Consequuntur sit
-            quasi tenetur similique? Deserunt, minus!
-          </p>
+          <h5>Description</h5>
+          <p>{product?.description}</p>
         </Col>
       </Row>
       <Row className="my-5">
         <Col>
-          <RelatedProductsComponent />
+          <RelatedProductsComponent
+            category={product?.category?.category}
+            dispatch={dispatch}
+          />
         </Col>
       </Row>
       <HomeFooter />

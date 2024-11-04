@@ -188,3 +188,21 @@ export const getTotalProductsCategoryStats = createAsyncThunk(
     }
   }
 );
+export const getProductById = createAsyncThunk(
+  "product/getProductById",
+  async (id, thunkAPI) => {
+    try {
+      const response = await axios.get(`/api/product/getProductById/${id}`);
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
