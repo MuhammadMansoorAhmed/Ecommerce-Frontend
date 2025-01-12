@@ -1,142 +1,189 @@
 /* eslint-disable react/prop-types */
 import { useDispatch } from "react-redux";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { updateProduct } from "../../Redux/Services/productServices";
 import { BsXCircle } from "react-icons/bs";
 import "./form.css";
+import { useEffect, useState } from "react";
+import { getAllCategories } from "../../Redux/Services/categoryServices";
 
 const UpdateProductForm = ({ product, closeForm }) => {
-  const dispatch = useDispatch();
-
-  // Function to generate SKU based on the product name and category
-  const generateSKU = (name, category) => {
-    const namePart = name ? name.slice(0, 3).toUpperCase() : "PRD";
-    const categoryPart = category ? category.slice(0, 3).toUpperCase() : "CAT";
-    const randomNum = Math.floor(Math.random() * 10000); // Generate a random number for uniqueness
-    return `${namePart}-${categoryPart}-${randomNum}`;
-  };
-
-  // Validation schema remains the same
-  const validationSchema = Yup.object({
-    name: Yup.string().required("Product name is required"),
-    description: Yup.string().required("Description is required"),
-    category: Yup.string().required("Category is required"),
-    price: Yup.number()
-      .required("Price is required")
-      .positive("Price must be positive"),
-    totalStock: Yup.number()
-      .required("Total stock is required")
-      .positive("Stock must be positive"),
-    images: Yup.mixed().test(
-      "fileSize",
-      "Maximum 3 images allowed",
-      (files) => !files || files.length <= 3
-    ),
+  const [formData, setFormData] = useState({
+    _id: product?._id || "",
+    name: product?.name || "",
+    description: product?.description || "",
+    category: product?.category || "",
+    price: product?.price || "",
+    totalStock: product?.totalStock || "",
+    images: product?.images || [],
   });
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    // Generate SKU dynamically based on the product name and category
-    const sku = generateSKU(values.name, values.category);
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState({});
+  const [categories, setCategories] = useState([]);
 
-    const formData = new FormData();
-    Object.keys(values).forEach((key) => {
-      if (key === "images") {
-        values.images.forEach((image, i) =>
-          formData.append(`images[${i}]`, image)
-        );
-      } else {
-        formData.append(key, values[key]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await dispatch(getAllCategories());
+      if (response.payload && response.payload.data) {
+        setCategories(response.payload.data);
       }
-    });
+    };
+    fetchCategories();
+  }, [dispatch]);
 
-    // Append the generated SKU to the form data
-    formData.append("sku", sku);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    const result = await dispatch(updateProduct({ id: product._id, formData }));
-    if (result.payload.success) {
-      alert("Product updated successfully");
-    }
-    setSubmitting(false);
+  const handleFileChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: Array.from(e.target.files),
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = "Product name is required";
+    if (!formData.description)
+      newErrors.description = "Description is required";
+    if (!formData.category) newErrors.category = "Category is required";
+    if (!formData.price || formData.price <= 0)
+      newErrors.price = "Price must be positive";
+    if (!formData.totalStock || formData.totalStock <= 0)
+      newErrors.totalStock = "Total stock must be positive";
+    if (!formData.images.length) newErrors.images = "Images are required";
+    if (formData.images.length > 3)
+      newErrors.images = "Maximum 3 images allowed";
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    let data = new FormData();
+    data.append("name", formData.name);
+    data.append("description", formData.description);
+    data.append("category", formData.category);
+    data.append("price", formData.price);
+    data.append("sku", formData.sku);
+    data.append("totalStock", formData.totalStock);
+    formData.images.forEach((file) => data.append("images", file));
+    await dispatch(updateProduct({ id: formData._id, formData: data }));
   };
 
   return (
-    <Formik
-      initialValues={{
-        name: product?.name,
-        description: product?.description,
-        category: product?.category,
-        price: product?.price,
-        totalStock: product?.totalStock,
-        images: [],
-      }}
-      validationSchema={validationSchema}
+    <form
       onSubmit={handleSubmit}
+      className="d-flex justify-content-center flex-column w-100 p-4"
     >
-      {({ setFieldValue }) => (
-        <Form className="d-flex justify-content-center flex-column w-100 p-4">
-          <div className="d-flex justify-content-between w-100">
-            <h4>Update Product</h4>
-            <BsXCircle size={20} onClick={closeForm} className="closeBtn" />
-          </div>
-          <div className="w-100">
-            <label>Product Name</label>
-            <Field className="inputFields" name="name" type="text" />
-            <ErrorMessage name="name" component="div" className="error" />
-          </div>
+      <div className="d-flex justify-content-between w-100">
+        <h4>Add New Product</h4>
+        <BsXCircle
+          size={20}
+          onClick={() => closeForm && closeForm()}
+          className="closeBtn"
+        />
+      </div>
 
-          <div>
-            <label>Description</label>
-            <Field className="inputFields" name="description" as="textarea" />
-            <ErrorMessage
-              name="description"
-              component="div"
-              className="error"
-            />
-          </div>
+      {/* Product Name */}
+      <div className="w-100">
+        <label>Product Name</label>
+        <input
+          className="inputFields"
+          name="name"
+          type="text"
+          value={formData.name}
+          onChange={handleChange}
+        />
+        {errors.name && <div className="error">{errors.name}</div>}
+      </div>
 
-          <div>
-            <label>Category</label>
-            <Field className="inputFields" name="category" type="text" />
-            <ErrorMessage name="category" component="div" className="error" />
-          </div>
+      {/* Description */}
+      <div className="w-100">
+        <label>Description</label>
+        <textarea
+          className="inputFields"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+        />
+        {errors.description && (
+          <div className="error">{errors.description}</div>
+        )}
+      </div>
 
-          <div>
-            <label>Price</label>
-            <Field className="inputFields" name="price" type="number" />
-            <ErrorMessage name="price" component="div" className="error" />
-          </div>
+      {/* Category */}
+      <div className="w-100">
+        <label>Category</label>
+        <select
+          name="category"
+          className="inputFields"
+          value={formData.category}
+          onChange={handleChange}
+        >
+          <option value="">Select a category</option>
+          {categories.map((category) => (
+            <option key={category._id} value={category.category}>
+              {category.category}
+            </option>
+          ))}
+        </select>
+        {errors.category && <div className="error">{errors.category}</div>}
+      </div>
 
-          <div>
-            <label>Total Stock</label>
-            <Field className="inputFields" name="totalStock" type="number" />
-            <ErrorMessage name="totalStock" component="div" className="error" />
-          </div>
+      {/* Price */}
+      <div className="w-100">
+        <label>Price</label>
+        <input
+          className="inputFields"
+          name="price"
+          type="number"
+          value={formData.price}
+          onChange={handleChange}
+        />
+        {errors.price && <div className="error">{errors.price}</div>}
+      </div>
 
-          <div>
-            <label>Images (Max 3)</label>
-            <input
-              className="inputFields my-3 p-2"
-              name="images"
-              type="file"
-              multiple
-              onChange={(event) =>
-                setFieldValue("images", Array.from(event.currentTarget.files))
-              }
-            />
-            <ErrorMessage name="images" component="div" className="error" />
-          </div>
+      {/* Total Stock */}
+      <div className="w-100">
+        <label>Total Stock</label>
+        <input
+          className="inputFields"
+          name="totalStock"
+          type="number"
+          value={formData.totalStock}
+          onChange={handleChange}
+        />
+        {errors.totalStock && <div className="error">{errors.totalStock}</div>}
+      </div>
 
-          <button
-            className="btn addProductBtn"
-            type="submit"
-            style={{ backgroundColor: "#1F3A56" }}
-          >
-            Update Product
-          </button>
-        </Form>
-      )}
-    </Formik>
+      {/* Images */}
+      <div className="w-100">
+        <label>Images (Max 3)</label>
+        <input
+          className="inputFields my-3 p-2"
+          name="images"
+          type="file"
+          multiple
+          onChange={handleFileChange}
+        />
+        {errors.images && <div className="error">{errors.images}</div>}
+      </div>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        className="btn addProductBtn"
+        style={{ backgroundColor: "#1F3A56" }}
+        // onClick={handleSubmit}
+      >
+        Add Product
+      </button>
+    </form>
   );
 };
 

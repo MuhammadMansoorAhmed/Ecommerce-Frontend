@@ -21,6 +21,8 @@ const CategoryPageComponent = () => {
     };
     fetchProducts();
   }, [category, dispatch]);
+  console.log(products);
+  
 
   return (
     <>

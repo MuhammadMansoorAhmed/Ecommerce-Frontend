@@ -5,9 +5,17 @@ export const addProduct = createAsyncThunk(
   "product/addProduct",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/product/addProduct`, formData);
-      if (response.statusText === "OK") {
+      const response = await axios.post(`/api/product/addProduct`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 200) {
+        // Use status code instead of statusText for consistency
         return response.data;
+      } else {
+        return thunkAPI.rejectWithValue("Failed to add product");
       }
     } catch (error) {
       const message =
@@ -16,17 +24,18 @@ export const addProduct = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      console.log(message);
+      console.error(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
+
 export const updateProduct = createAsyncThunk(
   "product/updateProduct",
-  async (formData, thunkAPI) => {
+  async ({ id, formData }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `/api/product/updateProduct/:id`,
+        `/api/product/updateProduct/${id}`,
         formData
       );
       if (response.statusText === "OK") {
@@ -46,10 +55,10 @@ export const updateProduct = createAsyncThunk(
 );
 export const updateProductImages = createAsyncThunk(
   "product/updateProductImages",
-  async (formData, thunkAPI) => {
+  async ({ id, formData }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `/api/product/updateProductImages/:id`,
+        `/api/product/updateProductImages/${id}`,
         formData
       );
       if (response.statusText === "OK") {
@@ -69,10 +78,10 @@ export const updateProductImages = createAsyncThunk(
 );
 export const updateProductStock = createAsyncThunk(
   "product/updateProductStock",
-  async (formData, thunkAPI) => {
+  async ({ id, formData }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `/api/product/updateProductStock/:id`,
+        `/api/product/updateProductStock/${id}`,
         formData
       );
       if (response.statusText === "OK") {
@@ -94,8 +103,6 @@ export const deleteProduct = createAsyncThunk(
   "product/deleteProduct",
   async (selectedProductId, thunkAPI) => {
     try {
-      console.log(selectedProductId);
-
       const response = await axios.delete(
         `/api/product/deleteProduct/${selectedProductId}`
       );

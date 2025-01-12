@@ -24,6 +24,7 @@ const ManageProductsComponent = () => {
   const [editProductForm, setEditProductForm] = useState(false);
   const [products, setProducts] = useState(null);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const [productItem, setProductItem] = useState(null);
   const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
@@ -46,12 +47,14 @@ const ManageProductsComponent = () => {
   };
 
   const handleEditProduct = (product) => {
-    setSelectedProductId(product._id);
+    setProductItem(product);
     setEditProductForm(true);
     setAddProductForm(false); // Close add form if open
   };
 
   const handleDeleteProduct = async () => {
+    // console.log(selectedProductId);
+
     if (!selectedProductId) return;
     try {
       const result = await dispatch(deleteProduct(selectedProductId));
@@ -116,7 +119,7 @@ const ManageProductsComponent = () => {
         <AddProductForm closeForm={() => setAddProductForm(false)} />
       ) : editProductForm ? (
         <UpdateProductForm
-          productId={selectedProductId}
+          product={productItem}
           closeForm={() => setEditProductForm(false)}
         />
       ) : (
