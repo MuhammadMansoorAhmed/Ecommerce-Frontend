@@ -8,8 +8,7 @@ import {
   deleteCategory,
 } from "../../Redux/Services/categoryServices";
 import AddCategoryForm from "./AddCategoryForm";
-import AddSubcategoryForm from "./AddSubCategoryForm";
-import AddTagForm from "./AddTagForm";
+
 
 const CategoriesAndTagsComponent = () => {
   const dispatch = useDispatch();
@@ -17,8 +16,6 @@ const CategoriesAndTagsComponent = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [addCategoryForm, setAddCategoryForm] = useState(false);
-  const [addSubCategoryForm, setAddSubCategoryForm] = useState(false);
-  const [addCategoryTagForm, setAddCategoryTagForm] = useState(false);
 
   // Fetch all categories
   useEffect(() => {
@@ -44,8 +41,6 @@ const CategoriesAndTagsComponent = () => {
 
   const handleCloseForm = () => {
     setAddCategoryForm(false);
-    setAddSubCategoryForm(false);
-    setAddCategoryTagForm(false);
   };
 
   // // Handle Adding Category
@@ -120,7 +115,7 @@ const CategoriesAndTagsComponent = () => {
           >
             Add Category
           </Button>
-          <Button
+          {/* <Button
             style={{ borderRadius: "8px", marginLeft: "10px" }}
             varient="primary"
             onClick={() => setAddSubCategoryForm(true)}
@@ -133,53 +128,53 @@ const CategoriesAndTagsComponent = () => {
             onClick={() => setAddCategoryTagForm(true)}
           >
             Add Tag
-          </Button>
+          </Button> */}
         </div>
-        {addCategoryForm ? (
-          <AddCategoryForm closeForm={handleCloseForm} />
-        ) : addSubCategoryForm ? (
+        {/* addSubCategoryForm ? (
           <AddSubcategoryForm closeForm={handleCloseForm} />
-        ) : addCategoryTagForm ? (
+        ) : 
+        addCategoryTagForm ? (
           <AddTagForm closeForm={handleCloseForm} />
-        ) : (
-          <Row>
-            {/* Table 1: Category */}
-            <Col sm={12} md={4} lg={4} xl={4} className="p-3">
-              <h4 className="text-center border-bottom pb-2">Categories</h4>
-              <table className="tableLayout mt-4 px-2 border">
-                <thead>
-                  <tr>
-                    <th className="border p-1">Category</th>
-                    <th className="border p-1">Options</th>
+        )  */}
+        {addCategoryForm && <AddCategoryForm closeForm={handleCloseForm} />}
+        <Row>
+          {/* Table 1: Category */}
+          <Col sm={12} md={8} lg={8} xl={8} className="p-3">
+            <h4 className="text-center border-bottom pb-2">Categories</h4>
+            <table className="tableLayout mt-4 px-2 border">
+              <thead>
+                <tr>
+                  <th className="border p-1">Category</th>
+                  <th className="border p-1">Options</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categories?.map((categoryItem, index) => (
+                  <tr key={index}>
+                    <td className="border p-1">{categoryItem?.category}</td>
+                    <td className="border p-1">
+                      <MdOutlineDeleteOutline
+                        size={20}
+                        style={{ color: "lightCoral", cursor: "pointer" }}
+                        onClick={() => {
+                          setShowDeleteModal(true);
+                          setSelectedCategory(categoryItem._id);
+                        }}
+                      />
+                      <FaRegEdit
+                        size={20}
+                        style={{ color: "seaGreen", cursor: "pointer" }}
+                        // Add edit logic here
+                      />
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {categories?.map((categoryItem, index) => (
-                    <tr key={index}>
-                      <td className="border p-1">{categoryItem?.category}</td>
-                      <td className="border p-1">
-                        <MdOutlineDeleteOutline
-                          size={20}
-                          style={{ color: "lightCoral", cursor: "pointer" }}
-                          onClick={() => {
-                            setShowDeleteModal(true);
-                            setSelectedCategory(categoryItem._id);
-                          }}
-                        />
-                        <FaRegEdit
-                          size={20}
-                          style={{ color: "seaGreen", cursor: "pointer" }}
-                          // Add edit logic here
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </Col>
+                ))}
+              </tbody>
+            </table>
+          </Col>
 
-            {/* Table 2: Subcategories */}
-            <Col sm={12} md={4} lg={4} xl={4} className="p-3">
+          {/* Table 2: Subcategories */}
+          {/* <Col sm={12} md={4} lg={4} xl={4} className="p-3">
               <h4 className="text-center border-bottom pb-2">Subcategories</h4>
               <table className="tableLayout mt-4 px-2 border">
                 <thead>
@@ -212,10 +207,10 @@ const CategoriesAndTagsComponent = () => {
                   ))}
                 </tbody>
               </table>
-            </Col>
+            </Col> */}
 
-            {/* Table 3: Tags */}
-            <Col sm={12} md={4} lg={4} xl={4} className="p-3">
+          {/* Table 3: Tags */}
+          {/* <Col sm={12} md={4} lg={4} xl={4} className="p-3">
               <h4 className="text-center border-bottom pb-2">Tags</h4>
               <table className="tableLayout mt-4 px-2 border">
                 <thead>
@@ -252,9 +247,8 @@ const CategoriesAndTagsComponent = () => {
                   ))}
                 </tbody>
               </table>
-            </Col>
-          </Row>
-        )}
+            </Col> */}
+        </Row>
       </div>
     </div>
   );

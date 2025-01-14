@@ -30,6 +30,18 @@ const AddProductForm = ({ closeForm }) => {
     fetchCategories();
   }, [dispatch]);
 
+  // useEffect(() => {
+  //   if (selectedCategory) {
+  //     const fetchSubCategories = async () => {
+  //       const response = await dispatch(getAllSubCategories(selectedCategory));
+  //       if (response.payload && response.payload.data) {
+  //         setSubCategories(response.payload.data);
+  //       }
+  //     };
+  //     fetchSubCategories();
+  //   }
+  // }, [dispatch, selectedCategory]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -141,7 +153,7 @@ const AddProductForm = ({ closeForm }) => {
         >
           <option value="">Select a category</option>
           {categories.map((category) => (
-            <option key={category._id} value={category.category}>
+            <option key={category._id} value={category._id}>
               {category.category}
             </option>
           ))}

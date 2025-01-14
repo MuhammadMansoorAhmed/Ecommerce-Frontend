@@ -110,25 +110,25 @@ export const deleteCategory = createAsyncThunk(
     }
   }
 );
-export const getAllSubCategories = createAsyncThunk(
-  "category/getAllSubCategories",
-  async (category, thunkAPI) => {
-    try {
-      const response = await axios.get(
-        `/api/category/getAllSubCategories/${category}`
-      );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      console.log(message);
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+// export const getAllSubCategories = createAsyncThunk(
+//   "category/getAllSubCategories",
+//   async (category, thunkAPI) => {
+//     try {
+//       const response = await axios.get(
+//         `/api/category/getAllSubCategories/${category}`
+//       );
+//       if (response.statusText === "OK") {
+//         return response.data;
+//       }
+//     } catch (error) {
+//       const message =
+//         (error.response &&
+//           error.response.data &&
+//           error.response.data.message) ||
+//         error.message ||
+//         error.toString();
+//       console.log(message);
+//       return thunkAPI.rejectWithValue(message);
+//     }
+//   }
+// );
