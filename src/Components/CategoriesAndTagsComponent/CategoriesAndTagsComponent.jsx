@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
-import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import {
@@ -8,7 +7,6 @@ import {
   deleteCategory,
 } from "../../Redux/Services/categoryServices";
 import AddCategoryForm from "./AddCategoryForm";
-
 
 const CategoriesAndTagsComponent = () => {
   const dispatch = useDispatch();
@@ -136,7 +134,12 @@ const CategoriesAndTagsComponent = () => {
         addCategoryTagForm ? (
           <AddTagForm closeForm={handleCloseForm} />
         )  */}
-        {addCategoryForm && <AddCategoryForm closeForm={handleCloseForm} />}
+        {addCategoryForm && (
+          <AddCategoryForm
+            closeForm={handleCloseForm}
+            setCategories={setCategories}
+          />
+        )}
         <Row>
           {/* Table 1: Category */}
           <Col sm={12} md={8} lg={8} xl={8} className="p-3">
@@ -151,7 +154,7 @@ const CategoriesAndTagsComponent = () => {
               <tbody>
                 {categories?.map((categoryItem, index) => (
                   <tr key={index}>
-                    <td className="border p-1">{categoryItem?.category}</td>
+                    <td className="border p-1">{categoryItem?.name}</td>
                     <td className="border p-1">
                       <MdOutlineDeleteOutline
                         size={20}
@@ -161,11 +164,11 @@ const CategoriesAndTagsComponent = () => {
                           setSelectedCategory(categoryItem._id);
                         }}
                       />
-                      <FaRegEdit
+                      {/* <FaRegEdit
                         size={20}
                         style={{ color: "seaGreen", cursor: "pointer" }}
                         // Add edit logic here
-                      />
+                      /> */}
                     </td>
                   </tr>
                 ))}

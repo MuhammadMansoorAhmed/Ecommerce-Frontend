@@ -3,9 +3,12 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { BsXCircle } from "react-icons/bs";
-import { addCategory } from "../../Redux/Services/categoryServices";
+import {
+  addCategory,
+  getAllCategories,
+} from "../../Redux/Services/categoryServices";
 
-const AddCategoryForm = ({ closeForm }) => {
+const AddCategoryForm = ({ closeForm, setCategories }) => {
   const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
@@ -16,6 +19,10 @@ const AddCategoryForm = ({ closeForm }) => {
     const result = await dispatch(addCategory(values));
     if (result.payload.success) {
       alert("Category added successfully");
+      const reFetchCategories = await dispatch(getAllCategories());
+      if (reFetchCategories.meta.requestStatus === "fulfilled") {
+        setCategories(reFetchCategories.payload.data);
+      }
     }
     setSubmitting(false);
   };

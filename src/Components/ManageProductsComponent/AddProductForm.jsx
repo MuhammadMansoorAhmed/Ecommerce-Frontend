@@ -93,16 +93,21 @@ const AddProductForm = ({ closeForm }) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    formData.sku = generateSKU(formData.name, formData.category);
-    let data = new FormData();
-    data.append("name", formData.name);
-    data.append("description", formData.description);
-    data.append("category", formData.category);
-    data.append("price", formData.price);
-    data.append("sku", formData.sku);
-    data.append("totalStock", formData.totalStock);
-    formData.images.forEach((file) => data.append("images", file));
-    await dispatch(addProduct(data));
+    try {
+      formData.sku = generateSKU(formData.name, formData.category);
+      let data = new FormData();
+      data.append("name", formData.name);
+      data.append("description", formData.description);
+      data.append("category", formData.category);
+      data.append("price", formData.price);
+      data.append("sku", formData.sku);
+      data.append("totalStock", formData.totalStock);
+      formData.images.forEach((file) => data.append("images", file));
+      await dispatch(addProduct(data));
+      alert("Product added successfully");
+    } catch (error) {
+      console.log("error while adding new product", error);
+    }
   };
 
   return (
@@ -151,10 +156,12 @@ const AddProductForm = ({ closeForm }) => {
           value={formData.category}
           onChange={handleChange}
         >
-          <option value="">Select a category</option>
+          <option value="" disabled selected>
+            Select a category
+          </option>
           {categories.map((category) => (
             <option key={category._id} value={category._id}>
-              {category.category}
+              {category.name}
             </option>
           ))}
         </select>

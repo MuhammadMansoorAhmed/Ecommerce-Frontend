@@ -164,7 +164,7 @@ const ManageProductsComponent = () => {
                         {product?.name}
                       </td>
                       <td className="border border-white p-1">
-                        {product?.categoryInfo?.category}
+                        {product?.categoryInfo?.name}
                       </td>
                       <td className="border border-white p-1">
                         PKR: {product?.price}

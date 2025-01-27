@@ -51,6 +51,7 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
           width: "100%",
           height: "100%",
           objectFit: "cover",
+          minHeight: "350px",
         }}
         src={imgSrc}
         alt="Product Image"

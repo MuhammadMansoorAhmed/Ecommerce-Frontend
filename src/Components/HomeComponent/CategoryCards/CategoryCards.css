@@ -5,8 +5,8 @@
   transform: translate(-50%, -50%);
 }
 .categoryHeading {
-  font-size: 36px;
-  font-weight: 600;
+  font-size: 32px;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.4s;
 }
@@ -17,7 +17,7 @@
 .imgHover {
   opacity: 60%;
   border-radius: 12px;
-  height: 330px;
+  height: 250px;
   transition: all 0.4s;
   cursor: pointer;
 }

@@ -176,7 +176,7 @@ const ProductDisplayComponent = () => {
       <Row className="my-5">
         <Col>
           <RelatedProductsComponent
-            category={product?.category?.category}
+            category={product?.category?.name}
             dispatch={dispatch}
           />
         </Col>

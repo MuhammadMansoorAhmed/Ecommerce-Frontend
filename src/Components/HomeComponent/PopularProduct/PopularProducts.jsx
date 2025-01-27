@@ -3,12 +3,10 @@ import { Col, Container, Row } from "react-bootstrap";
 import BlurHashImageComponent from "./BlurHashImageComponent";
 
 const PopularProducts = ({ popularProducts }) => {
-  console.log(popularProducts);
-
   return (
     <Container>
       <Row className="d-flex justify-content-center mb-5">
-        <h2 className="text-center my-5 fw-bold">Popular Products</h2>
+        <h3 className="text-center mb-4 fw-bold">Popular Products</h3>
         {popularProducts?.map((product) => (
           <Col
             sm={10}
