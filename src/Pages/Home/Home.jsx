@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import CategoryCards from "../../Components/HomeComponent/CategoryCards/CategoryCards";
 import HomeFooter from "../../Components/HomeComponent/HomeFooter/HomeFooter";
-import PopularProducts from "../../Components/HomeComponent/PopularProduct/PopularProducts";
 import NavbarComponent from "../../Components/Navbar/NavbarComponent";
 import { useDispatch } from "react-redux";
 import { getAllProducts } from "../../Redux/Services/productServices";
@@ -24,7 +22,7 @@ const Home = () => {
   return (
     <div>
       <NavbarComponent />
-      <CategoryCards />
+      {/* <CategoryCards /> */}
       {/* <PopularProducts popularProducts={popularProducts} /> */}
       <div className="container-fluid">
         <CategoryPageComponent />

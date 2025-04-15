@@ -1,0 +1,10 @@
+.action-icon {
+  border-radius: 4px;
+  color: rgb(138, 153, 151);
+  margin-inline: 6px;
+  cursor: pointer;
+  padding: 4px;
+}
+.action-icon:hover {
+  opacity: 80%;
+}

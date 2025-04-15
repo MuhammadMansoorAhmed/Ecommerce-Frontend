@@ -1,34 +1,38 @@
-.add-to-cart-container:hover{
+.add-to-cart-container{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  transition: all .4s;
+}
+.order-btn{
+  border: 1px solid rgba(196, 204, 216, 0.70);
+  background-color:  rgba(196, 204, 216, 0.70);
+  border-radius: 4px;
+  margin-top: 14px;
+  margin-left: 8px;
+  font-size: 14px;
   transition: all .4s;
 }
 
-.add-to-cart {
-  background-color: #2a39ff;
-  color: #fff;
-  width: 85%;
-  z-index: 3;
-  position: absolute;
-  top: 85%;
-  left: 8%;
-  padding: 8px ;
-  outline: none;
-  border: none;
-  cursor: pointer; 
-  animation: btnsContainer linear .4s;
-  transition: all 0.4s;
+.order-btn:hover {
+  color: #628281;
 }
+
+
 
 .hoverIcon {
   cursor: pointer;
-  color: #dadde2;
+  color: #41434688;
   margin: 4px 12px;
   transition: all 0.4s;
 }
 
-.add-to-cart:hover {
-  animation: btnAnimate 0.4s forwards;
-  transition: all .4s;
+.hoverIcon:hover{
+  color: #0080ff;
 }
+
+
 
 @media screen and (max-width: 800px){
   .add-to-cart{
@@ -43,15 +47,6 @@
   }
 }
 
-@keyframes btnAnimate {
-  0% {
-    background-color: #2a39ff;
-  }
-  100% {
-    background-color: #862dfc;
-  }
- 
-}
 @keyframes btnsContainer {
   0% {
     display: none;

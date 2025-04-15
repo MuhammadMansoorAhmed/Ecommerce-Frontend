@@ -9,13 +9,12 @@
 #628281
 
 #43655A */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: Ubuntu, sans-serif;
+@font-face {
+  font-family: Inter;
+  src: url("../public/Inter-VariableFont_opsz\,wght.ttf");
+}
+* {
+  font-family: inter;
   font-weight: 600;
 }
 

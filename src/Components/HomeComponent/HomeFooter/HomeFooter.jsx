@@ -23,7 +23,7 @@ const HomeFooter = () => {
             <li className="footerLinks">My Account</li>
             <li className="footerLinks">Order Tracking</li>
             <li className="footerLinks">Checkout</li>
-            <li className="footerLinks">Whitelist</li>
+            <li className="footerLinks">Wishlist</li>
           </ul>
         </Col>
         <Col sm={5} md={3} lg={3} xl={3}>
@@ -41,7 +41,7 @@ const HomeFooter = () => {
             <li className="footerLinks">My Account</li>
             <li className="footerLinks">Order Tracking</li>
             <li className="footerLinks">Checkout</li>
-            <li className="footerLinks">Whitelist</li>
+            <li className="footerLinks">Wishlist</li>
           </ul>
         </Col>
         <Col sm={5} md={3} lg={3} xl={3}>

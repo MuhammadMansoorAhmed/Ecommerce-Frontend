@@ -1,5 +1,11 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import Contact from "./Pages/Contact/Contact";
 import About from "./Pages/About/About";
@@ -14,8 +20,31 @@ import InventoryManagement from "./Pages/InventoryManagement/InventoryManagement
 import DiscountAndPromotion from "./Pages/DiscountAndPromotion/DiscountAndPromotion";
 import OrderDisplay from "./Pages/OrderDetails/OrderDetails";
 import ViewAllOrders from "./Pages/AdminOrderManagement/ViewAllOrders";
+import Login from "./Pages/Login/Login";
+import Signup from "./Pages/Signup/Signup";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getUserLoginStatus } from "./Redux/Services/authServices";
+import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
+import Cart from "./Pages/Cart/Cart";
 
 function App() {
+  const dispatch = useDispatch();
+  const [loginAccess, setLoginAccess] = useState(null);
+  useEffect(() => {
+    const fetchLogInStatus = async () => {
+      const response = await dispatch(getUserLoginStatus());
+      // console.log(response.payload.isLoggedIn);
+      if (response.payload.isLoggedIn === true) {
+        window.localStorage.setItem("isLoggedIn", true);
+        setLoginAccess(true);
+      } else {
+        window.localStorage.setItem("isLoggedIn", false);
+      }
+    };
+    fetchLogInStatus();
+  }, [dispatch]);
   return (
     <>
       <Router>
@@ -23,8 +52,28 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forget-password" element={<ForgetPassword />} />
+          <Route
+            path="/resetPassword/:resetToken"
+            element={<ResetPassword />}
+          />
           <Route path="/product/:id" element={<ProductDisplay />} />
           <Route path="/order/:id" element={<OrderDisplay />} />
+          <Route
+            path="/cart"
+            element={
+              loginAccess === null ? (
+                <div>Loading...</div>
+              ) : loginAccess ? (
+                <Cart />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+
           <Route
             path="/products/category/:category"
             element={<CategoryPage />}

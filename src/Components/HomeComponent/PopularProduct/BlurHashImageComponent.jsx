@@ -1,19 +1,19 @@
 /* eslint-disable react/prop-types */
-import { FaHeart } from "react-icons/fa";
+import { FaOpencart } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
 import "./BlurHashImageComponent.css";
 import { useNavigate } from "react-router-dom";
+import { BsFillCartCheckFill } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { AddtoCart } from "../../../Redux/Services/cartServices";
 
 const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [selectFavorite, setSelectFavorite] = useState(false);
+  const [selectAddtoCart, setSelectAddtoCart] = useState(false);
   const [hover, setHover] = useState(false);
-
-  const handleFavoriteClick = () => {
-    setSelectFavorite(!selectFavorite);
-  };
 
   useEffect(() => {
     const img = new Image();
@@ -22,6 +22,11 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
     };
     img.src = imgSrc;
   }, [imgSrc]);
+
+  const addProductToCart = async (productId) => {
+    const response = await dispatch(AddtoCart(productId));
+    console.log(response);
+  };
 
   return (
     <div
@@ -45,49 +50,64 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
       )}
 
       {/* Show image after it has loaded */}
-      <img
-        style={{
-          display: imageLoaded ? "block" : "none",
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          minHeight: "350px",
-        }}
-        src={imgSrc}
-        alt="Product Image"
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      />
-
-      {/* Favorite Icon */}
+      <div>
+        <img
+          style={{
+            display: imageLoaded ? "block" : "none",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            maxHeight: "350px",
+            minHeight: "300px",
+            overflow: "hidden",
+          }}
+          src={imgSrc}
+          alt="Product Image"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+        />
+      </div>
+      {/* AddtoCart Icon */}
       <div
-        className={`bg-light ${hover ? "d-block" : "d-none"}`}
+        className={` d-block  `}
+        // ${hover ? "d-block" : "d-none"}
         style={{
           position: "absolute",
           zIndex: 3,
           top: 10,
-          right: 10,
+          right: 8,
+          boxShadow: "2px",
+          borderRadius: "6px",
+          backgroundColor: "rgba(196, 204, 216, 0.56)",
+          border: "1px solid rgba(196, 204, 216, 0.70)",
         }}
         onMouseEnter={() => setHover(true)}
       >
-        <FaHeart
+        <BsFillCartCheckFill
           size={20}
           className="hoverIcon"
-          style={{
-            fill: `${selectFavorite ? "#FF0000" : ""}`,
+          // style={{
+          //   fill: `${selectAddtoCart ? "#0080ff" : ""}`,
+          // }}
+          onClick={() => {
+            const newValue = !selectAddtoCart;
+            setSelectAddtoCart(newValue);
+            addProductToCart(productId);
           }}
-          onClick={handleFavoriteClick}
-          onMouseEnter={() => setHover(true)}
+        />
+        <FaOpencart
+          size={20}
+          className="hoverIcon"
+          onClick={() => {
+            navigate("/cart");
+          }}
         />
       </div>
 
       {/* Add to Cart Button */}
-      <div
-        className="add-to-cart-container"
-        onMouseEnter={() => setHover(true)}
-      >
+      <div className="add-to-cart-container">
         <button
-          className={`add-to-cart ${hover ? "d-block" : "d-none"}`}
+          className="order-btn"
           type="button"
           onClick={() => navigate(`/product/${productId}`)}
         >

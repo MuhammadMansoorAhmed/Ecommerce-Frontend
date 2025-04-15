@@ -22,7 +22,6 @@ const CategoryPageComponent = () => {
   const isLoading = useSelector(selectIsLoading);
   const isSuccess = useSelector(selectIsSuccess);
   const isError = useSelector(selectIsError);
-  console.log(category);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -46,8 +45,8 @@ const CategoryPageComponent = () => {
 
   return (
     <>
-      <Container className="text-center border-top my-3">
-        <h3 className="mt-3">Products</h3>
+      <Container className="text-center  my-3">
+        {/* <h3 className="mt-3">Products</h3> */}
         <Row className="d-flex w-100 justify-content-md-evenly flex-wrap">
           {!isLoading && isSuccess ? (
             Array.isArray(products) && products.length > 0 ? (
@@ -67,7 +66,7 @@ const CategoryPageComponent = () => {
                     <BlurHashImageComponent
                       hash={product?.images[0]?.blurHash}
                       imgSrc={product?.images[0]?.url}
-                      productId={product?.images[0]?._id}
+                      productId={product?._id}
                     />
                   </div>
                   <div className="d-flex flex-column text-start px-2 py-2 ">

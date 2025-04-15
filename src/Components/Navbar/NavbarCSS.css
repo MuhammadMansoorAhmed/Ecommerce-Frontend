@@ -15,6 +15,7 @@
 }
 .navHover:hover {
   color: #628281;
+  border-bottom: 1px solid #628281;
 }
 .shopDropdownList {
   width: 100%;

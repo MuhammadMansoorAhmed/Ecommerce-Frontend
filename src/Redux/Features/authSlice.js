@@ -5,6 +5,7 @@ import {
   forgetPassword,
   getCurrentUser,
   getSingleUser,
+  getUserLoginStatus,
   login,
   logout,
   refreshAccessToken,
@@ -167,6 +168,17 @@ const authSlice = createSlice({
         state.isError = true;
       })
       .addCase(getCurrentUser.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(getUserLoginStatus.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserLoginStatus.rejected, (state) => {
+        state.isLoading = false;
+        state.isLoggedIn = true;
+        state.isError = true;
+      })
+      .addCase(getUserLoginStatus.fulfilled, (state) => {
         state.isLoading = false;
       });
   },

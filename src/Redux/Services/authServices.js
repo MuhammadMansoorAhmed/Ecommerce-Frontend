@@ -1,12 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const register = createAsyncThunk(
   "user/register",
   async (formData, thunkAPI) => {
     try {
       const response = await axios.post(`/api/auth/register`, formData);
+
       if (response.statusText === "OK") {
+        toast.success("User Registration Successful");
         return response.data;
       }
     } catch (error) {
@@ -17,6 +20,7 @@ export const register = createAsyncThunk(
         error.message ||
         error.toString();
       console.log(message);
+      toast.error("User Registration Failed");
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -45,8 +49,11 @@ export const logout = createAsyncThunk("user/logout", async (_, thunkAPI) => {
   try {
     const response = await axios.post(`/api/auth/logout`);
     if (response.statusText === "OK") {
+      toast.success("User logged Out");
+      window.location.reload();
       return response.data;
     }
+    toast.errpr("Failed to logged Out");
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -56,6 +63,7 @@ export const logout = createAsyncThunk("user/logout", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(message);
   }
 });
+
 export const getSingleUser = createAsyncThunk(
   "user/getSingleUser",
   async (_, thunkAPI) => {
@@ -136,6 +144,7 @@ export const updateUserAvatar = createAsyncThunk(
     }
   }
 );
+
 export const forgetPassword = createAsyncThunk(
   "user/forgetPassword",
   async (formData, thunkAPI) => {
@@ -227,6 +236,27 @@ export const getCurrentUser = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const response = await axios.post(`/api/auth/getCurrentUser`, formData);
+      if (response.statusText === "OK") {
+        return response.data;
+      }
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getUserLoginStatus = createAsyncThunk(
+  "user/getUserLoginStatus",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(`/api/auth/loggedIn`);
       if (response.statusText === "OK") {
         return response.data;
       }
