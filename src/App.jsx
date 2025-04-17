@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useNavigate,
   Navigate,
 } from "react-router-dom";
 import Home from "./Pages/Home/Home";
@@ -35,12 +34,14 @@ function App() {
   useEffect(() => {
     const fetchLogInStatus = async () => {
       const response = await dispatch(getUserLoginStatus());
-      // console.log(response.payload.isLoggedIn);
       if (response.payload.isLoggedIn === true) {
         window.localStorage.setItem("isLoggedIn", true);
+        window.localStorage.setItem("role", response.payload.user.role);
         setLoginAccess(true);
       } else {
-        window.localStorage.setItem("isLoggedIn", false);
+        window.localStorage.removeItem("isLoggedIn");
+        window.localStorage.removeItem("role");
+        setLoginAccess(false);
       }
     };
     fetchLogInStatus();
