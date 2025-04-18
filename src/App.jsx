@@ -27,6 +27,9 @@ import { getUserLoginStatus } from "./Redux/Services/authServices";
 import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import Cart from "./Pages/Cart/Cart";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +37,7 @@ function App() {
   useEffect(() => {
     const fetchLogInStatus = async () => {
       const response = await dispatch(getUserLoginStatus());
+
       if (response.payload.isLoggedIn === true) {
         window.localStorage.setItem("isLoggedIn", true);
         window.localStorage.setItem("role", response.payload.user.role);
@@ -46,6 +50,7 @@ function App() {
     };
     fetchLogInStatus();
   }, [dispatch]);
+
   return (
     <>
       <Router>

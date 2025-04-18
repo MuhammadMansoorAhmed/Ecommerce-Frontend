@@ -35,7 +35,8 @@ export const login = createAsyncThunk(
     try {
       const response = await axios.post(
         `${API_BASE_URL}/api/auth/login`,
-        formData
+        formData,
+        { withCredentials: true }
       );
       if (response.statusText === "OK") {
         return response.data;
@@ -282,7 +283,9 @@ export const getUserLoginStatus = createAsyncThunk(
   "user/getUserLoginStatus",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/auth/loggedIn`);
+      const response = await axios.get(`${API_BASE_URL}/api/auth/loggedIn`, {
+        withCredentials: true,
+      });
       if (response.statusText === "OK") {
         return response.data;
       }
