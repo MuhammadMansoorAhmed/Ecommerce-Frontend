@@ -1,12 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
+const API_BASE_URL = import.meta.env.VITE_SERVER_ROUTE;
 
 export const register = createAsyncThunk(
   "user/register",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/auth/register`, formData);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/register`,
+        formData
+      );
 
       if (response.statusText === "OK") {
         toast.success("User Registration Successful");
@@ -29,7 +33,10 @@ export const login = createAsyncThunk(
   "user/login",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/auth/login`, formData);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/login`,
+        formData
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -47,7 +54,7 @@ export const login = createAsyncThunk(
 );
 export const logout = createAsyncThunk("user/logout", async (_, thunkAPI) => {
   try {
-    const response = await axios.post(`/api/auth/logout`);
+    const response = await axios.post(`${API_BASE_URL}/api/auth/logout`);
     if (response.statusText === "OK") {
       toast.success("User logged Out");
       window.location.reload();
@@ -68,7 +75,9 @@ export const getSingleUser = createAsyncThunk(
   "user/getSingleUser",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/auth/getSingleUser`);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/getSingleUser`
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -88,7 +97,9 @@ export const deleteUser = createAsyncThunk(
   "user/deleteUser/:id",
   async (id, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/auth/deleteUser/${id}`);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/deleteUser/${id}`
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -108,7 +119,10 @@ export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/auth/updateUser`, formData);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/updateUser`,
+        formData
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -128,7 +142,10 @@ export const updateUserAvatar = createAsyncThunk(
   "user/updateUserAvatar",
   async (avatar, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/auth/updateUserAvatar`, avatar);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/updateUserAvatar`,
+        avatar
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -149,7 +166,10 @@ export const forgetPassword = createAsyncThunk(
   "user/forgetPassword",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/auth/forgetPassword`, formData);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/forgetPassword`,
+        formData
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -170,7 +190,7 @@ export const resetPassword = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const response = await axios.post(
-        `/api/auth/resetPassword/:resetToken`,
+        `${API_BASE_URL}/api/auth/resetPassword/:resetToken`,
         formData
       );
       if (response.statusText === "OK") {
@@ -193,7 +213,7 @@ export const refreshAccessToken = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const response = await axios.post(
-        `/api/auth/refreshAccessToken`,
+        `${API_BASE_URL}/api/auth/refreshAccessToken`,
         formData
       );
       if (response.statusText === "OK") {
@@ -215,7 +235,10 @@ export const changePassword = createAsyncThunk(
   "user/changePassword",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/auth/changePassword`, formData);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/changePassword`,
+        formData
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -235,7 +258,10 @@ export const getCurrentUser = createAsyncThunk(
   "user/getCurrentUser",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/auth/getCurrentUser`, formData);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/getCurrentUser`,
+        formData
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -256,7 +282,7 @@ export const getUserLoginStatus = createAsyncThunk(
   "user/getUserLoginStatus",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`/api/auth/loggedIn`);
+      const response = await axios.get(`${API_BASE_URL}/api/auth/loggedIn`);
       if (response.statusText === "OK") {
         return response.data;
       }

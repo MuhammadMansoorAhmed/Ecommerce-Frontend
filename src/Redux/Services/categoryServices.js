@@ -1,11 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_SERVER_ROUTE;
 
 export const addCategory = createAsyncThunk(
   "category/addCategory",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/category/addCategory`, formData);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/category/addCategory`,
+        formData
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -27,7 +31,7 @@ export const getAllCategories = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const response = await axios.get(
-        `/api/category/getAllCategories`,
+        `${API_BASE_URL}/api/category/getAllCategories`,
         formData
       );
       if (response.statusText === "OK") {
@@ -49,7 +53,9 @@ export const deleteCategory = createAsyncThunk(
   "category/deleteCategory",
   async (id, thunkAPI) => {
     try {
-      const response = await axios.delete(`/api/category/deleteCategory/${id}`);
+      const response = await axios.delete(
+        `${API_BASE_URL}/api/category/deleteCategory/${id}`
+      );
       if (response.statusText === "OK") {
         return response.data;
       }

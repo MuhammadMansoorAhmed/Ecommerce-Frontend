@@ -1,13 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
+const API_BASE_URL = import.meta.env.VITE_SERVER_ROUTE;
 
 export const AddtoCart = createAsyncThunk(
   "cart/addToCart",
   async (productId, thunkAPI) => {
     try {
       const response = await axios.post(
-        `/api/cart/addItemToTheCart/${productId}`
+        `${API_BASE_URL}/api/cart/addItemToTheCart/${productId}`
       );
 
       if (response.statusText === "OK") {
@@ -40,7 +41,9 @@ export const RemoveFromCart = createAsyncThunk(
   "cart/RemoveFromCart",
   async (id, thunkAPI) => {
     try {
-      const response = await axios.delete(`/api/cart/deleteItemFromCart/${id}`);
+      const response = await axios.delete(
+        `${API_BASE_URL}/api/cart/deleteItemFromCart/${id}`
+      );
 
       if (response.statusText === "OK") {
         toast.success("Removed from cart");
@@ -64,7 +67,9 @@ export const getAllCartItems = createAsyncThunk(
   "cart/getAllCartItems",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`/api/cart/getAllCartItems`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/cart/getAllCartItems`
+      );
 
       if (response.statusText === "OK") {
         return response.data;

@@ -1,15 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_SERVER_ROUTE;
 
 export const addProduct = createAsyncThunk(
   "product/addProduct",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post(`/api/product/addProduct`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        `${API_BASE_URL}/api/product/addProduct`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if (response.status === 200) {
         // Use status code instead of statusText for consistency
@@ -35,7 +40,7 @@ export const updateProduct = createAsyncThunk(
   async ({ id, formData }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `/api/product/updateProduct/${id}`,
+        `${API_BASE_URL}/api/product/updateProduct/${id}`,
         formData
       );
       if (response.statusText === "OK") {
@@ -58,7 +63,7 @@ export const updateProductImages = createAsyncThunk(
   async ({ id, formData }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `/api/product/updateProductImages/${id}`,
+        `${API_BASE_URL}/api/product/updateProductImages/${id}`,
         formData
       );
       if (response.statusText === "OK") {
@@ -81,7 +86,7 @@ export const updateProductStock = createAsyncThunk(
   async ({ id, formData }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `/api/product/updateProductStock/${id}`,
+        `${API_BASE_URL}/api/product/updateProductStock/${id}`,
         formData
       );
       if (response.statusText === "OK") {
@@ -104,7 +109,7 @@ export const deleteProduct = createAsyncThunk(
   async (selectedProductId, thunkAPI) => {
     try {
       const response = await axios.delete(
-        `/api/product/deleteProduct/${selectedProductId}`
+        `${API_BASE_URL}/api/product/deleteProduct/${selectedProductId}`
       );
       if (response.statusText === "OK") {
         return response.data;
@@ -125,7 +130,9 @@ export const getAllProducts = createAsyncThunk(
   "product/getAllProducts",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`/api/product/getAllProducts`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/product/getAllProducts`
+      );
       return response.data;
     } catch (error) {
       const message =
@@ -144,7 +151,7 @@ export const getProductsWithCategory = createAsyncThunk(
   async (category, thunkAPI) => {
     try {
       const response = await axios.get(
-        `/api/product/getProductByCategory/${category}`
+        `${API_BASE_URL}/api/product/getProductByCategory/${category}`
       );
       return response.data;
     } catch (error) {
@@ -163,7 +170,9 @@ export const getTotalProductsStats = createAsyncThunk(
   "product/getTotalProductsStats",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`/api/product/stats/overview`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/product/stats/overview`
+      );
       return response.data;
     } catch (error) {
       const message =
@@ -181,7 +190,9 @@ export const getTotalProductsCategoryStats = createAsyncThunk(
   "product/getTotalProductsCategoryStats",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`/api/product/stats/categories`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/product/stats/categories`
+      );
       return response.data;
     } catch (error) {
       const message =
@@ -199,7 +210,9 @@ export const getProductById = createAsyncThunk(
   "product/getProductById",
   async (id, thunkAPI) => {
     try {
-      const response = await axios.get(`/api/product/getProductById/${id}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/product/getProductById/${id}`
+      );
       return response.data;
     } catch (error) {
       const message =

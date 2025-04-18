@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_SERVER_ROUTE;
 
 export const addOrder = createAsyncThunk(
   "order/addOrder",
   async ({ formData, productId }, thunkAPI) => {
     try {
       const response = await axios.post(
-        `/api/order/addOrder/${productId}`,
+        `${API_BASE_URL}/api/order/addOrder/${productId}`,
         formData
       );
       if (response.statusText === "OK") {
@@ -28,7 +29,9 @@ export const deleteOrder = createAsyncThunk(
   "order/deleteOrder",
   async (orderId, thunkAPI) => {
     try {
-      const response = await axios.delete(`/api/order/deleteOrder/${orderId}`);
+      const response = await axios.delete(
+        `${API_BASE_URL}/api/order/deleteOrder/${orderId}`
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -48,7 +51,9 @@ export const getOrdersByUser = createAsyncThunk(
   "order/getOrderByUser",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`/api/order/getUserOrder`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/order/getUserOrder`
+      );
       if (response.statusText === "OK") {
         return response.data;
       }
@@ -68,7 +73,7 @@ export const getAllOrders = createAsyncThunk(
   "order/getAllOrders",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`/api/order/getAllOrder`);
+      const response = await axios.get(`${API_BASE_URL}/api/order/getAllOrder`);
       if (response.statusText === "OK") {
         return response.data;
       }
