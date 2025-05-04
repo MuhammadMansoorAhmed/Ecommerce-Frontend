@@ -15,43 +15,60 @@ const AdminDashboardSidebar = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [itemMenu, setitemMenu] = useState(null);
 
-  useEffect(() => {
-    const initialize = async () => {
-      const response = await dispatch(getUserLoginStatus());
-      const payload = response?.payload ?? response;
-      if (payload?.isLoggedIn === true) {
-        const userRole = response.payload.user.role;
-        window.localStorage.setItem("isLoggedIn", "true");
-        window.localStorage.setItem("role", userRole);
-        setRole(userRole);
-      } else {
-        window.localStorage.removeItem("isLoggedIn");
-        window.localStorage.removeItem("role");
-        navigate("/login");
-        return;
-      }
+ useEffect(() => {
+   const initialize = async () => {
+     const storedLogin = localStorage.getItem("isLoggedIn");
+     const storedRole = localStorage.getItem("role");
 
-      setIsInitialized(true);
-    };
+     if (storedLogin === "true" && storedRole) {
+       setRole(storedRole);
+       setIsInitialized(true);
+       return;
+     }
 
-    initialize();
-  }, [dispatch, navigate]);
+     const response = await dispatch(getUserLoginStatus());
+     const payload = response?.payload ?? response;
 
-  if (!isInitialized) {
-    return (
-      <div className="adminMainDashboard d-flex justify-content-center align-items-center">
-        <h3>Loading...</h3>
-      </div>
-    );
-  }
+     if (payload.isLoggedIn) {
+       const userRole = payload.user.role;
+       localStorage.setItem("isLoggedIn", "true");
+       localStorage.setItem("role", userRole);
+       setRole(userRole);
+     } else {
+       localStorage.removeItem("isLoggedIn");
+       localStorage.removeItem("role");
+       navigate("/login");
+       return;
+     }
 
-  if (role !== "admin") {
-    return (
-      <div className="adminMainDashboard d-flex justify-content-center align-items-center">
-        <h3 className="text-danger">Access Denied</h3>
-      </div>
-    );
-  }
+     setIsInitialized(true);
+   };
+
+   initialize();
+ }, [dispatch, navigate]);
+
+ if (!isInitialized) {
+   return (
+     <div className="adminMainDashboard d-flex justify-content-center align-items-center">
+       <h3>Loading...</h3>
+     </div>
+   );
+ }
+
+ if (role !== "admin") {
+   return (
+     <div className="adminMainDashboard d-flex justify-content-center align-items-center">
+       <h3 className="text-danger">Access Denied</h3>
+     </div>
+   );
+ }
+
+ console.log(
+   "Login status from localStorage:",
+   localStorage.getItem("isLoggedIn")
+ );
+ console.log("Dashboard role:", localStorage.getItem("role"));
+
 
   const handleItemMenu = (item) => {
     setitemMenu(item === itemMenu ? null : item);
