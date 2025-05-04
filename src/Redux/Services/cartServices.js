@@ -71,9 +71,8 @@ export const getAllCartItems = createAsyncThunk(
         `${API_BASE_URL}/api/cart/getAllCartItems`
       );
 
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
+
     } catch (error) {
       const message =
         (error.response &&

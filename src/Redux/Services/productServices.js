@@ -43,9 +43,7 @@ export const updateProduct = createAsyncThunk(
         `${API_BASE_URL}/api/product/updateProduct/${id}`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -66,9 +64,7 @@ export const updateProductImages = createAsyncThunk(
         `${API_BASE_URL}/api/product/updateProductImages/${id}`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -89,9 +85,7 @@ export const updateProductStock = createAsyncThunk(
         `${API_BASE_URL}/api/product/updateProductStock/${id}`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -111,9 +105,7 @@ export const deleteProduct = createAsyncThunk(
       const response = await axios.delete(
         `${API_BASE_URL}/api/product/deleteProduct/${selectedProductId}`
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&

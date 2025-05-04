@@ -38,9 +38,7 @@ export const login = createAsyncThunk(
         formData,
         { withCredentials: true }
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -79,9 +77,7 @@ export const getSingleUser = createAsyncThunk(
       const response = await axios.post(
         `${API_BASE_URL}/api/auth/getSingleUser`
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -101,9 +97,7 @@ export const deleteUser = createAsyncThunk(
       const response = await axios.post(
         `${API_BASE_URL}/api/auth/deleteUser/${id}`
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -124,9 +118,7 @@ export const updateUser = createAsyncThunk(
         `${API_BASE_URL}/api/auth/updateUser`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -147,9 +139,7 @@ export const updateUserAvatar = createAsyncThunk(
         `${API_BASE_URL}/api/auth/updateUserAvatar`,
         avatar
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -171,9 +161,7 @@ export const forgetPassword = createAsyncThunk(
         `${API_BASE_URL}/api/auth/forgetPassword`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -194,9 +182,7 @@ export const resetPassword = createAsyncThunk(
         `${API_BASE_URL}/api/auth/resetPassword/:resetToken`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -217,9 +203,7 @@ export const refreshAccessToken = createAsyncThunk(
         `${API_BASE_URL}/api/auth/refreshAccessToken`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -240,9 +224,7 @@ export const changePassword = createAsyncThunk(
         `${API_BASE_URL}/api/auth/changePassword`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -263,9 +245,7 @@ export const getCurrentUser = createAsyncThunk(
         `${API_BASE_URL}/api/auth/getCurrentUser`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -286,9 +266,7 @@ export const getUserLoginStatus = createAsyncThunk(
       const response = await axios.get(`${API_BASE_URL}/api/auth/loggedIn`, {
         withCredentials: true,
       });
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&

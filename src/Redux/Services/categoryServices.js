@@ -10,9 +10,7 @@ export const addCategory = createAsyncThunk(
         `${API_BASE_URL}/api/category/addCategory`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -34,9 +32,7 @@ export const getAllCategories = createAsyncThunk(
         `${API_BASE_URL}/api/category/getAllCategories`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -56,9 +52,7 @@ export const deleteCategory = createAsyncThunk(
       const response = await axios.delete(
         `${API_BASE_URL}/api/category/deleteCategory/${id}`
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&

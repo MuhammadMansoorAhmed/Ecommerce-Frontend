@@ -10,9 +10,7 @@ export const addOrder = createAsyncThunk(
         `${API_BASE_URL}/api/order/addOrder/${productId}`,
         formData
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -32,9 +30,7 @@ export const deleteOrder = createAsyncThunk(
       const response = await axios.delete(
         `${API_BASE_URL}/api/order/deleteOrder/${orderId}`
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -54,9 +50,7 @@ export const getOrdersByUser = createAsyncThunk(
       const response = await axios.get(
         `${API_BASE_URL}/api/order/getUserOrder`
       );
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -74,9 +68,7 @@ export const getAllOrders = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/api/order/getAllOrder`);
-      if (response.statusText === "OK") {
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
