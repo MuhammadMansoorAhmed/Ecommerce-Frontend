@@ -31,7 +31,7 @@ const AdminDashboardSidebar = ({ children }) => {
 
      if (payload.isLoggedIn) {
        const userRole = payload.user.role;
-       localStorage.setItem("isLoggedIn", "true");
+       localStorage.setItem("isLoggedIn", true);
        localStorage.setItem("role", userRole);
        setRole(userRole);
      } else {

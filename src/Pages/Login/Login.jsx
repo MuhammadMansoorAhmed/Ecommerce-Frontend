@@ -26,9 +26,11 @@ const Login = () => {
     const response = await dispatch(login(formData));
 
     if (response.meta.requestStatus === "fulfilled") {
-      window.localStorage.setItem("isLoggedIn", "true");
-      window.localStorage.setItem("role", response.payload.user.role);
+      window.localStorage.setItem("isLoggedIn", true);
+      window.localStorage.setItem("role", response?.payload?.user.role);
       toast.success("User Login successful");
+      console.log(response.payload.user.role);
+      
       if (response.payload.user.role === "admin") {
         navigate("/EBS-admin");
       } else {

@@ -44,7 +44,7 @@ function App() {
      const fetchLogInStatus = async () => {
        const response = await dispatch(getUserLoginStatus());
        if (response?.payload?.isLoggedIn === true) {
-         window.localStorage.setItem("isLoggedIn", "true");
+         window.localStorage.setItem("isLoggedIn", true);
          window.localStorage.setItem("role", response?.payload?.user.role);
          setLoginAccess(true);
        } else {
