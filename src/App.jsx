@@ -28,36 +28,34 @@ import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import Cart from "./Pages/Cart/Cart";
 import axios from "axios";
+import ProtectedRoute from "./Components/ProtectedRoutesComponent/ProtectedRoutesComponent";
 
 axios.defaults.withCredentials = true;
 
 function App() {
   const dispatch = useDispatch();
   const [loginAccess, setLoginAccess] = useState(null);
- useEffect(() => {
-   const savedStatus = window.localStorage.getItem("isLoggedIn");
-   //  const savedRole = window.localStorage.getItem("role");
+  useEffect(() => {
+    const savedStatus = window.localStorage.getItem("isLoggedIn");
 
-   if (savedStatus === "true") {
-     setLoginAccess(true);
-   } else {
-     const fetchLogInStatus = async () => {
-       const response = await dispatch(getUserLoginStatus());
-       if (response?.payload?.isLoggedIn === true) {
-         window.localStorage.setItem("isLoggedIn", true);
-         window.localStorage.setItem("role", response?.payload?.user.role);
-         setLoginAccess(true);
-       } else {
-         window.localStorage.removeItem("isLoggedIn");
-         window.localStorage.removeItem("role");
-         setLoginAccess(false);
-       }
-     };
-     fetchLogInStatus();
-   }
- }, [dispatch]);
-
-
+    if (savedStatus === "true") {
+      setLoginAccess(true);
+    } else {
+      const fetchLogInStatus = async () => {
+        const response = await dispatch(getUserLoginStatus());
+        if (response?.payload?.isLoggedIn === true) {
+          window.localStorage.setItem("isLoggedIn", "true");
+          window.localStorage.setItem("role", response.payload.user.role);
+          setLoginAccess(true);
+        } else {
+          window.localStorage.removeItem("isLoggedIn");
+          window.localStorage.removeItem("role");
+          setLoginAccess(false);
+        }
+      };
+      fetchLogInStatus();
+    }
+  }, [dispatch]);
   return (
     <>
       <Router>
@@ -95,61 +93,73 @@ function App() {
           <Route
             path="/EBS-admin"
             element={
-              <AdminDashboardSidebar>
-                <Layout>
-                  <AdminDashboard />
-                </Layout>
-              </AdminDashboardSidebar>
+              <ProtectedRoute requiredRole="admin">
+                <AdminDashboardSidebar>
+                  <Layout>
+                    <AdminDashboard />
+                  </Layout>
+                </AdminDashboardSidebar>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/EBS-admin/manage-products"
             element={
-              <AdminDashboardSidebar>
-                <Layout>
-                  <ManageProducts />
-                </Layout>
-              </AdminDashboardSidebar>
+              <ProtectedRoute requiredRole="admin">
+                <AdminDashboardSidebar>
+                  <Layout>
+                    <ManageProducts />
+                  </Layout>
+                </AdminDashboardSidebar>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/EBS-admin/categories&tags"
             element={
-              <AdminDashboardSidebar>
-                <Layout>
-                  <CategoriesAndTags />
-                </Layout>
-              </AdminDashboardSidebar>
+              <ProtectedRoute requiredRole="admin">
+                <AdminDashboardSidebar>
+                  <Layout>
+                    <CategoriesAndTags />
+                  </Layout>
+                </AdminDashboardSidebar>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/EBS-admin/inventory-management"
             element={
-              <AdminDashboardSidebar>
-                <Layout>
-                  <InventoryManagement />
-                </Layout>
-              </AdminDashboardSidebar>
+              <ProtectedRoute requiredRole="admin">
+                <AdminDashboardSidebar>
+                  <Layout>
+                    <InventoryManagement />
+                  </Layout>
+                </AdminDashboardSidebar>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/EBS-admin/discounts&promotions"
             element={
-              <AdminDashboardSidebar>
-                <Layout>
-                  <DiscountAndPromotion />
-                </Layout>
-              </AdminDashboardSidebar>
+              <ProtectedRoute requiredRole="admin">
+                <AdminDashboardSidebar>
+                  <Layout>
+                    <DiscountAndPromotion />
+                  </Layout>
+                </AdminDashboardSidebar>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/EBS-admin/view-all-orders"
             element={
-              <AdminDashboardSidebar>
-                <Layout>
-                  <ViewAllOrders />
-                </Layout>
-              </AdminDashboardSidebar>
+              <ProtectedRoute requiredRole="admin">
+                <AdminDashboardSidebar>
+                  <Layout>
+                    <ViewAllOrders />
+                  </Layout>
+                </AdminDashboardSidebar>
+              </ProtectedRoute>
             }
           />
         </Routes>

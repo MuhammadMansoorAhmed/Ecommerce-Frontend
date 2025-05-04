@@ -21,23 +21,25 @@ const Login = () => {
     }));
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const response = await dispatch(login(formData));
+const handleLogin = async (e) => {
+  e.preventDefault();
+  const response = await dispatch(login(formData));
 
-    if (response.meta.requestStatus === "fulfilled") {
-      window.localStorage.setItem("isLoggedIn", true);
-      window.localStorage.setItem("role", response?.payload?.user.role);
-      toast.success("User Login successful");
-      console.log(response.payload.user.role);
-      
-      if (response.payload.user.role === "admin") {
-        navigate("/EBS-admin");
-      } else {
-        navigate("/");
-      } 
+  if (response.meta.requestStatus === "fulfilled") {
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("role", response.payload.user.role);
+    toast.success("Login successful");
+
+    const userRole = response.payload.user.role;
+    if (userRole === "admin") {
+      navigate("/EBS-admin");
+    } else {
+      navigate("/");
     }
-  };
+  } else {
+    toast.error("Login failed. Please try again.");
+  }
+};
 
   return (
     <>

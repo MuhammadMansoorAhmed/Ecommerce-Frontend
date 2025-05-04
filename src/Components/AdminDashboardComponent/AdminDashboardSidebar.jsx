@@ -10,55 +10,41 @@ import { getUserLoginStatus } from "../../Redux/Services/authServices";
 const AdminDashboardSidebar = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const [role, setRole] = useState(null);
+  
   const [isInitialized, setIsInitialized] = useState(false);
   const [itemMenu, setitemMenu] = useState(null);
 
- useEffect(() => {
-   const initialize = async () => {
-     const storedLogin = localStorage.getItem("isLoggedIn");
-     const storedRole = localStorage.getItem("role");
+  useEffect(() => {
+    const checkLogin = async () => {
+      const storedLogin = localStorage.getItem("isLoggedIn");
+      const storedRole = localStorage.getItem("role");
 
-     if (storedLogin === "true" && storedRole) {
-       setRole(storedRole);
-       setIsInitialized(true);
-       return;
-     }
+      if (storedLogin === "true" && storedRole === "admin") {
+        setIsInitialized(true);
+        return;
+      }
 
-     const response = await dispatch(getUserLoginStatus());
-     const payload = response?.payload ?? response;
+      const response = await dispatch(getUserLoginStatus());
+      const payload = response?.payload ?? response;
 
-     if (payload.isLoggedIn) {
-       const userRole = payload.user.role;
-       localStorage.setItem("isLoggedIn", true);
-       localStorage.setItem("role", userRole);
-       setRole(userRole);
-     } else {
-       localStorage.removeItem("isLoggedIn");
-       localStorage.removeItem("role");
-       navigate("/login");
-       return;
-     }
+      if (payload?.isLoggedIn && payload?.user?.role === "admin") {
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("role", payload.user.role);
+        setIsInitialized(true);
+      } else {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("role");
+        navigate("/login");
+      }
+    };
 
-     setIsInitialized(true);
-   };
-
-   initialize();
- }, [dispatch, navigate]);
+    checkLogin();
+  }, [dispatch, navigate]);
 
  if (!isInitialized) {
    return (
      <div className="adminMainDashboard d-flex justify-content-center align-items-center">
        <h3>Loading...</h3>
-     </div>
-   );
- }
-
- if (role !== "admin") {
-   return (
-     <div className="adminMainDashboard d-flex justify-content-center align-items-center">
-       <h3 className="text-danger">Access Denied</h3>
      </div>
    );
  }
