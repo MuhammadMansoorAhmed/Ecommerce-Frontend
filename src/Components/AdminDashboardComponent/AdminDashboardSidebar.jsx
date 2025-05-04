@@ -1,60 +1,20 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MdDashboard } from "react-icons/md";
 import { PiDotOutlineFill } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import "./AdminDashboardSidebar.css";
-import { useDispatch } from "react-redux";
-import { getUserLoginStatus } from "../../Redux/Services/authServices";
 
 const AdminDashboardSidebar = ({ children }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  const [isInitialized, setIsInitialized] = useState(false);
+
   const [itemMenu, setitemMenu] = useState(null);
 
-  useEffect(() => {
-    const checkLogin = async () => {
-      const storedLogin = localStorage.getItem("isLoggedIn");
-      const storedRole = localStorage.getItem("role");
-
-      if (storedLogin === "true" && storedRole === "admin") {
-        setIsInitialized(true);
-        return;
-      }
-
-      const response = await dispatch(getUserLoginStatus());
-      const payload = response?.payload ?? response;
-
-      if (payload?.isLoggedIn && payload?.user?.role === "admin") {
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("role", payload.user.role);
-        setIsInitialized(true);
-      } else {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("role");
-        navigate("/login");
-      }
-    };
-
-    checkLogin();
-  }, [dispatch, navigate]);
-
- if (!isInitialized) {
-   return (
-     <div className="adminMainDashboard d-flex justify-content-center align-items-center">
-       <h3>Loading...</h3>
-     </div>
-   );
- }
-
- console.log(
-   "Login status from localStorage:",
-   localStorage.getItem("isLoggedIn")
- );
- console.log("Dashboard role:", localStorage.getItem("role"));
-
+  console.log(
+    "Login status from localStorage:",
+    localStorage.getItem("isLoggedIn")
+  );
+  console.log("Dashboard role:", localStorage.getItem("role"));
 
   const handleItemMenu = (item) => {
     setitemMenu(item === itemMenu ? null : item);

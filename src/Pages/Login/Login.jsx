@@ -26,19 +26,25 @@ const handleLogin = async (e) => {
   const response = await dispatch(login(formData));
 
   if (response.meta.requestStatus === "fulfilled") {
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("role", response.payload.user.role);
-    toast.success("Login successful");
+    console.log("LOGIN RESPONSE PAYLOAD:", response.payload); // 👈 Add this
+    const role = response?.payload?.user?.role;
 
-    const userRole = response.payload.user.role;
-    if (userRole === "admin") {
-      navigate("/EBS-admin");
+    if (role) {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("role", role);
+      toast.success("Login successful");
+
+      if (role === "admin") {
+        navigate("/EBS-admin");
+      } else {
+        navigate("/");
+      }
     } else {
-      navigate("/");
+      console.warn("User role is missing from login response.");
+      toast.error("Login response malformed.");
     }
-  } else {
-    toast.error("Login failed. Please try again.");
   }
+
 };
 
   return (

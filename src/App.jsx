@@ -42,7 +42,7 @@ function App() {
         const response = await dispatch(getUserLoginStatus()).unwrap();
         console.log("Login status response:", response);
 
-        if (response?.isLoggedIn && response?.user?.role) {
+        if (response.isLoggedIn && response.user.role) {
           localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("role", response.user.role);
           setLoginAccess(true);
