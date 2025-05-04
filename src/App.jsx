@@ -34,22 +34,29 @@ axios.defaults.withCredentials = true;
 function App() {
   const dispatch = useDispatch();
   const [loginAccess, setLoginAccess] = useState(null);
-  useEffect(() => {
-    const fetchLogInStatus = async () => {
-      const response = await dispatch(getUserLoginStatus());
+ useEffect(() => {
+   const savedStatus = window.localStorage.getItem("isLoggedIn");
+   //  const savedRole = window.localStorage.getItem("role");
 
-      if (response.payload.isLoggedIn === true) {
-        window.localStorage.setItem("isLoggedIn", true);
-        window.localStorage.setItem("role", response.payload.user.role);
-        setLoginAccess(true);
-      } else {
-        window.localStorage.removeItem("isLoggedIn");
-        window.localStorage.removeItem("role");
-        setLoginAccess(false);
-      }
-    };
-    fetchLogInStatus();
-  }, [dispatch]);
+   if (savedStatus === "true") {
+     setLoginAccess(true);
+   } else {
+     const fetchLogInStatus = async () => {
+       const response = await dispatch(getUserLoginStatus());
+       if (response?.payload?.isLoggedIn === true) {
+         window.localStorage.setItem("isLoggedIn", "true");
+         window.localStorage.setItem("role", response.payload.user.role);
+         setLoginAccess(true);
+       } else {
+         window.localStorage.removeItem("isLoggedIn");
+         window.localStorage.removeItem("role");
+         setLoginAccess(false);
+       }
+     };
+     fetchLogInStatus();
+   }
+ }, [dispatch]);
+
 
   return (
     <>

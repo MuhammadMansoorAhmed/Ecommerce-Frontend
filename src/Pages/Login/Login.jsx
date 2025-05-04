@@ -27,6 +27,7 @@ const Login = () => {
 
     if (response.meta.requestStatus === "fulfilled") {
       window.localStorage.setItem("isLoggedIn", true);
+      window.localStorage.setItem("role", response.payload.user.role);
       toast.success("User Login successful");
       navigate("/");
     }

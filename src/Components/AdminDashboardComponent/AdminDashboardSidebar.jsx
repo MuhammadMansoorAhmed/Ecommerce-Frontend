@@ -18,8 +18,8 @@ const AdminDashboardSidebar = ({ children }) => {
   useEffect(() => {
     const initialize = async () => {
       const response = await dispatch(getUserLoginStatus());
-
-      if (response?.payload?.isLoggedIn) {
+      const payload = response?.payload ?? response;
+      if (payload?.isLoggedIn === true) {
         const userRole = response.payload.user.role;
         window.localStorage.setItem("isLoggedIn", "true");
         window.localStorage.setItem("role", userRole);
