@@ -19,7 +19,9 @@ const NavBar = () => {
   // console.log(isLoggedIn);
 
   const handleLogout = async () => {
-    await dispatch(logout());
+     await dispatch(logout());
+     localStorage.removeItem("isLoggedIn");
+     localStorage.removeItem("role");
   };
 
   return (

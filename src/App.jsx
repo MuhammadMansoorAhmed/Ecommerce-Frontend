@@ -35,27 +35,34 @@ axios.defaults.withCredentials = true;
 function App() {
   const dispatch = useDispatch();
   const [loginAccess, setLoginAccess] = useState(null);
-  useEffect(() => {
-    const savedStatus = window.localStorage.getItem("isLoggedIn");
 
-    if (savedStatus === "true") {
-      setLoginAccess(true);
-    } else {
-      const fetchLogInStatus = async () => {
-        const response = await dispatch(getUserLoginStatus());
-        if (response?.payload?.isLoggedIn === true) {
-          window.localStorage.setItem("isLoggedIn", "true");
-          window.localStorage.setItem("role", response.payload.user.role);
+  useEffect(() => {
+    const verifyLoginStatus = async () => {
+      try {
+        const response = await dispatch(getUserLoginStatus()).unwrap();
+        console.log("Login status response:", response);
+
+        if (response?.isLoggedIn && response?.user?.role) {
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("role", response.user.role);
           setLoginAccess(true);
         } else {
-          window.localStorage.removeItem("isLoggedIn");
-          window.localStorage.removeItem("role");
+          console.warn("Missing user role in response");
+          localStorage.removeItem("isLoggedIn");
+          localStorage.removeItem("role");
           setLoginAccess(false);
         }
-      };
-      fetchLogInStatus();
-    }
+      } catch (error) {
+        console.error("Login status check failed:", error);
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("role");
+        setLoginAccess(false);
+      }
+    };
+
+    verifyLoginStatus();
   }, [dispatch]);
+
   return (
     <>
       <Router>
