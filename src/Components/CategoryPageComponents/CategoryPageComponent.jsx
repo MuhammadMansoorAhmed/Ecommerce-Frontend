@@ -14,6 +14,7 @@ import {
   selectIsSuccess,
   selectIsError,
 } from "../../Redux/Features/productSlice";
+import { toast } from "react-toastify";
 
 const CategoryPageComponent = () => {
   const { category } = useParams();
@@ -38,6 +39,7 @@ const CategoryPageComponent = () => {
         }
       } catch (error) {
         console.error("Error fetching products:", error);
+        toast.error("Error fetching products");
       }
     };
     fetchProducts();
@@ -71,7 +73,7 @@ const CategoryPageComponent = () => {
                   </div>
                   <div className="d-flex flex-column text-start px-2 py-2 ">
                     <h6 className="my-0 py-1">{product?.name}</h6>
-                    <p className="my-0 py-1">{product?.description}</p>
+                    {/* <p className="my-0 py-1">{product?.description}</p> */}
                     <p className="my-0 py-1">Price: {product?.price}</p>
                     {/* <button className="btn btn-primary">Add to Cart</button> */}
                   </div>

@@ -38,10 +38,21 @@ export const addProduct = createAsyncThunk(
 export const updateProduct = createAsyncThunk(
   "product/updateProduct",
   async ({ id, formData }, thunkAPI) => {
+    console.log("Inspecting FormData inside thunk:");
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
     try {
-      const response = await axios.patch(
+      const response = await axios.put(
         `${API_BASE_URL}/api/product/updateProduct/${id}`,
         formData
+        // {
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // }
       );
       return response.data;
     } catch (error) {
@@ -51,11 +62,15 @@ export const updateProduct = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      console.log(message);
+      console.log("Error in updateProduct:", message);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
+
+
+
+
 export const updateProductImages = createAsyncThunk(
   "product/updateProductImages",
   async ({ id, formData }, thunkAPI) => {

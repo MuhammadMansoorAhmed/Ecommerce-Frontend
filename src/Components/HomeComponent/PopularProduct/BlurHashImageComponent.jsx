@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { AddtoCart } from "../../../Redux/Services/cartServices";
+import { toast } from "react-toastify";
 
 const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
   const dispatch = useDispatch();
@@ -24,8 +25,11 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
   }, [imgSrc]);
 
   const addProductToCart = async (productId) => {
-    const response = await dispatch(AddtoCart(productId));
-    console.log(response);
+    try {
+      await dispatch(AddtoCart(productId));
+    } catch (error) {
+      toast.error("failed to add product to the cart");
+    }
   };
 
   return (

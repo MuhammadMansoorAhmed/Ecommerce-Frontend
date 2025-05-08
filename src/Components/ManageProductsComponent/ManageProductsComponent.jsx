@@ -141,7 +141,6 @@ const ManageProductsComponent = () => {
           <table className="tableLayout ">
             <thead>
               <tr>
-                <th className="border border-white p-1">ID</th>
                 <th className="border border-white p-1">Name</th>
                 <th className="border border-white p-1">Category</th>
                 <th className="border border-white p-1">Price</th>
@@ -154,12 +153,6 @@ const ManageProductsComponent = () => {
                 Array.isArray(products) && products.length > 0 ? (
                   products?.map((product) => (
                     <tr key={product._id}>
-                      <td
-                        className="border border-white p-1 "
-                        style={{ wordBreak: "break-all" }}
-                      >
-                        {product?._id}
-                      </td>
                       <td className="border border-white p-1">
                         {product?.name}
                       </td>
@@ -170,7 +163,7 @@ const ManageProductsComponent = () => {
                         PKR: {product?.price}
                       </td>
                       <td className="border border-white p-1">
-                        {product?.inStock ? "TRUE" : "FALSE"}
+                        {product?.inStock ? "YES" : "NO"}
                       </td>
 
                       <td className="border border-white p-1 ">

@@ -10,12 +10,6 @@ const AdminDashboardSidebar = ({ children }) => {
 
   const [itemMenu, setitemMenu] = useState(null);
 
-  console.log(
-    "Login status from localStorage:",
-    localStorage.getItem("isLoggedIn")
-  );
-  console.log("Dashboard role:", localStorage.getItem("role"));
-
   const handleItemMenu = (item) => {
     setitemMenu(item === itemMenu ? null : item);
   };

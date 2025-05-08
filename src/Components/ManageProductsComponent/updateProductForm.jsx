@@ -5,20 +5,23 @@ import { BsXCircle } from "react-icons/bs";
 import "./form.css";
 import { useEffect, useState } from "react";
 import { getAllCategories } from "../../Redux/Services/categoryServices";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const UpdateProductForm = ({ product, closeForm }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
-    _id: product?._id || "",
+    _id: product?._id,
     name: product?.name || "",
     description: product?.description || "",
-    category: product?.category || "",
+    category: product?.categoryInfo?._id || "",
     price: product?.price || "",
     totalStock: product?.totalStock || "",
-    images: product?.images || [],
+    images: [], // New images, not the existing ones
   });
 
-  const dispatch = useDispatch();
-  const [errors, setErrors] = useState({});
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -43,36 +46,47 @@ const UpdateProductForm = ({ product, closeForm }) => {
     }));
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name) newErrors.name = "Product name is required";
-    if (!formData.description)
-      newErrors.description = "Description is required";
-    if (!formData.category) newErrors.category = "Category is required";
-    if (!formData.price || formData.price <= 0)
-      newErrors.price = "Price must be positive";
-    if (!formData.totalStock || formData.totalStock <= 0)
-      newErrors.totalStock = "Total stock must be positive";
-    if (!formData.images.length) newErrors.images = "Images are required";
-    if (formData.images.length > 3)
-      newErrors.images = "Maximum 3 images allowed";
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-    let data = new FormData();
-    data.append("name", formData.name);
-    data.append("description", formData.description);
-    data.append("category", formData.category);
-    data.append("price", formData.price);
-    data.append("sku", formData.sku);
-    data.append("totalStock", formData.totalStock);
-    formData.images.forEach((file) => data.append("images", file));
-    await dispatch(updateProduct({ id: formData._id, formData: data }));
+
+    const data = new FormData();
+
+    // Append modified or fallback to existing product data
+    data.append("name", formData.name.trim() || product.name);
+    data.append(
+      "description",
+      formData.description.trim() || product.description
+    );
+    data.append(
+      "category",
+      formData.category !== "" ? formData.category : product.categoryInfo._id
+    );
+    data.append("price", formData.price || product.price);
+    data.append("totalStock", formData.totalStock || product.totalStock);
+
+    // Handling images:
+    if (formData.images.length) {
+      formData.images.forEach((file) => {
+        data.append("images", file);
+      });
+    } else {
+      product.images.forEach((image) => {
+        data.append("existingImages", image);
+      });
+    }
+
+    try {
+      await dispatch(
+        updateProduct({ id: product._id, formData: data })
+      ).unwrap();
+
+      toast.success("Product updated successfully");
+      closeForm();
+      navigate(0); // Refresh the page
+    } catch (error) {
+      console.error("Update Error:", error);
+      toast.error(`Error updating product: ${error}`);
+    }
   };
 
   return (
@@ -81,12 +95,8 @@ const UpdateProductForm = ({ product, closeForm }) => {
       className="d-flex justify-content-center flex-column w-100 p-4"
     >
       <div className="d-flex justify-content-between w-100">
-        <h4>Add New Product</h4>
-        <BsXCircle
-          size={20}
-          onClick={() => closeForm && closeForm()}
-          className="closeBtn"
-        />
+        <h4>Edit Product</h4>
+        <BsXCircle size={20} onClick={() => closeForm()} className="closeBtn" />
       </div>
 
       {/* Product Name */}
@@ -99,7 +109,6 @@ const UpdateProductForm = ({ product, closeForm }) => {
           value={formData.name}
           onChange={handleChange}
         />
-        {errors.name && <div className="error">{errors.name}</div>}
       </div>
 
       {/* Description */}
@@ -111,9 +120,6 @@ const UpdateProductForm = ({ product, closeForm }) => {
           value={formData.description}
           onChange={handleChange}
         />
-        {errors.description && (
-          <div className="error">{errors.description}</div>
-        )}
       </div>
 
       {/* Category */}
@@ -125,7 +131,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
           value={formData.category}
           onChange={handleChange}
         >
-          <option value="" selected disabled>
+          <option value="" disabled>
             Select a category
           </option>
           {categories.map((category) => (
@@ -134,7 +140,6 @@ const UpdateProductForm = ({ product, closeForm }) => {
             </option>
           ))}
         </select>
-        {errors.category && <div className="error">{errors.category}</div>}
       </div>
 
       {/* Price */}
@@ -147,7 +152,6 @@ const UpdateProductForm = ({ product, closeForm }) => {
           value={formData.price}
           onChange={handleChange}
         />
-        {errors.price && <div className="error">{errors.price}</div>}
       </div>
 
       {/* Total Stock */}
@@ -160,7 +164,6 @@ const UpdateProductForm = ({ product, closeForm }) => {
           value={formData.totalStock}
           onChange={handleChange}
         />
-        {errors.totalStock && <div className="error">{errors.totalStock}</div>}
       </div>
 
       {/* Images */}
@@ -173,7 +176,6 @@ const UpdateProductForm = ({ product, closeForm }) => {
           multiple
           onChange={handleFileChange}
         />
-        {errors.images && <div className="error">{errors.images}</div>}
       </div>
 
       {/* Submit Button */}
@@ -181,9 +183,8 @@ const UpdateProductForm = ({ product, closeForm }) => {
         type="submit"
         className="btn addProductBtn"
         style={{ backgroundColor: "#1F3A56" }}
-        // onClick={handleSubmit}
       >
-        Add Product
+        Update Product
       </button>
     </form>
   );

@@ -40,20 +40,17 @@ function App() {
     const verifyLoginStatus = async () => {
       try {
         const response = await dispatch(getUserLoginStatus()).unwrap();
-        console.log("Login status response:", response);
 
         if (response.isLoggedIn && response.user.role) {
           localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("role", response.user.role);
           setLoginAccess(true);
         } else {
-          console.warn("Missing user role in response");
           localStorage.removeItem("isLoggedIn");
           localStorage.removeItem("role");
           setLoginAccess(false);
         }
       } catch (error) {
-        console.error("Login status check failed:", error);
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("role");
         setLoginAccess(false);
