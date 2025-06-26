@@ -11,6 +11,7 @@ import {
 } from "../../../Redux/Services/cartServices";
 import { toast } from "react-toastify";
 import { MdShoppingCartCheckout } from "react-icons/md";
+import TooltipWrapper from "../../TooltipWrapper";
 
 const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
   const dispatch = useDispatch();
@@ -113,25 +114,31 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
           }}
           // onMouseEnter={() => setHover(true)}
         >
-          <BsFillCartCheckFill
-            size={20}
-            className={isProductInCart ? "checkedIcon" : "hoverIcon"}
-            // style={{
-            //   fill: `${selectAddtoCart ? "#0080ff" : ""}`,
-            // }}
-            onClick={() => {
-              const newValue = !selectAddtoCart;
-              setSelectAddtoCart(newValue);
-              addProductToCart(productId);
-            }}
-          />
-          <MdShoppingCartCheckout
-            size={20}
-            className="hoverIcon"
-            onClick={() => {
-              navigate("/cart");
-            }}
-          />
+          <TooltipWrapper
+            tooltip={isProductInCart ? "Already added" : "Add to Cart"}
+          >
+            <BsFillCartCheckFill
+              size={20}
+              className={isProductInCart ? "checkedIcon" : "hoverIcon"}
+              // style={{
+              //   fill: `${selectAddtoCart ? "#0080ff" : ""}`,
+              // }}
+              onClick={() => {
+                const newValue = !selectAddtoCart;
+                setSelectAddtoCart(newValue);
+                addProductToCart(productId);
+              }}
+            />
+          </TooltipWrapper>
+          <TooltipWrapper tooltip="Go to Cart">
+            <MdShoppingCartCheckout
+              size={20}
+              className="hoverIcon"
+              onClick={() => {
+                navigate("/cart");
+              }}
+            />
+          </TooltipWrapper>
         </div>
       )}
 

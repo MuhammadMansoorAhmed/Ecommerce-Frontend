@@ -16,7 +16,6 @@ const NavBar = () => {
   const [showUserOptions, setShowUserOptions] = useState(false);
   const isLoggedIn = window.localStorage.getItem("isLoggedIn");
 
-  // console.log(isLoggedIn);
 
   const handleLogout = async () => {
      await dispatch(logout());

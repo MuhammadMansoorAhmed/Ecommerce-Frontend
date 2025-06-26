@@ -30,6 +30,7 @@ import Cart from "./Pages/Cart/Cart";
 import axios from "axios";
 import ProtectedRoute from "./Components/ProtectedRoutesComponent/ProtectedRoutesComponent";
 import Spinner from "react-bootstrap/Spinner";
+import Payment from "./Pages/Payment/Payment";
 
 axios.defaults.withCredentials = true;
 
@@ -71,6 +72,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
+          <Route path="/payment" element={<Payment />} />
           <Route
             path="/resetPassword/:resetToken"
             element={<ResetPassword />}

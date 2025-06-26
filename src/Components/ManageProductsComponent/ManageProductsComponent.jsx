@@ -34,11 +34,9 @@ const ManageProductsComponent = () => {
     };
     fetchProducts();
   }, [dispatch]);
-  // console.log(products);
 
   const handleShow = (id) => {
     setSelectedProductId(id);
-    console.log(selectedProductId);
     setShow(!show);
   };
 
@@ -53,7 +51,6 @@ const ManageProductsComponent = () => {
   };
 
   const handleDeleteProduct = async () => {
-    // console.log(selectedProductId);
 
     if (!selectedProductId) return;
     try {
