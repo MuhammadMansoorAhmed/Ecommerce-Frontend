@@ -26,7 +26,6 @@ const handleLogin = async (e) => {
   const response = await dispatch(login(formData));
 
   if (response.meta.requestStatus === "fulfilled") {
-    console.log("LOGIN RESPONSE PAYLOAD:", response.payload); // 👈 Add this
     const role = response?.payload?.user?.role;
 
     if (role) {

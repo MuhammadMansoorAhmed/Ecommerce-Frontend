@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   AddtoCart,
-  getAllCartItems,
+  getAllCartData,
+  getAllCartItemsByUserId,
   RemoveFromCart,
 } from "../Services/cartServices";
 
@@ -38,14 +39,25 @@ const cartSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
       })
-      .addCase(getAllCartItems.pending, (state) => {
+      .addCase(getAllCartItemsByUserId.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllCartItems.rejected, (state) => {
+      .addCase(getAllCartItemsByUserId.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       })
-      .addCase(getAllCartItems.fulfilled, (state) => {
+      .addCase(getAllCartItemsByUserId.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(getAllCartData.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllCartData.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getAllCartData.fulfilled, (state) => {
         state.isLoading = false;
         state.isError = false;
       });

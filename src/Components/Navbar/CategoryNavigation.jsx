@@ -29,7 +29,6 @@ const CategoryNavigation = () => {
   // Handler to track tab change
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
-    console.log("Selected Tab Value:", newValue);
     navigate(`/products/category/${newValue}`); // Navigate to the corresponding product list page when a tab is selected
   };
 
@@ -38,7 +37,7 @@ const CategoryNavigation = () => {
       {!isLoading && (
         <div
           className="d-flex justify-content-start px-1"
-          style={{ backgroundColor: "#F0F0F0", overflowX: "auto" }}
+          style={{ backgroundColor: "rgb(209, 232, 248)", overflowX: "auto" }}
         >
           <Tabs
             aria-label="tabs"
@@ -46,7 +45,7 @@ const CategoryNavigation = () => {
             onChange={handleTabChange} // Track tab change
             sx={{
               bgcolor: "transparent",
-              borderBottom: "1px solid rgb(159, 182, 182)",
+              borderBottom: "1px solid rgb(149, 210, 250)",
               width: "100%",
             }}
           >
@@ -59,7 +58,7 @@ const CategoryNavigation = () => {
                 color: "#628281",
                 [`& .${tabClasses.root}[aria-selected="true"]`]: {
                   boxShadow: "sm",
-                  bgcolor: "rgb(224, 231, 231)",
+                  bgcolor: "rgb(171, 213, 241)",
                 },
               }}
             >

@@ -28,12 +28,10 @@ const ResetPassword = () => {
     }
 
     const response = await dispatch(resetPassword(formData));
-    console.log(response.meta.requestStatus === "fulfilled");
     if (!response.meta.aborted) {
       toast.success("Password Reste Succcessful");
       return;
     }
-    console.log(response);
     toast.error("Failed To Send Recovery Email");
   };
   return (

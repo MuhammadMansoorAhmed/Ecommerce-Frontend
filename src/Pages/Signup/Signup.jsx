@@ -49,7 +49,6 @@ const Signup = () => {
     }
 
     const response = await dispatch(register(formData));
-    console.log(response.meta.requestStatus);
     if (response.meta.requestStatus === "fulfilled") {
       toast.success("User Registration successful");
       return navigate("/login");

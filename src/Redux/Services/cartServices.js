@@ -39,10 +39,10 @@ export const AddtoCart = createAsyncThunk(
 
 export const RemoveFromCart = createAsyncThunk(
   "cart/RemoveFromCart",
-  async (id, thunkAPI) => {
+  async (itemId, thunkAPI) => {
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}/api/cart/deleteItemFromCart/${id}`
+        `${API_BASE_URL}/api/cart/deleteItemFromCart/${itemId}`
       );
 
       if (response.statusText === "OK") {
@@ -63,16 +63,15 @@ export const RemoveFromCart = createAsyncThunk(
   }
 );
 
-export const getAllCartItems = createAsyncThunk(
-  "cart/getAllCartItems",
+export const getAllCartItemsByUserId = createAsyncThunk(
+  "cart/getAllCartItemsById",
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/api/cart/getAllCartItems`
+        `${API_BASE_URL}/api/cart/getAllCartItemsById`
       );
 
       return response.data;
-
     } catch (error) {
       const message =
         (error.response &&
@@ -81,7 +80,29 @@ export const getAllCartItems = createAsyncThunk(
         error.message ||
         error.toString();
       console.log(message);
-      toast.error("Failed To fetch Cart");
+      toast.error("Failed To fetch Cart data by User Id");
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+export const getAllCartData = createAsyncThunk(
+  "cart/getAllCartData",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/api/cart/getAllCartData`
+      );
+
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(message);
+      toast.error("Failed To fetch Cart data");
       return thunkAPI.rejectWithValue(message);
     }
   }

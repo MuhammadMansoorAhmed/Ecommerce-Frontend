@@ -1,20 +1,41 @@
 /* eslint-disable react/prop-types */
-import { FaOpencart } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
 import "./BlurHashImageComponent.css";
 import { useNavigate } from "react-router-dom";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
-import { AddtoCart } from "../../../Redux/Services/cartServices";
+import {
+  AddtoCart,
+  getAllCartItemsByUserId,
+} from "../../../Redux/Services/cartServices";
 import { toast } from "react-toastify";
+import { MdShoppingCartCheckout } from "react-icons/md";
 
 const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [selectAddtoCart, setSelectAddtoCart] = useState(false);
-  const [hover, setHover] = useState(false);
+  // const [hover, setHover] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cartProducts, setCartProducts] = useState([]);
+
+  //fetch cart product
+  useEffect(() => {
+    const getUserCartProducts = async () => {
+      const response = await dispatch(getAllCartItemsByUserId());
+      setCartProducts(response.payload.data);
+    };
+    getUserCartProducts();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const getLogInStatus = localStorage.getItem("isLoggedIn");
+    if (getLogInStatus == "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   useEffect(() => {
     const img = new Image();
@@ -31,6 +52,10 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
       toast.error("failed to add product to the cart");
     }
   };
+
+  const isProductInCart = cartProducts.some(
+    (item) => item.productId && item.productId._id === productId
+  );
 
   return (
     <div
@@ -67,46 +92,48 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
           }}
           src={imgSrc}
           alt="Product Image"
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
+          // onMouseEnter={() => setHover(true)}
+          // onMouseLeave={() => setHover(false)}
         />
       </div>
       {/* AddtoCart Icon */}
-      <div
-        className={` d-block  `}
-        // ${hover ? "d-block" : "d-none"}
-        style={{
-          position: "absolute",
-          zIndex: 3,
-          top: 10,
-          right: 8,
-          boxShadow: "2px",
-          borderRadius: "6px",
-          backgroundColor: "rgba(196, 204, 216, 0.56)",
-          border: "1px solid rgba(196, 204, 216, 0.70)",
-        }}
-        onMouseEnter={() => setHover(true)}
-      >
-        <BsFillCartCheckFill
-          size={20}
-          className="hoverIcon"
-          // style={{
-          //   fill: `${selectAddtoCart ? "#0080ff" : ""}`,
-          // }}
-          onClick={() => {
-            const newValue = !selectAddtoCart;
-            setSelectAddtoCart(newValue);
-            addProductToCart(productId);
+      {isLoggedIn && (
+        <div
+          className={` d-block  `}
+          // ${hover ? "d-block" : "d-none"}
+          style={{
+            position: "absolute",
+            zIndex: 3,
+            top: 10,
+            right: 8,
+            boxShadow: "2px",
+            borderRadius: "6px",
+            backgroundColor: "rgba(196, 204, 216, 0.56)",
+            border: "1px solid rgba(196, 204, 216, 0.70)",
           }}
-        />
-        <FaOpencart
-          size={20}
-          className="hoverIcon"
-          onClick={() => {
-            navigate("/cart");
-          }}
-        />
-      </div>
+          // onMouseEnter={() => setHover(true)}
+        >
+          <BsFillCartCheckFill
+            size={20}
+            className={isProductInCart ? "checkedIcon" : "hoverIcon"}
+            // style={{
+            //   fill: `${selectAddtoCart ? "#0080ff" : ""}`,
+            // }}
+            onClick={() => {
+              const newValue = !selectAddtoCart;
+              setSelectAddtoCart(newValue);
+              addProductToCart(productId);
+            }}
+          />
+          <MdShoppingCartCheckout
+            size={20}
+            className="hoverIcon"
+            onClick={() => {
+              navigate("/cart");
+            }}
+          />
+        </div>
+      )}
 
       {/* Add to Cart Button */}
       <div className="add-to-cart-container">

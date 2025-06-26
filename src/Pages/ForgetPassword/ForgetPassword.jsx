@@ -21,12 +21,10 @@ const ForgetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await dispatch(forgetPassword(formData));
-    console.log(response.meta.requestStatus === "fulfilled");
     if (!response.meta.aborted) {
       toast.success("Recovery Email sent");
       return;
     }
-    console.log(response);
     toast.error("Failed To Send Recovery Email");
   };
   return (

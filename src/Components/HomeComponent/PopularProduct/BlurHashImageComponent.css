@@ -15,6 +15,7 @@
   transition: all .4s;
 }
 
+
 .order-btn:hover {
   color: #628281;
 }
@@ -27,9 +28,19 @@
   margin: 4px 12px;
   transition: all 0.4s;
 }
-
 .hoverIcon:hover{
   color: #0080ff;
+}
+
+.checkedIcon {
+  cursor: pointer;
+  color: #0080ff;
+  margin: 4px 12px;
+  transition: all 0.4s;
+}
+
+.checkedIcon:hover{
+  color: #41434688;
 }
 
 

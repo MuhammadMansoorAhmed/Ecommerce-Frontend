@@ -1,6 +1,5 @@
-import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Carousel, Col, Container, Row, Spinner } from "react-bootstrap";
 import "./ProductDisplayComponent.css";
-import RelatedProductsComponent from "../RelatedProductsComponent/RelatedProductsComponent";
 import HomeFooter from "../HomeComponent/HomeFooter/HomeFooter";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -11,8 +10,10 @@ import { selectIsLoading } from "../../Redux/Features/productSlice";
 const ProductDisplayComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [quantity, setQuantity] = useState(0);
+
   const params = useParams();
+
+  const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const ProductDisplayComponent = () => {
     }
   };
   const handleDecrementQuantity = () => {
-    if (quantity > 0) {
+    if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
@@ -43,7 +44,7 @@ const ProductDisplayComponent = () => {
           <Row className="m-1 p-1">
             <Col sm={10} md={6} lg={6} xl={6} className="p-2">
               <Row className="p-2 h-100">
-                <Col
+                {/* <Col
                   sm={3}
                   md={3}
                   lg={3}
@@ -71,15 +72,22 @@ const ProductDisplayComponent = () => {
                       src={product?.images[2]?.url}
                     />
                   </div>
-                </Col>
-                <Col sm={7} md={9} lg={9} xl={9}>
+                </Col> */}
+
+                <Col sm={10} md={12} lg={12} xl={12}>
                   <div className="d-flex justify-content-center w-md-100">
-                    <img
-                      src={product?.images[0]?.url}
-                      alt="Product Image Not Found"
-                      className="rounded"
-                      style={{ height: "500px", width: "400px" }}
-                    />
+                    <Carousel className="w-100" style={{ maxWidth: "400px" }}>
+                      {product?.images?.map((img, index) => (
+                        <Carousel.Item key={index}>
+                          <img
+                            src={img.url}
+                            alt={`Product Image ${index + 1}`}
+                            className="d-block w-100 rounded"
+                            style={{ height: "500px", objectFit: "contain" }}
+                          />
+                        </Carousel.Item>
+                      ))}
+                    </Carousel>
                   </div>
                 </Col>
               </Row>
@@ -138,7 +146,7 @@ const ProductDisplayComponent = () => {
                     <button
                       className="addToCartBtn"
                       onClick={() => {
-                        navigate(`/order/${params?.id}`);
+                        navigate(`/${params?.id}/order/${quantity}`);
                       }}
                     >
                       Place Order
@@ -151,7 +159,7 @@ const ProductDisplayComponent = () => {
                     <h6 className="d-inline ">Availability: </h6>
                     <span className="ms-3"> {product?.totalStock}</span>
                   </div>
-                  <div className="availability">
+                  {/* <div className="availability">
                     <h6 className="d-inline ">Availability Colors: </h6>
                     <span className="ms-3"> Values</span>
                   </div>
@@ -162,7 +170,7 @@ const ProductDisplayComponent = () => {
                   <div className="availability">
                     <h6 className="d-inline ">Promotion: </h6>
                     <span className="ms-3"> Values</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </Col>

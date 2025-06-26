@@ -29,6 +29,7 @@ import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import Cart from "./Pages/Cart/Cart";
 import axios from "axios";
 import ProtectedRoute from "./Components/ProtectedRoutesComponent/ProtectedRoutesComponent";
+import Spinner from "react-bootstrap/Spinner";
 
 axios.defaults.withCredentials = true;
 
@@ -75,12 +76,15 @@ function App() {
             element={<ResetPassword />}
           />
           <Route path="/product/:id" element={<ProductDisplay />} />
-          <Route path="/order/:id" element={<OrderDisplay />} />
+          <Route
+            path="/:productId/order/:quantity"
+            element={<OrderDisplay />}
+          />
           <Route
             path="/cart"
             element={
               loginAccess === null ? (
-                <div>Loading...</div>
+                <Spinner animation="grow" />
               ) : loginAccess ? (
                 <Cart />
               ) : (
