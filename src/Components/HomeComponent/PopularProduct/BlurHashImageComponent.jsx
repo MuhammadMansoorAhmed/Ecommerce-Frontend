@@ -25,11 +25,13 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
   //fetch cart product
   useEffect(() => {
     const getUserCartProducts = async () => {
-      const response = await dispatch(getAllCartItemsByUserId());
-      setCartProducts(response.payload.data);
+      if (isLoggedIn) {
+        const response = await dispatch(getAllCartItemsByUserId());
+        setCartProducts(response.payload.data);
+      }
     };
     getUserCartProducts();
-  }, [dispatch]);
+  }, [dispatch, isLoggedIn]);
 
   useEffect(() => {
     const getLogInStatus = localStorage.getItem("isLoggedIn");
@@ -54,9 +56,11 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
     }
   };
 
-  const isProductInCart = cartProducts.some(
-    (item) => item.productId && item.productId._id === productId
-  );
+  const isProductInCart =
+    cartProducts &&
+    cartProducts.some(
+      (item) => item.productId && item.productId._id === productId
+    );
 
   return (
     <div

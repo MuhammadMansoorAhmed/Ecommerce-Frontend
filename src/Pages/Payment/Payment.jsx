@@ -1,9 +1,7 @@
+import PaymentLayout from "../../Components/PaymentComponents/PaymentLayout";
+
 const Payment = () => {
-  return (
-    <div className="d-flex justify-content-center">
-      <h3 className="text-danger">Coming Soon</h3>
-    </div>
-  );
+  return <PaymentLayout />;
 };
 
 export default Payment;
