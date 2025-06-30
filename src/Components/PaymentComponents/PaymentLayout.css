@@ -1,0 +1,14 @@
+.checkout-btn {
+  background: linear-gradient(to right, #007bff, #0056d2);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.checkout-btn:hover {
+  background: linear-gradient(to right, #0056d2, #0041a8);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 91, 255, 0.3);
+}

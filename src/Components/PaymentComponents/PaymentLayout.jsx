@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import { BsShieldLockFill } from "react-icons/bs";
+import { FaCcVisa, FaCcMastercard, FaCcAmex, FaPaypal } from "react-icons/fa";
+import "./PaymentLayout.css";
 
 const PaymentLayout = () => {
-  // -------------------- State --------------------
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardDetails, setCardDetails] = useState({
     number: "",
@@ -10,10 +12,8 @@ const PaymentLayout = () => {
     expiry: "",
     name: "",
   });
-
   const [errors, setErrors] = useState({});
 
-  // -------------------- Handle Input --------------------
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCardDetails((prev) => ({
@@ -27,7 +27,6 @@ const PaymentLayout = () => {
     setErrors({});
   };
 
-  // -------------------- Validation --------------------
   const validateForm = () => {
     const errs = {};
     if (paymentMethod === "card") {
@@ -48,30 +47,26 @@ const PaymentLayout = () => {
     return Object.keys(errs).length === 0;
   };
 
-  // -------------------- Handle Checkout --------------------
   const handleCheckout = () => {
     if (!validateForm()) return;
-
     const payload = {
       method: paymentMethod,
       ...(paymentMethod === "card" ? cardDetails : {}),
     };
-
     console.log("Sending payment data:", payload);
-    alert("Payment processed successfully (mock)!");
-    // Here you’d send `payload` to backend or payment gateway API.
+    alert("✅ Payment processed successfully (mock)!");
   };
 
   return (
     <Container className="py-5">
       <Row>
-        {/* Payment Method */}
-        <Col md={7}>
-          <h4 className="mb-4">Choose your payment method</h4>
+        {/* Left: Payment Method */}
+        <Col md={7} className="mb-4">
+          <h3 className="mb-4 fw-bold">Payment Details</h3>
 
-          {/* PayPal Option */}
-          <Card className="mb-3">
-            <Card.Body className="d-flex justify-content-between align-items-start">
+          {/* Payment Method Switch */}
+          <Card className="mb-3 shadow-sm">
+            <Card.Body>
               <Form.Check
                 type="radio"
                 id="paypal"
@@ -80,24 +75,23 @@ const PaymentLayout = () => {
                 onChange={() => handlePaymentMethodChange("paypal")}
                 label={
                   <div>
-                    <strong>PayPal</strong>
-                    <div className="text-muted" style={{ fontSize: "0.9rem" }}>
-                      Safe payment online. Credit card needed. PayPal account is
-                      not necessary.
-                    </div>
+                    <strong>
+                      <FaPaypal className="me-2 text-primary" size={18} />
+                      PayPal
+                    </strong>
+                    <p
+                      className="text-muted mb-0"
+                      style={{ fontSize: "0.9rem" }}
+                    >
+                      Secure checkout via PayPal.
+                    </p>
                   </div>
                 }
-              />
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"
-                alt="PayPal"
-                height={30}
               />
             </Card.Body>
           </Card>
 
-          {/* Credit Card Option */}
-          <Card>
+          <Card className="shadow-sm">
             <Card.Body>
               <Form.Check
                 type="radio"
@@ -107,23 +101,30 @@ const PaymentLayout = () => {
                 onChange={() => handlePaymentMethodChange("card")}
                 label={
                   <div>
-                    <strong>Credit Card</strong>
-                    <div className="text-muted" style={{ fontSize: "0.9rem" }}>
-                      Safe money transfer using your bank account. Visa,
-                      Mastercard, Discover, American Express.
-                    </div>
+                    <strong>
+                      <FaCcVisa size={20} className="me-1 text-primary" />
+                      <FaCcMastercard size={20} className="me-1 text-danger" />
+                      <FaCcAmex size={20} className="me-1 text-info" />
+                      Credit / Debit Card
+                    </strong>
+                    <p
+                      className="text-muted mb-0"
+                      style={{ fontSize: "0.9rem" }}
+                    >
+                      Supports Visa, Mastercard, Amex.
+                    </p>
                   </div>
                 }
               />
 
               {paymentMethod === "card" && (
                 <Form className="mt-4">
-                  <Form.Group className="mb-3" controlId="cardNumber">
-                    <Form.Label>Credit Card Number</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Card Number</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="6655 8444 2233 5559"
                       name="number"
+                      placeholder="1234 5678 9012 3456"
                       value={cardDetails.number}
                       onChange={handleChange}
                       isInvalid={!!errors.number}
@@ -135,12 +136,12 @@ const PaymentLayout = () => {
 
                   <Row>
                     <Col md={6}>
-                      <Form.Group className="mb-3" controlId="cvvCode">
-                        <Form.Label>CVV Code</Form.Label>
+                      <Form.Group className="mb-3">
+                        <Form.Label>CVV</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="123"
                           name="cvv"
+                          placeholder="123"
                           value={cardDetails.cvv}
                           onChange={handleChange}
                           isInvalid={!!errors.cvv}
@@ -151,12 +152,12 @@ const PaymentLayout = () => {
                       </Form.Group>
                     </Col>
                     <Col md={6}>
-                      <Form.Group className="mb-3" controlId="expiryDate">
+                      <Form.Group className="mb-3">
                         <Form.Label>Expiry Date</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="MM / YY"
                           name="expiry"
+                          placeholder="MM/YY"
                           value={cardDetails.expiry}
                           onChange={handleChange}
                           isInvalid={!!errors.expiry}
@@ -168,12 +169,12 @@ const PaymentLayout = () => {
                     </Col>
                   </Row>
 
-                  <Form.Group className="mb-3" controlId="nameOnCard">
+                  <Form.Group className="mb-3">
                     <Form.Label>Name on Card</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="John Doe"
                       name="name"
+                      placeholder="John Doe"
                       value={cardDetails.name}
                       onChange={handleChange}
                       isInvalid={!!errors.name}
@@ -186,79 +187,58 @@ const PaymentLayout = () => {
               )}
             </Card.Body>
           </Card>
-
-          <Button variant="outline-secondary" className="mt-4">
-            GO BACK
-          </Button>
         </Col>
 
-        {/* Summary Section */}
+        {/* Right: Summary Section */}
         <Col md={5}>
-          <h5>Summary</h5>
-          <Card className="mb-3">
+          <h4 className="fw-semibold mb-3">Order Summary</h4>
+
+          <Card className="shadow-sm mb-3">
             <Card.Body>
-              <p className="mb-1">
-                <strong>Packet:</strong> Full package (100+ channels)
-              </p>
-              <p className="mb-1">
-                <strong>Duration:</strong> 3m
-              </p>
-              <hr />
-              <div className="d-flex justify-content-between">
-                <span>Transaction:</span>
-                <span>€ 159.99</span>
+              <div className="d-flex justify-content-between mb-2">
+                <span>Subtotal</span>
+                <span>PKR 5,999</span>
               </div>
-              <div className="d-flex justify-content-between">
-                <span>Discount for points:</span>
-                <span>€ 0.00</span>
-              </div>
-              <div className="d-flex justify-content-between">
-                <span>Gift card discount:</span>
-                <span>€ 0.00</span>
+              <div className="d-flex justify-content-between mb-2">
+                <span>Shipping</span>
+                <span>PKR 200</span>
               </div>
               <hr />
               <div className="d-flex justify-content-between">
-                <strong>Total:</strong>
-                <strong style={{ color: "green" }}>€ 159.99</strong>
+                <strong>Total</strong>
+                <strong style={{ color: "green" }}>PKR 6,199</strong>
               </div>
             </Card.Body>
           </Card>
 
-          <Card className="mb-3">
-            <Card.Body>
-              <strong>📦 Streaming box shipping information</strong>
-              <p className="text-muted mb-0" style={{ fontSize: "0.9rem" }}>
-                Lorem ipsum is sheer actual model text, and a search for will
-                uncover many web.
-              </p>
-            </Card.Body>
-          </Card>
-
-          <Card className="mb-4">
-            <Card.Body>
-              <strong>🔁 30-day money back guarantee</strong>
-              <p className="text-muted mb-0" style={{ fontSize: "0.9rem" }}>
-                Contrary to popular belief, Lorem Ipsum is not simply random.
-              </p>
-            </Card.Body>
-          </Card>
+          <div className="mb-3 text-muted small">
+            <BsShieldLockFill className="me-2 text-success" />
+            Your payment is secured with end-to-end encryption.
+          </div>
 
           <Button
-            variant="success"
-            size="lg"
-            className="w-100"
+            className="checkout-btn w-100 py-2 fw-semibold"
             onClick={handleCheckout}
           >
-            CHECK OUT →
+            Checkout {"->"}
           </Button>
+
+          <div
+            className="text-center text-muted mt-3"
+            style={{ fontSize: "0.85rem" }}
+          >
+            By continuing, you agree to our{" "}
+            <a href="#" className="text-decoration-underline">
+              terms & conditions
+            </a>{" "}
+            and{" "}
+            <a href="#" className="text-decoration-underline">
+              refund policy
+            </a>
+            .
+          </div>
         </Col>
       </Row>
-
-      <p className="text-center text-muted mt-4" style={{ fontSize: "0.8rem" }}>
-        By clicking checkout you agree with our{" "}
-        <a href="#">terms and conditions</a> and{" "}
-        <a href="#">money-back guarantee</a>.
-      </p>
     </Container>
   );
 };
