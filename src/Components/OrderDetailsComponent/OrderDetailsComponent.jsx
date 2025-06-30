@@ -25,7 +25,7 @@ const OrderDetailsComponent = () => {
   const isError = useSelector(selectIsError);
   const [showToast, setShowToast] = useState(false);
 
-  const { id } = useParams();
+  const { productId, quantity } = useParams();
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required"),
@@ -36,12 +36,15 @@ const OrderDetailsComponent = () => {
     state: Yup.string().required("State is required"),
     postalCode: Yup.string().required("Postal Code is required"),
     contactNumber: Yup.string().required("Contact Number is required"),
-    email: Yup.string().email("Invalid email format").required("Email is required"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
   });
 
   const handleOrderSubmit = async (values) => {
+    values.quantity = quantity;
     const response = await dispatch(
-      addOrder({ formData: values, productId: id })
+      addOrder({ formData: values, productId: productId })
     );
     if (response.meta.requestStatus === "fulfilled") {
       setShowToast(true);

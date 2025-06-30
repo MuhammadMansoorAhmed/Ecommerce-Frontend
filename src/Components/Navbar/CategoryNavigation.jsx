@@ -1,9 +1,8 @@
-// Redesigned CategoryNavigation with Clean Styling and MUI Joy Tabs
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab, { tabClasses } from "@mui/joy/Tab";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getAllCategories } from "../../Redux/Services/categoryServices";
 import { selectIsLoadingState } from "../../Redux/Features/categorySlice";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +15,7 @@ const CategoryNavigation = () => {
   const isLoading = useSelector(selectIsLoadingState);
   const [categories, setCategories] = useState([]);
   const [tabValue, setTabValue] = useState("");
+  const containerRef = useRef();
 
   useEffect(() => {
     const fetchAllCategories = async () => {
@@ -37,7 +37,12 @@ const CategoryNavigation = () => {
       {!isLoading && (
         <div
           className="px-2 py-2 border-top border-bottom"
-          style={{ backgroundColor: "#e3f3fb", overflowX: "auto" }}
+          ref={containerRef}
+          style={{
+            backgroundColor: "#e3f3fb",
+            overflowX: "auto",
+            WebkitOverflowScrolling: "touch",
+          }}
         >
           <Tabs
             aria-label="Category Tabs"
@@ -45,21 +50,23 @@ const CategoryNavigation = () => {
             onChange={handleTabChange}
             sx={{
               bgcolor: "transparent",
-              width: "100%",
+              width: "max-content", // allow Tabs to grow
+              minWidth: "100%", // ensure container width is respected
             }}
           >
             <TabList
               disableUnderline
               sx={{
-                p: 0.5,
-                gap: 1,
                 display: "flex",
+                gap: 1,
                 flexWrap: "nowrap",
-                overflowX: "auto",
+                whiteSpace: "nowrap",
+                px: 1,
                 [`& .${tabClasses.root}`]: {
                   fontWeight: 500,
                   fontSize: 13,
                   px: 2,
+                  minWidth: "max-content", // prevent tab from shrinking
                 },
                 [`& .${tabClasses.root}[aria-selected="true"]`]: {
                   bgcolor: "#b3e1f5",

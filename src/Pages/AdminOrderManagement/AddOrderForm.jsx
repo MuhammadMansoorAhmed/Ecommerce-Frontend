@@ -5,8 +5,10 @@ import { useDispatch } from "react-redux";
 import { BsXCircle } from "react-icons/bs";
 import { addOrder } from "../../Redux/Services/orderServices";
 
+
 const AddOrderForm = ({ closeForm }) => {
   const dispatch = useDispatch();
+  
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("First name is required"),
@@ -29,6 +31,7 @@ const AddOrderForm = ({ closeForm }) => {
 
   // Submit handler
   const handleSubmit = async (values, { setSubmitting }) => {
+    console.log(values);
     const result = await dispatch(addOrder(values));
     if (result.payload.success) {
       alert("Order added successfully");
