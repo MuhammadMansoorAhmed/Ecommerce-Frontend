@@ -28,18 +28,38 @@ const OrderDetailsComponent = () => {
   const { productId, quantity } = useParams();
 
   const validationSchema = Yup.object().shape({
-    firstName: Yup.string().required("First Name is required"),
-    lastName: Yup.string().required("Last Name is required"),
-    country: Yup.string().required("Country is required"),
-    address: Yup.string().required("Address is required"),
-    city: Yup.string().required("City is required"),
-    state: Yup.string().required("State is required"),
-    postalCode: Yup.string().required("Postal Code is required"),
-    contactNumber: Yup.string().required("Contact Number is required"),
+    firstName: Yup.string()
+      .required("First Name is required")
+      .max(16, "First Name must be at most 16 characters"),
+    lastName: Yup.string()
+      .required("Last Name is required")
+      .max(16, "Last Name must be at most 16 characters"),
+    country: Yup.string()
+      .required("Country is required")
+      .max(24, "Country must be at most 24 characters"),
+    address: Yup.string()
+      .required("Address is required")
+      .max(80, "Address must be at most 80 characters"),
+    city: Yup.string()
+      .required("City is required")
+      .max(16, "City must be at most 16 characters"),
+    state: Yup.string()
+      .required("State is required")
+      .max(20, "State must be at most 20 characters"),
+    postalCode: Yup.string()
+      .required("Postal Code is required")
+      .length(6, "Postal Code must be exactly 6 characters"),
+    contactNumber: Yup.string()
+      .required("Contact Number is required")
+      .matches(
+        /^03[0-9]{9}$/,
+        "Must be a valid Pakistani number (e.g., 03123456789)"
+      ),
     email: Yup.string()
       .email("Invalid email format")
       .required("Email is required"),
   });
+
 
   const handleOrderSubmit = async (values) => {
     values.quantity = quantity;

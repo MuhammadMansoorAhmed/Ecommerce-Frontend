@@ -12,7 +12,10 @@ const AddCategoryForm = ({ closeForm, setCategories }) => {
   const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
-    category: Yup.string().required("Category is required"),
+    category: Yup.string()
+      .required("Category is required")
+      .min(3, "category must be minimun 3 character")
+      .max(30, "category must not exceed 30 characters"),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
