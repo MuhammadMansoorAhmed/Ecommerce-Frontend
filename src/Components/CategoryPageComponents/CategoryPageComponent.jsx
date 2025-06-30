@@ -1,3 +1,4 @@
+// Redesigned CategoryPageComponent — Clean Layout, Responsive Cards
 /* eslint-disable react/prop-types */
 import BlurHashImageComponent from "../HomeComponent/PopularProduct/BlurHashImageComponent";
 import Spinner from "react-bootstrap/Spinner";
@@ -12,7 +13,7 @@ import {
 import {
   selectIsLoading,
   selectIsSuccess,
-  selectIsError,
+  // selectIsError,
 } from "../../Redux/Features/productSlice";
 import { toast } from "react-toastify";
 
@@ -22,7 +23,7 @@ const CategoryPageComponent = () => {
   const [products, setProducts] = useState([]);
   const isLoading = useSelector(selectIsLoading);
   const isSuccess = useSelector(selectIsSuccess);
-  const isError = useSelector(selectIsError);
+  // const isError = useSelector(selectIsError);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -46,50 +47,39 @@ const CategoryPageComponent = () => {
   }, [category, dispatch]);
 
   return (
-    <>
-      <Container className="text-center  my-3">
-        {/* <h3 className="mt-3">Products</h3> */}
-        <Row className="d-flex w-100 justify-content-md-evenly flex-wrap">
-          {!isLoading && isSuccess ? (
-            Array.isArray(products) && products.length > 0 ? (
-              products.map((product) => (
-                <Col
-                  sm={6}
-                  md={3}
-                  lg={3}
-                  xl={3}
-                  key={product?._id}
-                  className="mt-2 mb-5 px-2"
-                >
-                  <div
-                    className="w-100 "
-                    style={{ maxHeight: "390px", minHeight: "350px" }}
-                  >
-                    <BlurHashImageComponent
-                      hash={product?.images[0]?.blurHash}
-                      imgSrc={product?.images[0]?.url}
-                      productId={product?._id}
-                    />
-                  </div>
-                  <div className="d-flex flex-column text-start px-2 py-2 ">
-                    <h6 className="my-0 py-1">{product?.name}</h6>
-                    {/* <p className="my-0 py-1">{product?.description}</p> */}
-                    <p className="my-0 py-1">Price: {product?.price}</p>
-                    {/* <button className="btn btn-primary">Add to Cart</button> */}
-                  </div>
-                </Col>
-              ))
-            ) : (
-              <div>No Product Found</div>
-            )
-          ) : isLoading ? (
+    <Container className="my-4">
+      <Row className="justify-content-center g-4">
+        {isLoading ? (
+          <div className="text-center">
             <Spinner animation="grow" />
-          ) : (
-            isError && <div>No Product Found</div>
-          )}
-        </Row>
-      </Container>
-    </>
+          </div>
+        ) : isSuccess && products.length > 0 ? (
+          products.map((product) => (
+            <Col key={product._id} xs={12} sm={6} md={4} lg={3}>
+              <div className="border rounded-3 shadow-sm h-100 d-flex flex-column justify-content-between">
+                <div className="p-2" style={{ minHeight: "220px" }}>
+                  <BlurHashImageComponent
+                    hash={product?.images[0]?.blurHash}
+                    imgSrc={product?.images[0]?.url}
+                    productId={product?._id}
+                  />
+                </div>
+                <div className="p-3">
+                  <h6 className="fw-semibold mb-1 text-truncate">
+                    {product?.name}
+                  </h6>
+                  <p className="text-muted mb-1 small">
+                    Price: <strong>PKR:{product?.price}</strong>
+                  </p>
+                </div>
+              </div>
+            </Col>
+          ))
+        ) : (
+          <div className="text-center py-4">No Product Found</div>
+        )}
+      </Row>
+    </Container>
   );
 };
 

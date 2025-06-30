@@ -1,3 +1,4 @@
+// Redesigned CategoryNavigation with Clean Styling and MUI Joy Tabs
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab, { tabClasses } from "@mui/joy/Tab";
@@ -14,7 +15,7 @@ const CategoryNavigation = () => {
 
   const isLoading = useSelector(selectIsLoadingState);
   const [categories, setCategories] = useState([]);
-  const [tabValue, setTabValue] = useState(""); // State to track active tab
+  const [tabValue, setTabValue] = useState("");
 
   useEffect(() => {
     const fetchAllCategories = async () => {
@@ -26,26 +27,24 @@ const CategoryNavigation = () => {
     fetchAllCategories();
   }, [dispatch, categories]);
 
-  // Handler to track tab change
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
-    navigate(`/products/category/${newValue}`); // Navigate to the corresponding product list page when a tab is selected
+    navigate(`/products/category/${newValue}`);
   };
 
   return (
     <>
       {!isLoading && (
         <div
-          className="d-flex justify-content-start px-1"
-          style={{ backgroundColor: "rgb(209, 232, 248)", overflowX: "auto" }}
+          className="px-2 py-2 border-top border-bottom"
+          style={{ backgroundColor: "#e3f3fb", overflowX: "auto" }}
         >
           <Tabs
-            aria-label="tabs"
-            value={tabValue} // Controlled tab value
-            onChange={handleTabChange} // Track tab change
+            aria-label="Category Tabs"
+            value={tabValue}
+            onChange={handleTabChange}
             sx={{
               bgcolor: "transparent",
-              borderBottom: "1px solid rgb(149, 210, 250)",
               width: "100%",
             }}
           >
@@ -53,12 +52,19 @@ const CategoryNavigation = () => {
               disableUnderline
               sx={{
                 p: 0.5,
-                gap: 0.5,
-                borderRadius: "md",
-                color: "#628281",
+                gap: 1,
+                display: "flex",
+                flexWrap: "nowrap",
+                overflowX: "auto",
+                [`& .${tabClasses.root}`]: {
+                  fontWeight: 500,
+                  fontSize: 13,
+                  px: 2,
+                },
                 [`& .${tabClasses.root}[aria-selected="true"]`]: {
-                  boxShadow: "sm",
-                  bgcolor: "rgb(171, 213, 241)",
+                  bgcolor: "#b3e1f5",
+                  color: "#222",
+                  borderRadius: "6px",
                 },
               }}
             >
@@ -67,10 +73,10 @@ const CategoryNavigation = () => {
                   key={category._id}
                   disableIndicator
                   value={category._id}
-                  className="px-2 ms-2"
+                  className="text-uppercase d-flex align-items-center gap-1"
                 >
-                  <GoDotFill size={5} />
-                  {category?.name?.toUpperCase()}
+                  <GoDotFill size={6} />
+                  {category?.name}
                 </Tab>
               ))}
             </TabList>

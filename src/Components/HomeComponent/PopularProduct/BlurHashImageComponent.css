@@ -75,3 +75,19 @@
   }
  
 }
+
+.product-image-wrapper {
+  transition: box-shadow 0.2s ease;
+}
+
+.product-image-wrapper:hover {
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.checkedIcon {
+  color: #4caf50;
+}
+
+.hoverIcon:hover {
+  color: #007bff;
+}

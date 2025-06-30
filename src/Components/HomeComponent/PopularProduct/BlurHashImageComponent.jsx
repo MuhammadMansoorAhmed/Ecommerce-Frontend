@@ -1,28 +1,26 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
-import "./BlurHashImageComponent.css";
 import { useNavigate } from "react-router-dom";
 import { BsFillCartCheckFill } from "react-icons/bs";
+import { MdShoppingCartCheckout } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import {
   AddtoCart,
   getAllCartItemsByUserId,
 } from "../../../Redux/Services/cartServices";
 import { toast } from "react-toastify";
-import { MdShoppingCartCheckout } from "react-icons/md";
 import TooltipWrapper from "../../TooltipWrapper";
+import "./BlurHashImageComponent.css";
 
 const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [selectAddtoCart, setSelectAddtoCart] = useState(false);
-  // const [hover, setHover] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [cartProducts, setCartProducts] = useState([]);
 
-  //fetch cart product
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [cartProducts, setCartProducts] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     const getUserCartProducts = async () => {
       if (isLoggedIn) {
@@ -35,125 +33,91 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
 
   useEffect(() => {
     const getLogInStatus = localStorage.getItem("isLoggedIn");
-    if (getLogInStatus == "true") {
+    if (getLogInStatus === "true") {
       setIsLoggedIn(true);
     }
   }, []);
 
   useEffect(() => {
     const img = new Image();
-    img.onload = () => {
-      setImageLoaded(true);
-    };
+    img.onload = () => setImageLoaded(true);
     img.src = imgSrc;
   }, [imgSrc]);
 
-  const addProductToCart = async (productId) => {
+  const addProductToCart = async () => {
     try {
       await dispatch(AddtoCart(productId));
     } catch (error) {
-      toast.error("failed to add product to the cart");
+      toast.error("Failed to add product to the cart");
     }
   };
 
-  const isProductInCart =
-    cartProducts &&
-    cartProducts.some(
-      (item) => item.productId && item.productId._id === productId
-    );
+  const isProductInCart = cartProducts?.some(
+    (item) => item.productId && item.productId._id === productId
+  );
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        overflow: "hidden",
-      }}
-    >
-      {/* Display BlurHash if the image hasn't loaded */}
-      {!imageLoaded && (
-        <Blurhash
-          hash={hash}
-          width={250}
-          height={300}
-          resolutionX={32}
-          resolutionY={32}
-          punch={1}
-        />
-      )}
-
-      {/* Show image after it has loaded */}
-      <div>
-        <img
-          style={{
-            display: imageLoaded ? "block" : "none",
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            maxHeight: "350px",
-            minHeight: "300px",
-            overflow: "hidden",
-          }}
-          src={imgSrc}
-          alt="Product Image"
-          // onMouseEnter={() => setHover(true)}
-          // onMouseLeave={() => setHover(false)}
-        />
-      </div>
-      {/* AddtoCart Icon */}
-      {isLoggedIn && (
-        <div
-          className={` d-block  `}
-          // ${hover ? "d-block" : "d-none"}
-          style={{
-            position: "absolute",
-            zIndex: 3,
-            top: 10,
-            right: 8,
-            boxShadow: "2px",
-            borderRadius: "6px",
-            backgroundColor: "rgba(196, 204, 216, 0.56)",
-            border: "1px solid rgba(196, 204, 216, 0.70)",
-          }}
-          // onMouseEnter={() => setHover(true)}
-        >
-          <TooltipWrapper
-            tooltip={isProductInCart ? "Already added" : "Add to Cart"}
+    <div className="product-image-wrapper d-flex flex-column h-100">
+      <div className="image-container position-relative">
+        {!imageLoaded ? (
+          <Blurhash
+            hash={hash}
+            width="100%"
+            height={250}
+            resolutionX={32}
+            resolutionY={32}
+            punch={1}
+          />
+        ) : (
+          <img
+            src={imgSrc}
+            alt="Product"
+            style={{
+              width: "100%",
+              height: "250px",
+              objectFit: "cover",
+              borderRadius: "6px",
+              display: imageLoaded ? "block" : "none",
+            }}
+          />
+        )}
+        {isLoggedIn && (
+          <div
+            className="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.85)",
+              padding: "6px",
+              borderRadius: "6px",
+            }}
           >
-            <BsFillCartCheckFill
-              size={20}
-              className={isProductInCart ? "checkedIcon" : "hoverIcon"}
-              // style={{
-              //   fill: `${selectAddtoCart ? "#0080ff" : ""}`,
-              // }}
-              onClick={() => {
-                const newValue = !selectAddtoCart;
-                setSelectAddtoCart(newValue);
-                addProductToCart(productId);
-              }}
-            />
-          </TooltipWrapper>
-          <TooltipWrapper tooltip="Go to Cart">
-            <MdShoppingCartCheckout
-              size={20}
-              className="hoverIcon"
-              onClick={() => {
-                navigate("/cart");
-              }}
-            />
-          </TooltipWrapper>
-        </div>
-      )}
+            <TooltipWrapper
+              tooltip={isProductInCart ? "Already in cart" : "Add to Cart"}
+            >
+              <BsFillCartCheckFill
+                size={18}
+                className={isProductInCart ? "checkedIcon" : "hoverIcon"}
+                onClick={addProductToCart}
+                style={{ cursor: "pointer" }}
+              />
+            </TooltipWrapper>
+            <TooltipWrapper tooltip="Go to Cart">
+              <MdShoppingCartCheckout
+                size={18}
+                className="hoverIcon"
+                onClick={() => navigate("/cart")}
+                style={{ cursor: "pointer" }}
+              />
+            </TooltipWrapper>
+          </div>
+        )}
+      </div>
 
-      {/* Add to Cart Button */}
-      <div className="add-to-cart-container">
+      <div className="mt-2">
         <button
-          className="order-btn"
-          type="button"
+          className="btn btn-outline-primary btn-sm w-100"
           onClick={() => navigate(`/product/${productId}`)}
         >
-          Order Now
+          Product Details
         </button>
       </div>
     </div>

@@ -1,0 +1,35 @@
+/* OrderDetailsComponent.css */
+.order-page {
+  /* background-color: #f9f9f9; */
+  border: 1px solid #f9f9f9;
+  margin-top: 16px;
+  border-radius: 8px;
+}
+
+.modern-order-form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.modern-submit-btn {
+  background-color: #0d6efd;
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.modern-submit-btn:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+.form-label {
+  font-weight: 500;
+}

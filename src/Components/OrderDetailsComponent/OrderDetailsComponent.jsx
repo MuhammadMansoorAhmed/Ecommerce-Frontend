@@ -1,5 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Container, Form, FormGroup, Row, Toast } from "react-bootstrap";
+import {
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Row,
+  Toast,
+  Button,
+} from "react-bootstrap";
 import { addOrder } from "../../Redux/Services/orderServices";
 import {
   selectIsError,
@@ -9,6 +17,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
+import "./OrderDetailsComponent.css";
 
 const OrderDetailsComponent = () => {
   const dispatch = useDispatch();
@@ -16,9 +25,8 @@ const OrderDetailsComponent = () => {
   const isError = useSelector(selectIsError);
   const [showToast, setShowToast] = useState(false);
 
-  const params = useParams();
+  const { id } = useParams();
 
-  // Yup validation schema
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required"),
     lastName: Yup.string().required("Last Name is required"),
@@ -28,27 +36,23 @@ const OrderDetailsComponent = () => {
     state: Yup.string().required("State is required"),
     postalCode: Yup.string().required("Postal Code is required"),
     contactNumber: Yup.string().required("Contact Number is required"),
-    email: Yup.string()
-      .email("Invalid email format")
-      .required("Email is required"),
+    email: Yup.string().email("Invalid email format").required("Email is required"),
   });
 
   const handleOrderSubmit = async (values) => {
     const response = await dispatch(
-      addOrder({ formData: values, productId: params.id })
+      addOrder({ formData: values, productId: id })
     );
-
     if (response.meta.requestStatus === "fulfilled") {
-      setShowToast(true); // Show the toast on successful order submission
+      setShowToast(true);
     }
   };
 
   return (
-    <Container style={{ marginTop: "120px" }}>
+    <Container className="order-page py-5">
       <Row>
-        <Col sm={12} md={8} lg={8} xl={8} className="border-end mb-4">
-          <h3>Order Details</h3>
-          <hr className="text-secondary" />
+        <Col md={8} className="pe-md-5">
+          <h2 className="mb-4 fw-bold">Shipping Information</h2>
           <Formik
             initialValues={{
               firstName: "",
@@ -76,46 +80,45 @@ const OrderDetailsComponent = () => {
               handleSubmit,
               isSubmitting,
             }) => (
-              <Form className="orderForm" onSubmit={handleSubmit}>
-                <div className="d-flex justify-content-center">
-                  <FormGroup className="my-3 w-100 me-4">
-                    <Form.Label>
-                      First Name<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="firstName"
-                      value={values.firstName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      isInvalid={touched.firstName && errors.firstName}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.firstName}
-                    </Form.Control.Feedback>
-                  </FormGroup>
-                  <FormGroup className="my-3 w-100 ms-4">
-                    <Form.Label>
-                      Last Name<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="lastName"
-                      value={values.lastName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      isInvalid={touched.lastName && errors.lastName}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.lastName}
-                    </Form.Control.Feedback>
-                  </FormGroup>
-                </div>
+              <Form className="modern-order-form" onSubmit={handleSubmit}>
+                <Row>
+                  <Col md={6}>
+                    <FormGroup className="mb-3">
+                      <Form.Label>First Name *</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="firstName"
+                        value={values.firstName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.firstName && errors.firstName}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.firstName}
+                      </Form.Control.Feedback>
+                    </FormGroup>
+                  </Col>
 
-                <FormGroup className="my-3">
-                  <Form.Label>
-                    Country<span className="text-danger">*</span>
-                  </Form.Label>
+                  <Col md={6}>
+                    <FormGroup className="mb-3">
+                      <Form.Label>Last Name *</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="lastName"
+                        value={values.lastName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.lastName && errors.lastName}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.lastName}
+                      </Form.Control.Feedback>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                <FormGroup className="mb-3">
+                  <Form.Label>Country *</Form.Label>
                   <Form.Control
                     type="text"
                     name="country"
@@ -129,10 +132,8 @@ const OrderDetailsComponent = () => {
                   </Form.Control.Feedback>
                 </FormGroup>
 
-                <FormGroup className="my-3">
-                  <Form.Label>
-                    Address<span className="text-danger">*</span>
-                  </Form.Label>
+                <FormGroup className="mb-3">
+                  <Form.Label>Address *</Form.Label>
                   <Form.Control
                     type="text"
                     name="address"
@@ -146,45 +147,44 @@ const OrderDetailsComponent = () => {
                   </Form.Control.Feedback>
                 </FormGroup>
 
-                <div className="d-flex justify-content-center">
-                  <FormGroup className="my-3 w-100 me-4">
-                    <Form.Label>
-                      City<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="city"
-                      value={values.city}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      isInvalid={touched.city && errors.city}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.city}
-                    </Form.Control.Feedback>
-                  </FormGroup>
-                  <FormGroup className="my-3 w-100 ms-4">
-                    <Form.Label>
-                      State<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="state"
-                      value={values.state}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      isInvalid={touched.state && errors.state}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.state}
-                    </Form.Control.Feedback>
-                  </FormGroup>
-                </div>
+                <Row>
+                  <Col md={6}>
+                    <FormGroup className="mb-3">
+                      <Form.Label>City *</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="city"
+                        value={values.city}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.city && errors.city}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.city}
+                      </Form.Control.Feedback>
+                    </FormGroup>
+                  </Col>
 
-                <FormGroup className="my-3">
-                  <Form.Label>
-                    Postal Code<span className="text-danger">*</span>
-                  </Form.Label>
+                  <Col md={6}>
+                    <FormGroup className="mb-3">
+                      <Form.Label>State *</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="state"
+                        value={values.state}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.state && errors.state}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.state}
+                      </Form.Control.Feedback>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                <FormGroup className="mb-3">
+                  <Form.Label>Postal Code *</Form.Label>
                   <Form.Control
                     type="text"
                     name="postalCode"
@@ -198,51 +198,52 @@ const OrderDetailsComponent = () => {
                   </Form.Control.Feedback>
                 </FormGroup>
 
-                <div className="d-flex justify-content-center">
-                  <FormGroup className="my-3 w-100 me-4">
-                    <Form.Label>
-                      Contact Number<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="contactNumber"
-                      value={values.contactNumber}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      isInvalid={touched.contactNumber && errors.contactNumber}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.contactNumber}
-                    </Form.Control.Feedback>
-                  </FormGroup>
-                  <FormGroup className="my-3 w-100 ms-4">
-                    <Form.Label>
-                      Email<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="email"
-                      name="email"
-                      value={values.email}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      isInvalid={touched.email && errors.email}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.email}
-                    </Form.Control.Feedback>
-                  </FormGroup>
-                </div>
+                <Row>
+                  <Col md={6}>
+                    <FormGroup className="mb-3">
+                      <Form.Label>Contact Number *</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="contactNumber"
+                        value={values.contactNumber}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.contactNumber && errors.contactNumber}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.contactNumber}
+                      </Form.Control.Feedback>
+                    </FormGroup>
+                  </Col>
 
-                <button
-                  className="addToCartBtn my-3 py-2 px-2"
+                  <Col md={6}>
+                    <FormGroup className="mb-3">
+                      <Form.Label>Email *</Form.Label>
+                      <Form.Control
+                        type="email"
+                        name="email"
+                        value={values.email}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.email && errors.email}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.email}
+                      </Form.Control.Feedback>
+                    </FormGroup>
+                  </Col>
+                </Row>
+
+                <Button
                   type="submit"
+                  className="modern-submit-btn mt-3"
                   disabled={isSubmitting || isLoading}
                 >
-                  {isLoading ? "Submitting..." : "Submit"}
-                </button>
+                  {isLoading ? "Submitting..." : "Submit Order"}
+                </Button>
 
                 {isError && (
-                  <p className="text-danger">
+                  <p className="text-danger mt-2">
                     Something went wrong. Please try again.
                   </p>
                 )}
@@ -250,8 +251,12 @@ const OrderDetailsComponent = () => {
             )}
           </Formik>
         </Col>
-        <Col sm={12} md={4} lg={4} xl={4}></Col>
+
+        <Col md={4} className="pt-md-5">
+          {/* You can display order summary or product card preview here */}
+        </Col>
       </Row>
+
       <Toast
         onClose={() => setShowToast(false)}
         show={showToast}
@@ -259,7 +264,9 @@ const OrderDetailsComponent = () => {
         autohide
         style={{ position: "fixed", bottom: 20, right: 20 }}
       >
-        <Toast.Body>Order placed successfully</Toast.Body>
+        <Toast.Body className="text-success fw-semibold">
+          Order placed successfully!
+        </Toast.Body>
       </Toast>
     </Container>
   );

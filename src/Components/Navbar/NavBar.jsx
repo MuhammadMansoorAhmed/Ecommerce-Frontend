@@ -1,115 +1,140 @@
+// Redesigned NavBar with Consistent Styling and Enhancements
 import { Navbar } from "react-bootstrap";
-import { FaRegistered, FaUser } from "react-icons/fa6";
+import { FaRegistered, FaUser, FaUserEdit } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
-import { IoLogIn } from "react-icons/io5";
+import { IoLogIn, IoLogOut } from "react-icons/io5";
 import { RiBloggerFill, RiContactsBook2Fill } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
-import { IoLogOut } from "react-icons/io5";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../Redux/Services/authServices";
-import { useState } from "react";
-import { FaUserEdit } from "react-icons/fa";
+import { useState, useEffect, useRef } from "react";
 
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showUserOptions, setShowUserOptions] = useState(false);
   const isLoggedIn = window.localStorage.getItem("isLoggedIn");
-
+  const dropdownRef = useRef();
 
   const handleLogout = async () => {
-     await dispatch(logout());
-     localStorage.removeItem("isLoggedIn");
-     localStorage.removeItem("role");
+    await dispatch(logout());
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("role");
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowUserOptions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <Navbar
       expand="lg"
-      className={`py-0 position-md-relative position-lg-relative position-md-fixed w-100  border-bottom sticky-top
-        
-      }`}
-      style={{
-        top: 0,
-        left: 0,
-        transition: "top 0.3s",
-        backgroundColor: "#FFFFFF99",
-      }}
+      className="py-0 sticky-top shadow-sm border-b bg-white/90"
+      style={{ backdropFilter: "blur(10px)" }}
     >
-      <div className="p-3 w-100">
-        <Navbar.Toggle aria-controls="basic-navbar-nav bg-sm-light" />
-        <Navbar.Collapse id="basic-navbar-nav border ">
-          <div className="d-flex justify-content-between w-100">
-            <div className="d-flex me-auto">
-              <Link className="navHover mx-2" to={"/"}>
-                <IoMdHome size={20} className="mb-1" /> Home
-              </Link>
-              <Link className="navHover mx-2" to={"/blog"}>
-                <RiBloggerFill size={20} className="mb-1" /> Blog
-              </Link>
-              <Link className="navHover mx-2" to={"/contact"}>
-                <RiContactsBook2Fill size={20} className="mb-1" />
-                Contact
-              </Link>
-            </div>
-            <div className="d-flex ms-auto">
-              {isLoggedIn === "true" ? (
-                <div className="position-relative">
-                  <Link
-                    className="navHover mx-2"
-                    to={""}
-                    onClick={handleLogout}
-                  >
-                    <IoLogOut size={20} className="mb-1" /> Logout
-                  </Link>
+      <div className="container d-flex justify-content-between align-items-center py-3 px-4">
+        {/* Brand Logo */}
+        <NavLink to="/" className="navbar-brand fw-bold text-indigo-600 fs-4">
+          MyShop
+        </NavLink>
 
-                  <Link
-                    className="navHover mx-2"
-                    to={""}
-                    onClick={() => setShowUserOptions(!showUserOptions)}
+        {/* Navigation Links */}
+        <div className="d-flex gap-3">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `text-decoration-none d-flex align-items-center gap-1 navHover ${
+                isActive ? "text-indigo-600 fw-semibold" : "text-dark"
+              }`
+            }
+          >
+            <IoMdHome size={20} /> Home
+          </NavLink>
+          <NavLink
+            to="/blog"
+            className={({ isActive }) =>
+              `text-decoration-none d-flex align-items-center gap-1 navHover ${
+                isActive ? "text-indigo-600 fw-semibold" : "text-dark"
+              }`
+            }
+          >
+            <RiBloggerFill size={20} /> Blog
+          </NavLink>
+          <NavLink
+            to="/contact"
+            className={({ isActive }) =>
+              `text-decoration-none d-flex align-items-center gap-1 navHover ${
+                isActive ? "text-indigo-600 fw-semibold" : "text-dark"
+              }`
+            }
+          >
+            <RiContactsBook2Fill size={20} /> Contact
+          </NavLink>
+        </div>
+
+        {/* User Section */}
+        <div className="d-flex gap-3 align-items-center">
+          {isLoggedIn === "true" ? (
+            <div className="position-relative" ref={dropdownRef}>
+              <button
+                onClick={handleLogout}
+                className="btn btn-link text-decoration-none text-dark navHover"
+              >
+                <IoLogOut size={20} /> Logout
+              </button>
+
+              <button
+                onClick={() => setShowUserOptions(!showUserOptions)}
+                className="btn btn-link text-dark text-decoration-none navHover"
+              >
+                <FaUser size={20} />
+              </button>
+
+              {showUserOptions && (
+                <div
+                  className="position-absolute mt-2 bg-light shadow rounded p-2"
+                  style={{ right: 0, minWidth: "150px", zIndex: 10 }}
+                >
+                  <button
+                    onClick={() => navigate("/user-profile")}
+                    className="d-flex align-items-center w-100 btn btn-light navHover"
                   >
-                    <FaUser size={20} className="mb-1" />
-                  </Link>
-                  {showUserOptions && (
-                    <div
-                      className="position-absolute d-flex flex-column justify-content-center align-items-center w-100 rounded-3 px-2"
-                      style={{
-                        zIndex: 2,
-                        top: "100%",
-                        right: 0,
-                        backgroundColor: "rgba(196, 204, 216, 0.56)",
-                        transition: "all .4s smooth",
-                      }}
-                    >
-                      <div
-                        className="d-flex justify-content-center m-2 navHover cursor-pointer"
-                        onClick={() => navigate("/user-profile")}
-                      >
-                        <FaUserEdit size={20} />
-                        <p className="m-0">
-                          {" "}
-                          <Link className="nav-link mx-2" to={""}>
-                            Profile
-                          </Link>
-                        </p>
-                      </div>
-                    </div>
-                  )}
+                    <FaUserEdit className="me-2" /> Profile
+                  </button>
                 </div>
-              ) : (
-                <>
-                  <Link className="navHover mx-2" to={"/login"}>
-                    <IoLogIn size={20} className="mb-1" /> Login
-                  </Link>
-                  <Link className="navHover mx-2" to={"/signup"}>
-                    <FaRegistered size={20} className="mb-1 me-1" />
-                    Signup
-                  </Link>
-                </>
               )}
             </div>
-          </div>
-        </Navbar.Collapse>
+          ) : (
+            <>
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `text-decoration-none d-flex align-items-center gap-1 navHover ${
+                    isActive ? "text-indigo-600 fw-semibold" : "text-dark"
+                  }`
+                }
+              >
+                <IoLogIn size={20} /> Login
+              </NavLink>
+              <NavLink
+                to="/signup"
+                className={({ isActive }) =>
+                  `text-decoration-none d-flex align-items-center gap-1 navHover ${
+                    isActive ? "text-indigo-600 fw-semibold" : "text-dark"
+                  }`
+                }
+              >
+                <FaRegistered size={20} /> Signup
+              </NavLink>
+            </>
+          )}
+        </div>
       </div>
     </Navbar>
   );

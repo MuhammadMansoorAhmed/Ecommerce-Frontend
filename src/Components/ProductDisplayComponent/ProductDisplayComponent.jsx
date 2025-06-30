@@ -1,200 +1,148 @@
-import { Carousel, Col, Container, Row, Spinner } from "react-bootstrap";
-import "./ProductDisplayComponent.css";
+import {
+  Carousel,
+  Col,
+  Container,
+  Row,
+  Spinner,
+  Button,
+  ButtonGroup,
+} from "react-bootstrap";
 import HomeFooter from "../HomeComponent/HomeFooter/HomeFooter";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../../Redux/Services/productServices";
 import { selectIsLoading } from "../../Redux/Features/productSlice";
+import { FiMinus, FiPlus } from "react-icons/fi";
 
 const ProductDisplayComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const params = useParams();
-
-  const [quantity, setQuantity] = useState(1);
+  const isLoading = useSelector(selectIsLoading);
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await dispatch(getProductById(params.id));
+      const response = await dispatch(getProductById(id));
       setProduct(response.payload.data);
     };
     fetchProduct();
-  }, [dispatch, params.id]);
+  }, [dispatch, id]);
 
-  const handleIncrementQuantity = () => {
+  const handleIncrement = () => {
     if (quantity < product?.totalStockRemaining) {
-      setQuantity(quantity + 1);
+      setQuantity((prev) => prev + 1);
     }
   };
-  const handleDecrementQuantity = () => {
+
+  const handleDecrement = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
+      setQuantity((prev) => prev - 1);
     }
   };
 
   return (
-    <Container className="marginStyle">
-      {selectIsLoading && product === null ? (
-        <Spinner animation="grow" />
+    <Container className="py-5">
+      {isLoading || !product ? (
+        <div className="text-center my-5">
+          <Spinner animation="border" />
+        </div>
       ) : (
         <>
-          <Row className="m-1 p-1">
-            <Col sm={10} md={6} lg={6} xl={6} className="p-2">
-              <Row className="p-2 h-100">
-                {/* <Col
-                  sm={3}
-                  md={3}
-                  lg={3}
-                  xl={3}
-                  className="d-flex flex-md-column justify-content-md-center justify-content-evenly position-relative productLeftList h-md-100"
-                >
-                  <div>
-                    <img
-                      className="w-md-100 py-2"
-                      style={{ height: "150px" }}
-                      src={product?.images[0]?.url}
-                    />
-                  </div>
-                  <div>
-                    <img
-                      className="w-md-100 py-2"
-                      style={{ height: "150px" }}
-                      src={product?.images[1]?.url}
-                    />
-                  </div>
-                  <div>
-                    <img
-                      className="w-md-100 py-2"
-                      style={{ height: "150px" }}
-                      src={product?.images[2]?.url}
-                    />
-                  </div>
-                </Col> */}
-
-                <Col sm={10} md={12} lg={12} xl={12}>
-                  <div className="d-flex justify-content-center w-md-100">
-                    <Carousel className="w-100" style={{ maxWidth: "400px" }}>
-                      {product?.images?.map((img, index) => (
-                        <Carousel.Item key={index}>
-                          <img
-                            src={img.url}
-                            alt={`Product Image ${index + 1}`}
-                            className="d-block w-100 rounded"
-                            style={{ height: "500px", objectFit: "contain" }}
-                          />
-                        </Carousel.Item>
-                      ))}
-                    </Carousel>
-                  </div>
-                </Col>
-              </Row>
+          <Row className="g-5 align-items-start">
+            {/* IMAGE SLIDER */}
+            <Col md={6}>
+              <div className="bg-white rounded shadow-sm p-3">
+                <Carousel interval={null} className="rounded overflow-hidden">
+                  {product?.images?.map((img, idx) => (
+                    <Carousel.Item key={idx}>
+                      <img
+                        src={img.url}
+                        alt={`Product ${idx + 1}`}
+                        className="d-block w-100"
+                        style={{
+                          height: "500px",
+                          objectFit: "contain",
+                          borderRadius: "0.5rem",
+                        }}
+                      />
+                    </Carousel.Item>
+                  ))}
+                </Carousel>
+              </div>
             </Col>
-            <Col sm={10} md={6} lg={6} xl={6}>
-              <div className="d-flex justify-content-start flex-column w-100">
-                <p
-                  style={{
-                    fontSize: "32px",
-                    color: "#212529",
-                    fontWeight: "600",
-                    marginTop: "10px",
-                    marginBottom: "6px",
-                  }}
-                >
-                  {product?.name}
-                </p>
-                {/* <p
-              style={{
-                color: "#666",
-                marginBottom: "10px",
-              }}
-            >
-              Brand Name
-            </p> */}
-                <p
-                  style={{
-                    fontSize: "40px",
-                    color: "#212529",
-                    marginBottom: "0px",
-                  }}
-                >
-                  PKR: {product?.price}
-                </p>
-                <p
-                  style={{
-                    fontSize: "18px",
-                    fontFamily: "font-family: Ubuntu, sans-serif",
-                    color: "#666",
-                    marginBottom: "10px",
-                    marginTop: "10px",
-                  }}
-                >
-                  Category: {product?.category?.category}
-                </p>
-                <div className="d-flex justfy-content-evenly w-100 mt-4">
-                  <div className="w-100">
-                    Quantity:
-                    <span className=" quantityBtnContainer">
-                      <button onClick={handleDecrementQuantity}>-</button>
-                      <p className="d-inline px-4">
-                        {quantity}/ {product?.totalStockRemaining}
-                      </p>
-                      <button onClick={handleIncrementQuantity}>+</button>
+
+            {/* PRODUCT DETAILS */}
+            <Col md={6}>
+              <div className="h-100 d-flex flex-column justify-content-between">
+                <div>
+                  <h2 className="fw-bold">{product?.name}</h2>
+                  <p className="text-muted mb-1">
+                    Category: <strong>{product?.category?.name}</strong>
+                  </p>
+                  <h3 className="text-dark fw-semibold my-3">
+                    PKR {product?.price}
+                  </h3>
+
+                  <div className="d-flex align-items-center gap-3 my-3">
+                    <span className="fw-semibold">Quantity:</span>
+                    <ButtonGroup size="sm" className="rounded-pill border">
+                      <Button
+                        variant="light"
+                        onClick={handleDecrement}
+                        className="px-3"
+                      >
+                        <FiMinus />
+                      </Button>
+                      <Button variant="light" disabled className="px-4">
+                        {quantity}
+                      </Button>
+                      <Button
+                        variant="light"
+                        onClick={handleIncrement}
+                        className="px-3"
+                      >
+                        <FiPlus />
+                      </Button>
+                    </ButtonGroup>
+                    <span className="text-muted">
+                      / {product?.totalStockRemaining} in stock
                     </span>
-                    <button
-                      className="addToCartBtn"
-                      onClick={() => {
-                        navigate(`/${params?.id}/order/${quantity}`);
-                      }}
-                    >
-                      Place Order
-                    </button>
-                    <hr className="text-secondary my-4" />
                   </div>
+
+                  <Button
+                    onClick={() => navigate(`/${id}/order/${quantity}`)}
+                    className="w-100 mt-3 modern-order-btn"
+                    size="lg"
+                  >
+                    Place Order
+                  </Button>
                 </div>
-                <div className="d-flex  flex-column justify-content-center">
-                  <div className="availability">
-                    <h6 className="d-inline ">Availability: </h6>
-                    <span className="ms-3"> {product?.totalStock}</span>
-                  </div>
-                  {/* <div className="availability">
-                    <h6 className="d-inline ">Availability Colors: </h6>
-                    <span className="ms-3"> Values</span>
-                  </div>
-                  <div className="availability">
-                    <h6 className="d-inline ">Availability Size: </h6>
-                    <span className="ms-3"> Values</span>
-                  </div>
-                  <div className="availability">
-                    <h6 className="d-inline ">Promotion: </h6>
-                    <span className="ms-3"> Values</span>
-                  </div> */}
+
+                <hr className="my-4" />
+
+                <div>
+                  <h6 className="fw-semibold mb-1">Availability:</h6>
+                  <p className="text-muted">{product?.totalStock} units</p>
                 </div>
               </div>
             </Col>
           </Row>
 
-          <Row className="my-5">
+          {/* DESCRIPTION */}
+          <Row className="mt-5">
             <Col>
-              <hr className="text-secondary" />
-
-              <h5>Description</h5>
-              <p>{product?.description}</p>
+              <h5 className="fw-semibold mb-3">📝 Description</h5>
+              <p className="text-muted">{product?.description}</p>
             </Col>
           </Row>
+
+          <HomeFooter />
         </>
       )}
-      {/* <Row className="my-5">
-        <Col>
-          <RelatedProductsComponent
-            category={product?.category?.name}
-            dispatch={dispatch}
-          />
-        </Col>
-      </Row> */}
-      <HomeFooter />
     </Container>
   );
 };

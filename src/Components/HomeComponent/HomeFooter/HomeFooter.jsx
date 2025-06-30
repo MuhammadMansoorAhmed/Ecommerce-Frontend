@@ -1,7 +1,4 @@
-import { Container } from "react-bootstrap";
-import Col from "react-bootstrap/esm/Col";
-import Row from "react-bootstrap/esm/Row";
-import "./HomeFooter.css";
+import { Container, Row, Col } from "react-bootstrap";
 import {
   FaFacebook,
   FaInstagram,
@@ -9,81 +6,78 @@ import {
   FaTiktok,
   FaXTwitter,
 } from "react-icons/fa6";
+import "./HomeFooter.css";
 
 const HomeFooter = () => {
   return (
-    <Container className="border-top">
-      <Row>
-        <Col></Col>
-      </Row>
-      <Row className="d-flex justify-content-evenly py-4">
-        <Col sm={5} md={3} lg={3} xl={3}>
-          <ul className="footerLinkContainer">
-            <li className="footerFirstLinks">Account</li>
-            <li className="footerLinks">My Account</li>
-            <li className="footerLinks">Order Tracking</li>
-            <li className="footerLinks">Checkout</li>
-            <li className="footerLinks">Wishlist</li>
-          </ul>
-        </Col>
-        <Col sm={5} md={3} lg={3} xl={3}>
-          <ul className="footerLinkContainer">
-            <li className="footerFirstLinks">Quick Links</li>
-            <li className="footerLinks">About</li>
-            <li className="footerLinks">Blogs</li>
-            <li className="footerLinks">Contact</li>
-            <li className="footerLinks">FAQ</li>
-          </ul>
-        </Col>
-        <Col sm={5} md={3} lg={3} xl={3}>
-          <ul className="footerLinkContainer">
-            <li className="footerFirstLinks">Account</li>
-            <li className="footerLinks">My Account</li>
-            <li className="footerLinks">Order Tracking</li>
-            <li className="footerLinks">Checkout</li>
-            <li className="footerLinks">Wishlist</li>
-          </ul>
-        </Col>
-        <Col sm={5} md={3} lg={3} xl={3}>
-          <ul className="footerLinkContainer">
-            <li className="footerFirstLinks" style={{ fontSize: "24px" }}>
-              News Letter
-            </li>
+    <footer className="bg-light border-top pt-4 mt-5">
+      <Container>
+        <Row className="gy-4 justify-content-between">
+          {/* Column 1 */}
+          <Col xs={12} md={3}>
+            <h6 className="fw-semibold mb-3">Account</h6>
+            <ul className="list-unstyled text-muted small">
+              <li className="mb-1">My Account</li>
+              <li className="mb-1">Order Tracking</li>
+              <li className="mb-1">Checkout</li>
+              <li className="mb-1">Wishlist</li>
+            </ul>
+          </Col>
 
-            <li className="footerLinks">
-              <div
-                className="d-flex "
-                style={{ backgroundColor: "#66666620", borderRadius: "32px" }}
-              >
-                <input
-                  type="text"
-                  placeholder=""
-                  className="subscriptionInput"
-                />
-                <button className="emailSubBtn">Subscribe</button>
-              </div>
-            </li>
-            <li className="list-unstyledfooterLinks d-flex justify-content-center m-3">
-              <div className="footerSocialLinks m-1 footerLinks">
-                <FaInstagram size={25} />
-              </div>
-              <div className="footerSocialLinks m-1 footerLinks">
-                <FaFacebook size={25} />
-              </div>
-              <div className="footerSocialLinks m-1 footerLinks">
-                <FaXTwitter size={25} />
-              </div>
-              <div className="footerSocialLinks m-1 footerLinks">
-                <FaTiktok size={25} />
-              </div>
-              <div className="footerSocialLinks m-1 footerLinks">
-                <FaPinterest size={25} />
-              </div>
-            </li>
-          </ul>
-        </Col>
-      </Row>
-    </Container>
+          {/* Column 2 */}
+          <Col xs={12} md={3}>
+            <h6 className="fw-semibold mb-3">Quick Links</h6>
+            <ul className="list-unstyled text-muted small">
+              <li className="mb-1">About</li>
+              <li className="mb-1">Blogs</li>
+              <li className="mb-1">Contact</li>
+              <li className="mb-1">FAQ</li>
+            </ul>
+          </Col>
+
+          {/* Column 3 */}
+          <Col xs={12} md={3}>
+            <h6 className="fw-semibold mb-3">Support</h6>
+            <ul className="list-unstyled text-muted small">
+              <li className="mb-1">Shipping Policy</li>
+              <li className="mb-1">Return Policy</li>
+              <li className="mb-1">Privacy Policy</li>
+              <li className="mb-1">Terms of Service</li>
+            </ul>
+          </Col>
+
+          {/* Column 4 - Newsletter */}
+          <Col xs={12} md={3}>
+            <h6 className="fw-semibold mb-3">Subscribe</h6>
+            <div className="bg-white rounded-pill p-1 d-flex">
+              <input
+                type="email"
+                placeholder="Enter email"
+                className="form-control border-0 rounded-pill shadow-none ps-3"
+                style={{ fontSize: "0.9rem" }}
+              />
+              <button className="btn btn-dark btn-sm px-3 rounded-pill ms-2">
+                Subscribe
+              </button>
+            </div>
+
+            <div className="d-flex gap-3 mt-3 justify-content-start">
+              <FaInstagram className="footer-icon" />
+              <FaFacebook className="footer-icon" />
+              <FaXTwitter className="footer-icon" />
+              <FaTiktok className="footer-icon" />
+              <FaPinterest className="footer-icon" />
+            </div>
+          </Col>
+        </Row>
+
+        <hr className="my-3" />
+        <p className="text-center text-muted small mb-0">
+          &copy; {new Date().getFullYear()} Your Brand Name. All rights
+          reserved.
+        </p>
+      </Container>
+    </footer>
   );
 };
 
