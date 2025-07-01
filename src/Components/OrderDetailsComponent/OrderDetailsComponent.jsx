@@ -47,8 +47,8 @@ const OrderDetailsComponent = () => {
       .required("State is required")
       .max(20, "State must be at most 20 characters"),
     postalCode: Yup.string()
-      .required("Postal Code is required")
-      .length(6, "Postal Code must be exactly 6 characters"),
+      .required("Postal code is required")
+      .matches(/^[0-9]{5,6}$/, "Postal code must be 5 or 6 digits"),
     contactNumber: Yup.string()
       .required("Contact Number is required")
       .matches(

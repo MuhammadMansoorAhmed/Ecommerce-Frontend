@@ -13,7 +13,18 @@ import { toast } from "react-toastify";
 import TooltipWrapper from "../../TooltipWrapper";
 import "./BlurHashImageComponent.css";
 
-const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
+const BlurHashImageComponent = ({ product }) => {
+  const {
+    _id: productId,
+    images,
+    price,
+    discount,
+    discountedPrice,
+    name,
+  } = product;
+  const imgSrc = images?.[0]?.url || "";
+  const hash = images?.[0]?.blurHash || "";
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -77,15 +88,15 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
               height: "250px",
               objectFit: "cover",
               borderRadius: "6px",
-              display: imageLoaded ? "block" : "none",
             }}
           />
         )}
+
         {isLoggedIn && (
           <div
             className="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2"
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.85)",
+              backgroundColor: "rgba(255,255,255,0.85)",
               padding: "6px",
               borderRadius: "6px",
             }}
@@ -109,6 +120,23 @@ const BlurHashImageComponent = ({ imgSrc, hash, productId }) => {
               />
             </TooltipWrapper>
           </div>
+        )}
+      </div>
+
+      <div className="product-details text-center mt-2">
+        <h6 className="fw-semibold text-truncate" title={name}>
+          {name}
+        </h6>
+        {discount > 0 ? (
+          <div className="d-flex justify-content-center gap-2 align-items-center">
+            <span className="text-danger fw-bold">Rs {discountedPrice}</span>
+            <small className="text-muted text-decoration-line-through">
+              Rs {price}
+            </small>
+            <span className="badge bg-success">{discount}% off</span>
+          </div>
+        ) : (
+          <div className="fw-bold text-primary">Rs {price}</div>
         )}
       </div>
 

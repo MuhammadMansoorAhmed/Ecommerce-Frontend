@@ -1,5 +1,3 @@
-// Redesigned CategoryPageComponent — Clean Layout, Responsive Cards
-/* eslint-disable react/prop-types */
 import BlurHashImageComponent from "../HomeComponent/PopularProduct/BlurHashImageComponent";
 import Spinner from "react-bootstrap/Spinner";
 import { Col, Container, Row } from "react-bootstrap";
@@ -13,7 +11,6 @@ import {
 import {
   selectIsLoading,
   selectIsSuccess,
-  // selectIsError,
 } from "../../Redux/Features/productSlice";
 import { toast } from "react-toastify";
 
@@ -23,7 +20,6 @@ const CategoryPageComponent = () => {
   const [products, setProducts] = useState([]);
   const isLoading = useSelector(selectIsLoading);
   const isSuccess = useSelector(selectIsSuccess);
-  // const isError = useSelector(selectIsError);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -56,22 +52,8 @@ const CategoryPageComponent = () => {
         ) : isSuccess && products.length > 0 ? (
           products.map((product) => (
             <Col key={product._id} xs={12} sm={6} md={4} lg={3}>
-              <div className="border rounded-3 shadow-sm h-100 d-flex flex-column justify-content-between">
-                <div className="p-2" style={{ minHeight: "220px" }}>
-                  <BlurHashImageComponent
-                    hash={product?.images[0]?.blurHash}
-                    imgSrc={product?.images[0]?.url}
-                    productId={product?._id}
-                  />
-                </div>
-                <div className="p-3">
-                  <h6 className="fw-semibold mb-1 text-truncate">
-                    {product?.name}
-                  </h6>
-                  <p className="text-muted mb-1 small">
-                    Price: <strong>PKR:{product?.price}</strong>
-                  </p>
-                </div>
+              <div className="border rounded-3 shadow-sm h-100 d-flex flex-column justify-content-between p-2">
+                <BlurHashImageComponent product={product} />
               </div>
             </Col>
           ))

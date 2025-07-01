@@ -14,6 +14,8 @@ const AddProductForm = ({ closeForm }) => {
     category: "",
     price: "",
     totalStock: "",
+    discount: "",
+    discountedPrice: "",
     images: [],
   });
   const [errors, setErrors] = useState({});
@@ -62,13 +64,16 @@ const AddProductForm = ({ closeForm }) => {
     if (!formData.category) newErrors.category = "Category is required";
     if (!formData.price || formData.price <= 0)
       newErrors.price = "Price must be positive";
+    if (formData.discount && (formData.discount < 0 || formData.discount > 100))
+      newErrors.discount = "Discount must be between 0 and 100";
+    if (formData.discountedPrice && formData.discountedPrice <= 0)
+      newErrors.discountedPrice = "Discounted price must be positive";
     if (!formData.totalStock || formData.totalStock <= 0)
       newErrors.totalStock = "Total stock must be positive";
     if (!formData.images.length) newErrors.images = "Images are required";
     if (formData.images.length > 3)
       newErrors.images = "Maximum 3 images allowed";
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   };
 
@@ -102,6 +107,8 @@ const AddProductForm = ({ closeForm }) => {
       data.append("price", formData.price);
       data.append("sku", formData.sku);
       data.append("totalStock", formData.totalStock);
+      data.append("discount", formData.discount || 0);
+      data.append("discountedPrice", formData.discountedPrice || 0);
       formData.images.forEach((file) => data.append("images", file));
       await dispatch(addProduct(data));
       alert("Product added successfully");
@@ -179,6 +186,37 @@ const AddProductForm = ({ closeForm }) => {
           onChange={handleChange}
         />
         {errors.price && <div className="error">{errors.price}</div>}
+      </div>
+
+      {/* Discount (%) */}
+      <div className="w-100">
+        <label>Discount (%)</label>
+        <input
+          className="inputFields"
+          name="discount"
+          type="number"
+          min="0"
+          max="100"
+          value={formData.discount}
+          onChange={handleChange}
+        />
+        {errors.discount && <div className="error">{errors.discount}</div>}
+      </div>
+
+      {/* Discounted Price */}
+      <div className="w-100">
+        <label>Discounted Price</label>
+        <input
+          className="inputFields"
+          name="discountedPrice"
+          type="number"
+          min="0"
+          value={formData.discountedPrice}
+          onChange={handleChange}
+        />
+        {errors.discountedPrice && (
+          <div className="error">{errors.discountedPrice}</div>
+        )}
       </div>
 
       {/* Total Stock */}
