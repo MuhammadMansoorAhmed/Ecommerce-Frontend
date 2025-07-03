@@ -1,33 +1,32 @@
-.inputFields{
-    background-color: rgb(31, 58, 66);
-    padding: 3px;
-    outline: none;
-    border-radius: 4px;
-    width: 100%;
-    border: none;
-    color: #fff;
-    transition: border-color 0.3s ease;
-}
-
-.inputFields:focus{
-    border: 2px solid rgb(56, 106, 121);
-    transition: border-color 0.3s ease;
-}
-
-.addProductBtn{
-    
-    color: #53a1f5e0;
-}
-
-.error{
-    color: #f55353e0;
-}
-
-.closeBtn{
-    color: #53a1f5e0;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-.closeBtn:hover{
-    color: #fff;
-}
+.form-container {
+    background-color: #696969;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    max-width: 700px;
+    margin: auto;
+    color: #f1f1f1;
+  }
+  .form-control,
+  .form-select {
+    background-color: #696969;
+    border: 1px solid #444;
+    color: #f1f1f1;
+    transition: 0.3s;
+  }
+  
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #7171f7;
+    box-shadow: 0 0 0 0.2rem rgba(92, 106, 196, 0.25);
+    background-color: #696969;
+    color: #f1f1f1;
+  }
+  h4 {
+    color: #f1f1f1;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #444;
+    padding-bottom: 0.5rem;
+  }
+      

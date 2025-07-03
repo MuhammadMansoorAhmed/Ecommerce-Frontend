@@ -1,18 +1,25 @@
 import { useEffect, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import Spinner from "react-bootstrap/Spinner";
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Button,
+  Modal,
+  Spinner,
+} from "react-bootstrap";
 import {
   MdOutlineVisibility,
   MdOutlineVisibilityOff,
   MdOutlineDeleteOutline,
 } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteProduct,
   getAllProducts,
 } from "../../Redux/Services/productServices";
 import { selectIsLoading } from "../../Redux/Features/productSlice";
-import { FaRegEdit } from "react-icons/fa";
 import AddProductForm from "./AddProductForm";
 import UpdateProductForm from "./updateProductForm";
 
@@ -37,7 +44,7 @@ const ManageProductsComponent = () => {
 
   const handleShow = (id) => {
     setSelectedProductId(id);
-    setShow(!show);
+    setShow(true);
   };
 
   const handleVisibilityClick = () => {
@@ -47,21 +54,18 @@ const ManageProductsComponent = () => {
   const handleEditProduct = (product) => {
     setProductItem(product);
     setEditProductForm(true);
-    setAddProductForm(false); // Close add form if open
+    setAddProductForm(false);
   };
 
   const handleDeleteProduct = async () => {
-
     if (!selectedProductId) return;
     try {
       const result = await dispatch(deleteProduct(selectedProductId));
       if (result.payload.success) {
-        setProducts((prevProducts) =>
-          prevProducts.filter((product) => product._id !== selectedProductId)
+        setProducts((prev) =>
+          prev.filter((product) => product._id !== selectedProductId)
         );
-        setShow(false); // Close modal after successful deletion
-      } else {
-        console.error("Failed to delete product");
+        setShow(false);
       }
     } catch (error) {
       console.error("Error deleting product", error);
@@ -69,50 +73,31 @@ const ManageProductsComponent = () => {
   };
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        overflow: "auto",
-        paddingBottom: "12px",
-        paddingRight: "0px",
-        backgroundColor: "#212529",
-      }}
+    <Container
+      fluid
+      className="bg-dark text-white py-4 px-3"
+      style={{ minHeight: "100vh" }}
     >
-      {show ? (
-        <>
-          <Modal show={show} onHide={() => setShow(false)} variant="dark">
-            <Modal.Header
-              className=""
-              closeButton
-              style={{
-                backgroundColor: "#1C4240",
-                borderRadius: "0px 0px 0px 0px",
-              }}
-            >
-              <Modal.Title className="text-warning">Warning</Modal.Title>
-            </Modal.Header>
-            <Modal.Body
-              className="text-white"
-              style={{ backgroundColor: "#1C4240" }}
-            >
-              Are you sure you want to delete this product
-            </Modal.Body>
-            <Modal.Footer
-              style={{
-                backgroundColor: "#1C4240",
-                borderRadius: "0px 0px 0px 0px",
-              }}
-            >
-              <Button variant="secondary" onClick={() => setShow(false)}>
-                Close
-              </Button>
-              <Button variant="danger" onClick={handleDeleteProduct}>
-                Delete Product
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </>
-      ) : addProductForm ? (
+      {show && (
+        <Modal show onHide={() => setShow(false)} centered>
+          <Modal.Header closeButton className="bg-dark text-white">
+            <Modal.Title>Warning</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="bg-dark text-white">
+            Are you sure you want to delete this product?
+          </Modal.Body>
+          <Modal.Footer className="bg-dark">
+            <Button variant="secondary" onClick={() => setShow(false)}>
+              Close
+            </Button>
+            <Button variant="danger" onClick={handleDeleteProduct}>
+              Delete Product
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
+
+      {addProductForm ? (
         <AddProductForm closeForm={() => setAddProductForm(false)} />
       ) : editProductForm ? (
         <UpdateProductForm
@@ -121,90 +106,95 @@ const ManageProductsComponent = () => {
         />
       ) : (
         <>
-          <h2 className="text-center mt-3 mb-4 border-bottom pb-2">
-            Product Management
-          </h2>
+          <Row className="mb-4">
+            <Col>
+              <h2 className="text-center border-bottom pb-2">
+                Product Management
+              </h2>
+            </Col>
+          </Row>
 
-          <div className="d-flex justify-content-end my-3 mx-2 ">
-            <Button
-              style={{ borderRadius: "8px" }}
-              varient="primary"
-              onClick={() => setAddProductForm(true)}
-            >
-              Add Product
-            </Button>
-          </div>
+          <Row className="mb-3">
+            <Col className="text-end">
+              <Button variant="primary" onClick={() => setAddProductForm(true)}>
+                Add Product
+              </Button>
+            </Col>
+          </Row>
 
-          <table className="tableLayout ">
-            <thead>
-              <tr>
-                <th className="border border-white p-1">Name</th>
-                <th className="border border-white p-1">Category</th>
-                <th className="border border-white p-1">Price</th>
-                <th className="border border-white p-1">Stock Status</th>
-                <th className="border border-white p-1">Options</th>
-              </tr>
-            </thead>
-            <tbody>
-              {!isLoading ? (
-                Array.isArray(products) && products.length > 0 ? (
-                  products?.map((product) => (
-                    <tr key={product._id}>
-                      <td className="border border-white p-1">
-                        {product?.name}
-                      </td>
-                      <td className="border border-white p-1">
-                        {product?.categoryInfo?.name}
-                      </td>
-                      <td className="border border-white p-1">
-                        PKR: {product?.price}
-                      </td>
-                      <td className="border border-white p-1">
-                        {product?.inStock ? "YES" : "NO"}
-                      </td>
-
-                      <td className="border border-white p-1 ">
-                        {visibility ? (
-                          <MdOutlineVisibility
-                            size={20}
-                            style={{ color: "white", cursor: "pointer" }}
-                            onClick={handleVisibilityClick}
-                          />
-                        ) : (
-                          <MdOutlineVisibilityOff
-                            size={20}
-                            style={{ color: "#888", cursor: "pointer" }}
-                            onClick={handleVisibilityClick}
-                          />
-                        )}
-                        <MdOutlineDeleteOutline
-                          size={20}
-                          style={{ color: "lightCoral", cursor: "pointer" }}
-                          onClick={() => {
-                            handleShow(product._id);
-                          }}
-                        />
-                        <FaRegEdit
-                          size={20}
-                          style={{ color: "seaGreen", cursor: "pointer" }}
-                          onClick={() => handleEditProduct(product)}
-                        />
+          <Row>
+            <Col>
+              <Table bordered hover variant="dark" responsive>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock Status</th>
+                    <th>Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {!isLoading ? (
+                    Array.isArray(products) && products.length > 0 ? (
+                      products.map((product) => (
+                        <tr key={product._id}>
+                          <td>{product?.name}</td>
+                          <td>{product?.categoryInfo?.name}</td>
+                          <td>PKR: {product?.price}</td>
+                          <td>{product?.inStock ? "YES" : "NO"}</td>
+                          <td>
+                            {visibility ? (
+                              <MdOutlineVisibility
+                                size={20}
+                                className="text-white me-2"
+                                style={{ cursor: "pointer" }}
+                                onClick={handleVisibilityClick}
+                              />
+                            ) : (
+                              <MdOutlineVisibilityOff
+                                size={20}
+                                className="text-secondary me-2"
+                                style={{ cursor: "pointer" }}
+                                onClick={handleVisibilityClick}
+                              />
+                            )}
+                            <MdOutlineDeleteOutline
+                              size={20}
+                              className="text-danger me-2"
+                              style={{ cursor: "pointer" }}
+                              onClick={() => handleShow(product._id)}
+                            />
+                            <FaRegEdit
+                              size={20}
+                              className="text-success"
+                              style={{ cursor: "pointer" }}
+                              onClick={() => handleEditProduct(product)}
+                            />
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="5" className="text-center">
+                          No products found.
+                        </td>
+                      </tr>
+                    )
+                  ) : (
+                    <tr>
+                      <td colSpan="5" className="text-center">
+                        <Spinner animation="border" variant="light" />
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <p>No Poduct found</p>
-                )
-              ) : (
-                <div className="d-flex justify-content-center p-1">
-                  <Spinner animation="grow" />
-                </div>
-              )}
-            </tbody>
-          </table>
+                  )}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
         </>
       )}
-    </div>
+    </Container>
   );
 };
 

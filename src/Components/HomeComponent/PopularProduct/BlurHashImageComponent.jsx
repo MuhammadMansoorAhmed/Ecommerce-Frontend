@@ -21,7 +21,9 @@ const BlurHashImageComponent = ({ product }) => {
     discount,
     discountedPrice,
     name,
+    colors = [],
   } = product;
+
   const imgSrc = images?.[0]?.url || "";
   const hash = images?.[0]?.blurHash || "";
 
@@ -33,6 +35,13 @@ const BlurHashImageComponent = ({ product }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    const getLogInStatus = localStorage.getItem("isLoggedIn");
+    if (getLogInStatus === "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  useEffect(() => {
     const getUserCartProducts = async () => {
       if (isLoggedIn) {
         const response = await dispatch(getAllCartItemsByUserId());
@@ -41,13 +50,6 @@ const BlurHashImageComponent = ({ product }) => {
     };
     getUserCartProducts();
   }, [dispatch, isLoggedIn]);
-
-  useEffect(() => {
-    const getLogInStatus = localStorage.getItem("isLoggedIn");
-    if (getLogInStatus === "true") {
-      setIsLoggedIn(true);
-    }
-  }, []);
 
   useEffect(() => {
     const img = new Image();
@@ -127,6 +129,7 @@ const BlurHashImageComponent = ({ product }) => {
         <h6 className="fw-semibold text-truncate" title={name}>
           {name}
         </h6>
+
         {discount > 0 ? (
           <div className="d-flex justify-content-center gap-2 align-items-center">
             <span className="text-danger fw-bold">Rs {discountedPrice}</span>
@@ -137,6 +140,25 @@ const BlurHashImageComponent = ({ product }) => {
           </div>
         ) : (
           <div className="fw-bold text-primary">Rs {price}</div>
+        )}
+
+        {/* Color Circles */}
+        {colors.length > 0 && (
+          <div className="d-flex justify-content-center gap-2 mt-2 flex-wrap">
+            {colors.map((color, index) => (
+              <span
+                key={index}
+                style={{
+                  width: "18px",
+                  height: "18px",
+                  backgroundColor: color, // ✅ This shows the actual color
+                  borderRadius: "50%",
+                  border: "1px solid #ddd",
+                }}
+                title={color} // Optional: shows color code on hover
+              />
+            ))}
+          </div>
         )}
       </div>
 

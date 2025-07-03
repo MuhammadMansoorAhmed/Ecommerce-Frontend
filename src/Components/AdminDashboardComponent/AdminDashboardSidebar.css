@@ -1,54 +1,44 @@
-.adminAidebarContent {
-  position: fixed;
-  padding-top: 10px;
-  top: 0;
-  left: 0;
-  height: 100%;
-  color: #fff;
-  z-index: 2;
-  background-color: white;
-  transition: all 0.4s;
-  overflow: auto;
-}
-.adminMainDashboard {
-  padding-left: 280px;
-  z-index: 0;
-  background-color: #fff;
-  width: 100dvw;
-  height: 100%;
-  transition: all 0.4s;
-}
+/* AdminDashboardSidebar.css */
 
-.adminDashboardSidebarItem{
-    text-decoration: none;
-    padding-inline: 12px;
-    color: "#fff";
-    cursor: pointer;
-    transition: all .3s;
-}
-.adminDashboardSidebarItem:hover{
-    color: #889FA5  ;
-}
-.adminDashboardSidebarSubitems{
-    text-decoration: none;
-    padding-inline: 16px;
-    /* color: "#fff"; */
-    cursor: pointer;
-    transition: all .3s;
-}
-/* .dashboardSidebarSubitem > *{
-    color: "#fff";
-} */
-.adminDashboardSidebarSubitems:hover{
-    color: #889FA5;
-}
-.hoverEffect{
-    padding-top: 6px ;
-    padding-bottom: 6px ;
-    transition: all .2s;
-}
-
-.hoverEffect:hover{
-     padding-top: 12px ;
-    padding-bottom: 12px ;
-}
+.list-group-item {
+    transition: all 0.3s ease;
+    border-radius: 4px;
+  }
+  
+  .list-group-item:hover {
+    background-color: #343a40 !important; /* dark gray */
+    transform: translateX(4px);
+    color: #00d1ff !important;
+  }
+  
+  .list-group-item.active {
+    background-color: #495057 !important;
+    font-weight: bold;
+    color: #ffffff !important;
+  }
+  
+  .dashboard-header {
+    transition: all 0.2s ease;
+  }
+  
+  .dashboard-header:hover {
+    color: #00d1ff;
+    transform: scale(1.02);
+  }
+  
+  .subitem-animate {
+    animation: fadeInSlide 0.4s ease forwards;
+    opacity: 0;
+  }
+  
+  @keyframes fadeInSlide {
+    0% {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  

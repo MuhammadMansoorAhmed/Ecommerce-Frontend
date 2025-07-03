@@ -4,6 +4,7 @@ import { BsXCircle } from "react-icons/bs";
 import { addProduct } from "../../Redux/Services/productServices";
 import { getAllCategories } from "../../Redux/Services/categoryServices";
 import { useEffect, useState } from "react";
+import { Form, Button, Row, Col, FloatingLabel, Alert } from "react-bootstrap";
 import "./form.css";
 
 const AddProductForm = ({ closeForm }) => {
@@ -17,7 +18,9 @@ const AddProductForm = ({ closeForm }) => {
     discount: "",
     discountedPrice: "",
     images: [],
+    colors: [],
   });
+
   const [errors, setErrors] = useState({});
   const [categories, setCategories] = useState([]);
   const dispatch = useDispatch();
@@ -32,18 +35,6 @@ const AddProductForm = ({ closeForm }) => {
     fetchCategories();
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (selectedCategory) {
-  //     const fetchSubCategories = async () => {
-  //       const response = await dispatch(getAllSubCategories(selectedCategory));
-  //       if (response.payload && response.payload.data) {
-  //         setSubCategories(response.payload.data);
-  //       }
-  //     };
-  //     fetchSubCategories();
-  //   }
-  // }, [dispatch, selectedCategory]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -56,23 +47,68 @@ const AddProductForm = ({ closeForm }) => {
     }));
   };
 
+  useEffect(() => {
+    const price = parseFloat(formData.price);
+    const discount = parseFloat(formData.discount);
+
+    // If discount is empty or not a number, clear the discountedPrice
+    if (
+      formData.discount === "" ||
+      isNaN(discount) ||
+      discount < 0 ||
+      discount > 100
+    ) {
+      setFormData((prev) => ({ ...prev, discountedPrice: "" }));
+      return;
+    }
+
+    // Only update if price is valid too
+    if (!isNaN(price) && price > 0) {
+      const discounted = price - (price * discount) / 100;
+      setFormData((prev) => ({
+        ...prev,
+        discountedPrice: discounted.toFixed(2),
+      }));
+    }
+  }, [formData.price, formData.discount]);
+
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name) newErrors.name = "Product name is required";
+    else if (formData.name.length > 100)
+      newErrors.name = "Name can't exceed 100 characters";
+
     if (!formData.description)
       newErrors.description = "Description is required";
+    else if (formData.description.length > 500)
+      newErrors.description = "Description can't exceed 500 characters";
+
     if (!formData.category) newErrors.category = "Category is required";
+
     if (!formData.price || formData.price <= 0)
       newErrors.price = "Price must be positive";
+
     if (formData.discount && (formData.discount < 0 || formData.discount > 100))
       newErrors.discount = "Discount must be between 0 and 100";
-    if (formData.discountedPrice && formData.discountedPrice <= 0)
+
+    if (formData.discountedPrice <= 0)
       newErrors.discountedPrice = "Discounted price must be positive";
+
     if (!formData.totalStock || formData.totalStock <= 0)
       newErrors.totalStock = "Total stock must be positive";
+
     if (!formData.images.length) newErrors.images = "Images are required";
     if (formData.images.length > 3)
       newErrors.images = "Maximum 3 images allowed";
+
+    if (
+      !formData.colors ||
+      formData.colors.length === 0 ||
+      formData.colors.every((c) => c.trim() === "")
+    ) {
+      newErrors.colors = "At least one color is required";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -90,8 +126,7 @@ const AddProductForm = ({ closeForm }) => {
       .toString()
       .padStart(length, "0");
 
-    const sku = `${nameInitials}-${categoryInitials}-${randomNumber}`;
-    return sku;
+    return `${nameInitials}-${categoryInitials}-${randomNumber}`;
   }
 
   const handleSubmit = async (e) => {
@@ -109,152 +144,238 @@ const AddProductForm = ({ closeForm }) => {
       data.append("totalStock", formData.totalStock);
       data.append("discount", formData.discount || 0);
       data.append("discountedPrice", formData.discountedPrice || 0);
+      formData.colors.forEach((color) => {
+        data.append("colors", color);
+      });
       formData.images.forEach((file) => data.append("images", file));
+
       await dispatch(addProduct(data));
       alert("Product added successfully");
     } catch (error) {
-      console.log("error while adding new product", error);
+      console.log("Error while adding product", error);
     }
   };
 
   return (
-    <form
+    <Form
       onSubmit={handleSubmit}
-      className="d-flex justify-content-center flex-column w-100 p-4"
+      className="bg-dark text-white p-4 rounded shadow"
     >
-      <div className="d-flex justify-content-between w-100">
+      <div className="d-flex justify-content-between align-items-center mb-3">
         <h4>Add New Product</h4>
-        <BsXCircle size={20} onClick={closeForm} className="closeBtn" />
+        <BsXCircle
+          size={24}
+          className="text-danger"
+          onClick={closeForm}
+          style={{ cursor: "pointer" }}
+        />
       </div>
 
-      {/* Product Name */}
-      <div className="w-100">
-        <label>Product Name</label>
-        <input
-          className="inputFields"
-          name="name"
-          type="text"
-          value={formData.name}
-          onChange={handleChange}
-        />
-        {errors.name && <div className="error">{errors.name}</div>}
-      </div>
+      {/* Name & Category */}
+      <Row className="mb-3">
+        <Col>
+          <FloatingLabel label="Product Name" className="text-white ">
+            <Form.Control
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Product Name"
+              style={{ backgroundColor: "#696969", color: "#f1f1f1" }}
+            />
+          </FloatingLabel>
+          {errors.name && (
+            <Alert variant="danger" className="mt-1 py-1">
+              {errors.name}
+            </Alert>
+          )}
+        </Col>
+        <Col>
+          <FloatingLabel label="Category" className="text-white ">
+            <Form.Select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+            >
+              <option value=""></option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
+                </option>
+              ))}
+            </Form.Select>
+          </FloatingLabel>
+          {errors.category && (
+            <Alert variant="danger" className="mt-1 py-1">
+              {errors.category}
+            </Alert>
+          )}
+        </Col>
+      </Row>
 
       {/* Description */}
-      <div className="w-100">
-        <label>Description</label>
-        <textarea
-          className="inputFields"
+      <FloatingLabel label="Description" className="text-white mb-3">
+        <Form.Control
+          as="textarea"
           name="description"
           value={formData.description}
           onChange={handleChange}
+          style={{ height: "100px" }}
         />
-        {errors.description && (
-          <div className="error">{errors.description}</div>
-        )}
-      </div>
+      </FloatingLabel>
+      {errors.description && (
+        <Alert variant="danger" className="mb-3 py-1">
+          {errors.description}
+        </Alert>
+      )}
 
-      {/* Category */}
-      <div className="w-100">
-        <label>Category</label>
-        <select
-          name="category"
-          className="inputFields"
-          value={formData.category}
-          onChange={handleChange}
-        >
-          <option value="" disabled selected>
-            Select a category
-          </option>
-          {categories.map((category) => (
-            <option key={category._id} value={category._id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-        {errors.category && <div className="error">{errors.category}</div>}
-      </div>
+      {/* Price, Stock */}
+      <Row className="mb-3">
+        <Col>
+          <FloatingLabel label="Price" className="text-white">
+            <Form.Control
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              style={{ backgroundColor: "#696969", color: "#f1f1f1" }}
+            />
+          </FloatingLabel>
+          {errors.price && (
+            <Alert variant="danger" className="mt-1 py-1">
+              {errors.price}
+            </Alert>
+          )}
+        </Col>
+        <Col>
+          <FloatingLabel label="Total Stock" className="text-white">
+            <Form.Control
+              type="number"
+              name="totalStock"
+              value={formData.totalStock}
+              onChange={handleChange}
+            />
+          </FloatingLabel>
+          {errors.totalStock && (
+            <Alert variant="danger" className="mt-1 py-1">
+              {errors.totalStock}
+            </Alert>
+          )}
+        </Col>
+      </Row>
 
-      {/* Price */}
-      <div className="w-100">
-        <label>Price</label>
-        <input
-          className="inputFields"
-          name="price"
-          type="number"
-          value={formData.price}
-          onChange={handleChange}
-        />
-        {errors.price && <div className="error">{errors.price}</div>}
-      </div>
-
-      {/* Discount (%) */}
-      <div className="w-100">
-        <label>Discount (%)</label>
-        <input
-          className="inputFields"
-          name="discount"
-          type="number"
-          min="0"
-          max="100"
-          value={formData.discount}
-          onChange={handleChange}
-        />
-        {errors.discount && <div className="error">{errors.discount}</div>}
-      </div>
-
-      {/* Discounted Price */}
-      <div className="w-100">
-        <label>Discounted Price</label>
-        <input
-          className="inputFields"
-          name="discountedPrice"
-          type="number"
-          min="0"
-          value={formData.discountedPrice}
-          onChange={handleChange}
-        />
-        {errors.discountedPrice && (
-          <div className="error">{errors.discountedPrice}</div>
-        )}
-      </div>
-
-      {/* Total Stock */}
-      <div className="w-100">
-        <label>Total Stock</label>
-        <input
-          className="inputFields"
-          name="totalStock"
-          type="number"
-          value={formData.totalStock}
-          onChange={handleChange}
-        />
-        {errors.totalStock && <div className="error">{errors.totalStock}</div>}
-      </div>
+      {/* Discount */}
+      <Row className="mb-3">
+        <Col>
+          <FloatingLabel label="Discount (%)" className="text-white">
+            <Form.Control
+              type="number"
+              name="discount"
+              value={formData.discount}
+              onChange={handleChange}
+            />
+          </FloatingLabel>
+          {errors.discount && (
+            <Alert variant="danger" className="mt-1 py-1">
+              {errors.discount}
+            </Alert>
+          )}
+        </Col>
+        <Col>
+          <FloatingLabel label="Discounted Price" className="text-white">
+            <Form.Control
+              type="number"
+              readOnly
+              name="discountedPrice"
+              value={formData.discountedPrice}
+              placeholder="Auto-calculated"
+              style={{ backgroundColor: "#696969", color: "#f1f1f1" }}
+            />
+          </FloatingLabel>
+          {errors.discountedPrice && (
+            <Alert variant="danger" className="mt-1 py-1">
+              {errors.discountedPrice}
+            </Alert>
+          )}
+        </Col>
+      </Row>
 
       {/* Images */}
-      <div className="w-100">
-        <label>Images (Max 3)</label>
-        <input
-          className="inputFields my-3 p-2"
-          name="images"
+      <Form.Group className="mb-3">
+        <Form.Label>Images (Max 3)</Form.Label>
+        <Form.Control
           type="file"
+          name="images"
           multiple
           onChange={handleFileChange}
         />
-        {errors.images && <div className="error">{errors.images}</div>}
-      </div>
+        {errors.images && (
+          <Alert variant="danger" className="mt-1 py-1">
+            {errors.images}
+          </Alert>
+        )}
+      </Form.Group>
 
-      {/* Submit Button */}
-      <button
-        type="submit"
-        className="btn addProductBtn"
-        style={{ backgroundColor: "#1F3A56" }}
-        // onClick={handleSubmit}
-      >
+      {/* Colors */}
+      <Form.Group className="mb-3">
+        <Form.Label className="text-white">Colors</Form.Label>
+        {formData.colors.map((color, index) => (
+          <div key={index} className="d-flex align-items-center gap-2 mb-2">
+            <Form.Control
+              type="color"
+              value={color}
+              onChange={(e) => {
+                const newColors = [...formData.colors];
+                // ensure it's always in hex format (though input gives it in hash format already)
+                const hex = e.target.value.toLowerCase(); // already in #xxxxxx
+                newColors[index] = hex;
+                setFormData((prev) => ({ ...prev, colors: newColors }));
+              }}
+              style={{
+                width: "60px",
+                height: "40px",
+                padding: 0,
+                border: "none",
+              }}
+            />
+            <Button
+              variant="outline-danger"
+              size="sm"
+              onClick={() => {
+                const newColors = formData.colors.filter((_, i) => i !== index);
+                setFormData((prev) => ({ ...prev, colors: newColors }));
+              }}
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
+
+        <Button
+          variant="outline-light"
+          size="sm"
+          onClick={() =>
+            setFormData((prev) => ({
+              ...prev,
+              colors: [...prev.colors, "#000000"], // default color added in hash
+            }))
+          }
+        >
+          Add Color
+        </Button>
+      </Form.Group>
+
+      {errors.colors && (
+        <Alert variant="danger" className="mb-3 py-1">
+          {errors.colors}
+        </Alert>
+      )}
+
+      {/* Submit */}
+      <Button type="submit" variant="secondary" className="mt-3 w-100">
         Add Product
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 };
 
