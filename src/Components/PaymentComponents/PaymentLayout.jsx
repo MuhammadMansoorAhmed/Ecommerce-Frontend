@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { BsShieldLockFill } from "react-icons/bs";
 import { FaCcVisa, FaCcMastercard, FaCcAmex, FaPaypal } from "react-icons/fa";
 import "./PaymentLayout.css";
+import { toast } from "react-toastify";
 
 const PaymentLayout = () => {
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -54,7 +55,7 @@ const PaymentLayout = () => {
       ...(paymentMethod === "card" ? cardDetails : {}),
     };
     console.log("Sending payment data:", payload);
-    alert("✅ Payment processed successfully (mock)!");
+    toast.success("✅ Payment processed successfully (mock)!");
   };
 
   return (

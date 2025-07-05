@@ -1,13 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Col,
-  Container,
-  Form,
-  FormGroup,
-  Row,
-  Toast,
-  Button,
-} from "react-bootstrap";
+import { Col, Container, Form, FormGroup, Row, Button } from "react-bootstrap";
 import { addOrder } from "../../Redux/Services/orderServices";
 import {
   selectIsError,
@@ -16,14 +8,13 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
 import "./OrderDetailsComponent.css";
+import { toast } from "react-toastify";
 
 const OrderDetailsComponent = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const isError = useSelector(selectIsError);
-  const [showToast, setShowToast] = useState(false);
 
   const { productId, quantity } = useParams();
 
@@ -60,14 +51,13 @@ const OrderDetailsComponent = () => {
       .required("Email is required"),
   });
 
-
   const handleOrderSubmit = async (values) => {
     values.quantity = quantity;
     const response = await dispatch(
       addOrder({ formData: values, productId: productId })
     );
     if (response.meta.requestStatus === "fulfilled") {
-      setShowToast(true);
+      toast.success("Order Placed Successfully");
     }
   };
 
@@ -231,7 +221,9 @@ const OrderDetailsComponent = () => {
                         value={values.contactNumber}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        isInvalid={touched.contactNumber && errors.contactNumber}
+                        isInvalid={
+                          touched.contactNumber && errors.contactNumber
+                        }
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.contactNumber}
@@ -279,18 +271,6 @@ const OrderDetailsComponent = () => {
           {/* You can display order summary or product card preview here */}
         </Col>
       </Row>
-
-      <Toast
-        onClose={() => setShowToast(false)}
-        show={showToast}
-        delay={3000}
-        autohide
-        style={{ position: "fixed", bottom: 20, right: 20 }}
-      >
-        <Toast.Body className="text-success fw-semibold">
-          Order placed successfully!
-        </Toast.Body>
-      </Toast>
     </Container>
   );
 };

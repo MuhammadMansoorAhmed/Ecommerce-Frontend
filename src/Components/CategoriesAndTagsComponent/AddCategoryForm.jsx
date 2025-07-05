@@ -7,6 +7,7 @@ import {
   addCategory,
   getAllCategories,
 } from "../../Redux/Services/categoryServices";
+import { toast } from "react-toastify";
 
 const AddCategoryForm = ({ closeForm, setCategories }) => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const AddCategoryForm = ({ closeForm, setCategories }) => {
   const handleSubmit = async (values, { setSubmitting }) => {
     const result = await dispatch(addCategory(values));
     if (result.payload.success) {
-      alert("Category added successfully");
+      toast.success("Category added successfully");
       const reFetchCategories = await dispatch(getAllCategories());
       if (reFetchCategories.meta.requestStatus === "fulfilled") {
         setCategories(reFetchCategories.payload.data);

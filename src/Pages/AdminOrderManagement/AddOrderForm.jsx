@@ -4,50 +4,49 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { BsXCircle } from "react-icons/bs";
 import { addOrder } from "../../Redux/Services/orderServices";
-
+import { toast } from "react-toastify";
 
 const AddOrderForm = ({ closeForm }) => {
   const dispatch = useDispatch();
-  
 
   const validationSchema = Yup.object({
-  firstName: Yup.string()
-    .required("First name is required")
-    .max(16, "First name must be at most 16 characters"),
-  lastName: Yup.string()
-    .required("Last name is required")
-    .max(16, "Last name must be at most 16 characters"),
-  email: Yup.string()
-    .email("Invalid email format")
-    .required("Email is required"),
-  address: Yup.string()
-    .required("Address is required")
-    .max(80, "Address must be at most 80 characters"),
-  country: Yup.string()
-    .required("Country is required")
-    .max(24, "Country name must be at most 24 characters"),
-  state: Yup.string()
-    .required("State is required")
-    .max(20, "State must be at most 20 characters"),
-  city: Yup.string()
-    .required("City is required")
-    .max(16, "City must be at most 16 characters"),
-  postalCode: Yup.string()
-    .required("Postal code is required")
-    .matches(/^[0-9]{5,6}$/, "Postal code must be 5 or 6 digits"),
-  contactNumber: Yup.string()
-    .required("Contact number is required")
-    .matches(
-      /^03[0-9]{9}$/,
-      "Contact number must be a valid Pakistani number (e.g., 03123456789)"
-    ),
-});
+    firstName: Yup.string()
+      .required("First name is required")
+      .max(16, "First name must be at most 16 characters"),
+    lastName: Yup.string()
+      .required("Last name is required")
+      .max(16, "Last name must be at most 16 characters"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    address: Yup.string()
+      .required("Address is required")
+      .max(80, "Address must be at most 80 characters"),
+    country: Yup.string()
+      .required("Country is required")
+      .max(24, "Country name must be at most 24 characters"),
+    state: Yup.string()
+      .required("State is required")
+      .max(20, "State must be at most 20 characters"),
+    city: Yup.string()
+      .required("City is required")
+      .max(16, "City must be at most 16 characters"),
+    postalCode: Yup.string()
+      .required("Postal code is required")
+      .matches(/^[0-9]{5,6}$/, "Postal code must be 5 or 6 digits"),
+    contactNumber: Yup.string()
+      .required("Contact number is required")
+      .matches(
+        /^03[0-9]{9}$/,
+        "Contact number must be a valid Pakistani number (e.g., 03123456789)"
+      ),
+  });
   // Submit handler
   const handleSubmit = async (values, { setSubmitting }) => {
     console.log(values);
     const result = await dispatch(addOrder(values));
     if (result.payload.success) {
-      alert("Order added successfully");
+      toast.success("Order added successfully");
     }
     setSubmitting(false);
   };

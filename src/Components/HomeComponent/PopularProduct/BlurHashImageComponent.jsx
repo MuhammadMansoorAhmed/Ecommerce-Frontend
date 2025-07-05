@@ -23,6 +23,7 @@ const BlurHashImageComponent = ({ product }) => {
     name,
     colors = [],
   } = product;
+  console.log(product);
 
   const imgSrc = images?.[0]?.url || "";
   const hash = images?.[0]?.blurHash || "";
@@ -126,36 +127,39 @@ const BlurHashImageComponent = ({ product }) => {
       </div>
 
       <div className="product-details text-center mt-2">
-        <h6 className="fw-semibold text-truncate" title={name}>
+        <h6
+          className="fw-semibold text-truncate border-bottom pb-1"
+          title={name}
+        >
           {name}
         </h6>
 
         {discount > 0 ? (
-          <div className="d-flex justify-content-center gap-2 align-items-center">
-            <span className="text-danger fw-bold">Rs {discountedPrice}</span>
-            <small className="text-muted text-decoration-line-through">
+          <div className="d-flex mx-1 gap-2 align-items-center">
+            <span className="text-success fw-bold">Rs {discountedPrice}</span>
+            <small className="text-danger text-decoration-line-through">
               Rs {price}
             </small>
             <span className="badge bg-success">{discount}% off</span>
           </div>
         ) : (
-          <div className="fw-bold text-primary">Rs {price}</div>
+          <div className="fw-bold mx-1 d-flex text-primary">Rs {price}</div>
         )}
 
         {/* Color Circles */}
         {colors.length > 0 && (
-          <div className="d-flex justify-content-center gap-2 mt-2 flex-wrap">
+          <div className="d-flex gap-2 mt-2 mx-1 flex-wrap">
             {colors.map((color, index) => (
               <span
                 key={index}
                 style={{
                   width: "18px",
                   height: "18px",
-                  backgroundColor: color, // ✅ This shows the actual color
+                  backgroundColor: color,
                   borderRadius: "50%",
                   border: "1px solid #ddd",
                 }}
-                title={color} // Optional: shows color code on hover
+                title={color}
               />
             ))}
           </div>

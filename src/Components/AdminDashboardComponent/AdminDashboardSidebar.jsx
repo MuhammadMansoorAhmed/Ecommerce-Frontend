@@ -194,7 +194,7 @@ const AdminDashboardSidebar = ({ children }) => {
         </div>
       </Col>
 
-      <Col className="bg-secondary overflow-auto p-3">{children}</Col>
+      <Col className="bg-dark overflow-auto ">{children}</Col>
     </Container>
   );
 };

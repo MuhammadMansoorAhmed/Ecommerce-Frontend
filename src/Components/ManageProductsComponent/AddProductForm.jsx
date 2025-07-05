@@ -6,6 +6,7 @@ import { getAllCategories } from "../../Redux/Services/categoryServices";
 import { useEffect, useState } from "react";
 import { Form, Button, Row, Col, FloatingLabel, Alert } from "react-bootstrap";
 import "./form.css";
+import { toast } from "react-toastify";
 
 const AddProductForm = ({ closeForm }) => {
   const [formData, setFormData] = useState({
@@ -150,7 +151,7 @@ const AddProductForm = ({ closeForm }) => {
       formData.images.forEach((file) => data.append("images", file));
 
       await dispatch(addProduct(data));
-      alert("Product added successfully");
+      toast.success("Product Added");
     } catch (error) {
       console.log("Error while adding product", error);
     }
