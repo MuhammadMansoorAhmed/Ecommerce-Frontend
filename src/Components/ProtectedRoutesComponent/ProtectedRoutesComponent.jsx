@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
-import useAdminAuth from "../../Hooks/UseAdminAuth";
+import useAdminAuth from "../../Hooks/useAdminAuth";
+
 
 // eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ children, requiredRole }) => {
