@@ -1,8 +1,9 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { FaRegistered, FaUser, FaUserEdit } from "react-icons/fa";
-import { IoMdHome } from "react-icons/io";
-import { IoLogIn, IoLogOut } from "react-icons/io5";
-import { RiBloggerFill, RiContactsBook2Fill } from "react-icons/ri";
+import { GoPlus } from "react-icons/go";
+import { RiBloggerLine, RiContactsBook3Line } from "react-icons/ri";
+import { FaRegUser } from "react-icons/fa6";
+import { PiSignInThin, PiSignOutThin } from "react-icons/pi";
+import { GoHome } from "react-icons/go";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../Redux/Services/authServices";
@@ -49,7 +50,7 @@ const NavBar = () => {
               <Navbar.Brand
                 as={NavLink}
                 to="/"
-                className="fw-bold text-indigo-600 fs-4"
+                className="fw-bold text-primary fs-4"
               >
                 MyShop
               </Navbar.Brand>
@@ -61,31 +62,31 @@ const NavBar = () => {
                 to="/"
                 className={({ isActive }) =>
                   `text-decoration-none d-flex align-items-center gap-1 navHover ${
-                    isActive ? "text-indigo-600 fw-semibold" : "text-dark"
+                    isActive ? "text-primary fw-semibold" : "text-dark"
                   }`
                 }
               >
-                <IoMdHome size={20} /> Home
+                <GoHome size={20} /> Home
               </NavLink>
               <NavLink
                 to="/blog"
                 className={({ isActive }) =>
                   `text-decoration-none d-flex align-items-center gap-1 navHover ${
-                    isActive ? "text-indigo-600 fw-semibold" : "text-dark"
+                    isActive ? "text-primary fw-semibold" : "text-dark"
                   }`
                 }
               >
-                <RiBloggerFill size={20} /> Blog
+                <RiBloggerLine size={20} /> Blog
               </NavLink>
               <NavLink
                 to="/contact"
                 className={({ isActive }) =>
                   `text-decoration-none d-flex align-items-center gap-1 navHover ${
-                    isActive ? "text-indigo-600 fw-semibold" : "text-dark"
+                    isActive ? "text-primary fw-semibold" : "text-dark"
                   }`
                 }
               >
-                <RiContactsBook2Fill size={20} /> Contact
+                <RiContactsBook3Line size={20} /> Contact
               </NavLink>
             </Nav>
 
@@ -95,15 +96,15 @@ const NavBar = () => {
                 <div className="position-relative" ref={dropdownRef}>
                   <button
                     onClick={handleLogout}
-                    className="btn btn-link text-decoration-none text-dark navHover"
+                    className="btn btn-link text-decoration-none text-dark navHover "
                   >
-                    <IoLogOut size={20} /> Logout
+                    <PiSignOutThin size={20} /> Logout
                   </button>
                   <button
                     onClick={() => setShowUserOptions(!showUserOptions)}
                     className="btn btn-link text-dark text-decoration-none navHover"
                   >
-                    <FaUser size={20} />
+                    <FaRegUser size={20} />
                   </button>
                   {showUserOptions && (
                     <div
@@ -115,9 +116,9 @@ const NavBar = () => {
                           navigate("/user-profile");
                           setShowUserOptions(false);
                         }}
-                        className="d-flex align-items-center w-100 btn btn-light navHover"
+                        className="d-flex align-items-center justify-content-center w-100 btn btn-light navHover"
                       >
-                        <FaUserEdit className="me-2" /> Profile
+                        <FaRegUser className="me-2" /> Profile
                       </button>
                     </div>
                   )}
@@ -128,21 +129,21 @@ const NavBar = () => {
                     to="/login"
                     className={({ isActive }) =>
                       `text-decoration-none d-flex align-items-center gap-1 navHover ${
-                        isActive ? "text-indigo-600 fw-semibold" : "text-dark"
+                        isActive ? "text-primary fw-semibold" : "text-dark"
                       }`
                     }
                   >
-                    <IoLogIn size={20} /> Login
+                    <PiSignInThin size={20} /> Login
                   </NavLink>
                   <NavLink
                     to="/signup"
                     className={({ isActive }) =>
                       `text-decoration-none d-flex align-items-center gap-1 navHover ${
-                        isActive ? "text-indigo-600 fw-semibold" : "text-dark"
+                        isActive ? "text-primary fw-semibold" : "text-dark"
                       }`
                     }
                   >
-                    <FaRegistered size={20} /> Signup
+                    <GoPlus size={20} /> Signup
                   </NavLink>
                 </>
               )}

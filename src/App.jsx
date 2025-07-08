@@ -39,6 +39,15 @@ function App() {
   const [loginAccess, setLoginAccess] = useState(null);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    if (token) {
+      localStorage.setItem("authToken", token);
+      window.location.replace("/dashboard");
+    }
+  }, []);
+
+  useEffect(() => {
     const verifyLoginStatus = async () => {
       try {
         const response = await dispatch(getUserLoginStatus()).unwrap();

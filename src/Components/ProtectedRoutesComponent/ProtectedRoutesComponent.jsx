@@ -1,9 +1,13 @@
-/* eslint-disable react/prop-types */
 import { Navigate } from "react-router-dom";
+import useAdminAuth from "../../Hooks/UseAdminAuth";
 
+// eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ children, requiredRole }) => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-  const role = localStorage.getItem("role");
+  const { loading, isLoggedIn, role } = useAdminAuth();
+
+  if (loading) {
+    return <div className="text-center">Varifying User...</div>;
+  }
 
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;

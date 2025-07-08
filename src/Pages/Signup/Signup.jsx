@@ -55,7 +55,11 @@ const Signup = () => {
     }
     toast.error("User Registration Failed");
   };
-
+  const handleGoogleSignup = () => {
+    window.location.href = `${
+      import.meta.env.VITE_SERVER_ROUTE
+    }/api/auth/google`;
+  };
   return (
     <>
       <NavBar />
@@ -64,8 +68,41 @@ const Signup = () => {
           className="shadow d-flex flex-column p-4 justify-content-center "
           style={{ width: "600px", height: "auto" }}
         >
+          <div className="flex justify-content-center">
+            <button
+              style={{
+                width: "100%",
+                marginBottom: "10px",
+                display: "flex",
+                alignItems: "center",
+                padding: "10px 20px",
+                backgroundColor: "#ffffff",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontFamily: "Arial, sans-serif",
+                fontSize: "16px",
+                color: "#444",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                justifyContent: "center",
+              }}
+              onClick={handleGoogleSignup}
+            >
+              <img
+                src="https://developers.google.com/identity/images/g-logo.png"
+                alt="Google logo"
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  marginRight: "12px",
+                }}
+              />
+              Signup with Google
+            </button>
+          </div>
           <Form onSubmit={handleSignup}>
             <h3 className="w-100  py-2 text-primary">Signup</h3>
+
             <Form.Group className="mb-3" controlId="Name">
               <Form.Label>Name</Form.Label>
               <Form.Control

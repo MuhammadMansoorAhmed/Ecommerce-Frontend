@@ -39,7 +39,8 @@ const CategoryNavigation = () => {
           className="px-2 py-2 border-top border-bottom"
           ref={containerRef}
           style={{
-            backgroundColor: "#e3f3fb",
+            backgroundColor: "#fafafa",
+
             overflowX: "auto",
             WebkitOverflowScrolling: "touch",
           }}
@@ -80,7 +81,8 @@ const CategoryNavigation = () => {
                   key={category._id}
                   disableIndicator
                   value={category._id}
-                  className="text-uppercase d-flex align-items-center gap-1"
+                  className="text-uppercase d-flex align-items-center gap-1 text-dark"
+                  // style={{ color: "#628281" }}
                 >
                   <GoDotFill size={6} />
                   {category?.name}

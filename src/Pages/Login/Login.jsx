@@ -46,69 +46,105 @@ const handleLogin = async (e) => {
 
 };
 
-  return (
-    <>
-      <NavBar />
-      <div className="d-flex justify-content-center align-items-center container vh-100 py-3">
-        <div
-          className="shadow d-flex flex-column p-4 justify-content-center "
-          style={{ width: "450px", height: "auto" }}
-        >
-          <Form onSubmit={handleLogin}>
-            <h3 className="w-100  py-2 text-primary">Login</h3>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email </Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={formData.email}
-                placeholder="Enter email"
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+const handleGoogleLogin = () => {
+  window.location.href = `${import.meta.env.VITE_SERVER_ROUTE}/api/auth/google`;
+};
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                name="password"
-                value={formData.password}
-                placeholder="Enter Password"
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-1">
-              <Form.Text>
-                Forget Password?
-                <span>
-                  {" "}
-                  <a className="link" href="/forget-password">
-                    Forget Passwrod
-                  </a>
-                </span>
-              </Form.Text>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Text>
-                Don&apos;t Have An Account?
-                <span>
-                  {" "}
-                  <a className="link" href="/signup">
-                    Signup
-                  </a>
-                </span>
-              </Form.Text>
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Login
-            </Button>
-          </Form>
+return (
+  <>
+    <NavBar />
+    <div className="d-flex justify-content-center align-items-center container vh-100 py-3">
+      <div
+        className="shadow d-flex flex-column p-4 justify-content-center "
+        style={{ width: "450px", height: "auto" }}
+      >
+        <h3 className="w-100  py-2 text-primary">Login</h3>
+        <div className="flex justify-content-center">
+          <button
+            style={{
+              width: "100%",
+              marginBottom: "10px",
+              display: "flex",
+              alignItems: "center",
+              padding: "10px 20px",
+              backgroundColor: "#ffffff",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontFamily: "Arial, sans-serif",
+              fontSize: "16px",
+              color: "#444",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+              justifyContent: "center",
+            }}
+            onClick={handleGoogleLogin}
+          >
+            <img
+              src="https://developers.google.com/identity/images/g-logo.png"
+              alt="Google logo"
+              style={{
+                width: "20px",
+                height: "20px",
+                marginRight: "12px",
+              }}
+            />
+            Login with Google
+          </button>
         </div>
+        <Form onSubmit={handleLogin}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email </Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              value={formData.email}
+              placeholder="Enter email"
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              value={formData.password}
+              placeholder="Enter Password"
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-1">
+            <Form.Text>
+              Forget Password?
+              <span>
+                {" "}
+                <a className="link" href="/forget-password">
+                  Forget Passwrod
+                </a>
+              </span>
+            </Form.Text>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Text>
+              Don&apos;t Have An Account?
+              <span>
+                {" "}
+                <a className="link" href="/signup">
+                  Signup
+                </a>
+              </span>
+            </Form.Text>
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Login
+          </Button>
+        </Form>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 };
 
 export default Login;
