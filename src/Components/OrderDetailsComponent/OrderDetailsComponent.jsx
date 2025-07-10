@@ -7,12 +7,13 @@ import {
 } from "../../Redux/Features/orderSlice";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./OrderDetailsComponent.css";
 import { toast } from "react-toastify";
 
 const OrderDetailsComponent = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isLoading = useSelector(selectIsLoading);
   const isError = useSelector(selectIsError);
 
@@ -58,6 +59,8 @@ const OrderDetailsComponent = () => {
     );
     if (response.meta.requestStatus === "fulfilled") {
       toast.success("Order Placed Successfully");
+      // console.log(response.payload.data);
+      return response.payload.data.createdOrder;
     }
   };
 
@@ -79,9 +82,23 @@ const OrderDetailsComponent = () => {
               email: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              handleOrderSubmit(values);
-              setSubmitting(false);
+            onSubmit={async (values, { setSubmitting }) => {
+              setSubmitting(true);
+
+              try {
+                const order = await handleOrderSubmit(values); // ✅ Await here
+                if (order && order._id) {
+                  console.log(order);
+                  navigate(`/products/oder/userOrderDetails/${order._id}`);
+                } else {
+                  toast.error("Something went wrong while placing your order.");
+                }
+              } catch (error) {
+                console.error("Order submission failed:", error);
+                toast.error("Failed to place order. Please try again.");
+              } finally {
+                setSubmitting(false);
+              }
             }}
           >
             {({

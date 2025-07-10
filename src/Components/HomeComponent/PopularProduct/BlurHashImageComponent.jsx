@@ -23,7 +23,6 @@ const BlurHashImageComponent = ({ product }) => {
     name,
     colors = [],
   } = product;
-  console.log(product);
 
   const imgSrc = images?.[0]?.url || "";
   const hash = images?.[0]?.blurHash || "";

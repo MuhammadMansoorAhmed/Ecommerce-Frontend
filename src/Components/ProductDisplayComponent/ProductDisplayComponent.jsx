@@ -14,6 +14,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../../Redux/Services/productServices";
 import { selectIsLoading } from "../../Redux/Features/productSlice";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import { toast } from "react-toastify";
+import { FaPen, FaStar, FaTrash } from "react-icons/fa6";
+import {
+  addProductReview,
+  deleteProductReview,
+  updateProductReview,
+} from "../../Redux/Services/productReviewServices";
 
 const ProductDisplayComponent = () => {
   const dispatch = useDispatch();
@@ -23,6 +30,14 @@ const ProductDisplayComponent = () => {
   const isLoading = useSelector(selectIsLoading);
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
+
+  const [reviewText, setReviewText] = useState("");
+  const [rating, setRating] = useState(5);
+  const [editing, setEditing] = useState(false);
+  // const [editingReviewId, setEditingReviewId] = useState(null);
+  const [hover, setHover] = useState(0);
+
+  const user = useSelector((state) => state.auth.user); // adjust based on your store
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -43,6 +58,8 @@ const ProductDisplayComponent = () => {
       setQuantity((prev) => prev - 1);
     }
   };
+
+  console.log(product);
 
   return (
     <Container className="py-5">
@@ -137,6 +154,161 @@ const ProductDisplayComponent = () => {
             <Col>
               <h5 className="fw-semibold mb-3">📝 Description</h5>
               <p className="text-muted">{product?.description}</p>
+            </Col>
+          </Row>
+
+          {/* Reviews */}
+          <Row className="mt-5">
+            <Col>
+              <h5 className="fw-semibold mb-3">
+                💬 {editing ? "Edit Your Review" : "Leave a Review"}
+              </h5>
+
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+
+                  try {
+                    const reviewData = { review: reviewText, rating };
+                    if (editing) {
+                      await dispatch(
+                        updateProductReview({ productId: id, data: reviewData })
+                      ).unwrap();
+                      toast.success("Review updated");
+                    } else {
+                      await dispatch(
+                        addProductReview({ productId: id, data: reviewData })
+                      ).unwrap();
+                      toast.success("Review added");
+                    }
+
+                    setReviewText("");
+                    setRating(5);
+                    setEditing(false);
+                    // setEditingReviewId(null);
+
+                    const refreshed = await dispatch(getProductById(id));
+                    setProduct(refreshed.payload.data);
+                  } catch (err) {
+                    toast.error(err?.message || "Error submitting review");
+                  }
+                }}
+                className="shadow p-2 rounded"
+              >
+                <div className="mb-3">
+                  <textarea
+                    className="form-control"
+                    placeholder="Write your review"
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="mb-3 d-flex justify-content-between align-items-center gap-2">
+                  <div className="mb-3">
+                    <label className="fw-semibold d-block mb-2">Rating:</label>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <FaStar
+                        key={star}
+                        size={20}
+                        onClick={() => setRating(star)}
+                        onMouseEnter={() => setHover(star)}
+                        onMouseLeave={() => setHover(0)}
+                        className="me-1"
+                        color={
+                          (hover || rating) >= star ? "#ffc107" : "#e4e5e9"
+                        }
+                        style={{ cursor: "pointer" }}
+                      />
+                    ))}
+                    <span className="ms-2 text-muted"></span>
+                  </div>
+
+                  <Button type="submit" variant="outline-primary">
+                    {editing ? "Update Review" : "Submit Review"}
+                  </Button>
+                </div>
+              </form>
+            </Col>
+          </Row>
+          <Row className="mt-4">
+            <Col>
+              <h5 className="fw-semibold mb-3">🗂️ Reviews</h5>
+
+              {product?.reviews?.length === 0 ? (
+                <p className="text-muted">No reviews yet.</p>
+              ) : (
+                product.reviews.map((rev) => (
+                  <div
+                    key={rev._id}
+                    className="border rounded p-3 mb-3 bg-light d-flex justify-content-between align-items-start"
+                  >
+                    <div>
+                      <strong>{rev.userId?.fullName || "Anonymous"}</strong>
+                      <p className="mb-1 text-muted d-flex align-items-center gap-2">
+                        Rating:
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <FaStar
+                            key={star}
+                            size={16}
+                            color={star <= rev.rating ? "#ffc107" : "#e4e5e9"}
+                          />
+                        ))}
+                        <span className="ms-1">({rev.rating} / 5)</span>
+                      </p>
+
+                      <p className="mb-0">{rev.review}</p>
+                    </div>
+
+                    {user?._id === rev.userId?._id && (
+                      <div className="d-flex gap-2">
+                        <Button
+                          variant="outline-primary"
+                          size="sm"
+                          onClick={() => {
+                            setReviewText(rev.review);
+                            setRating(rev.rating);
+                            setEditing(true);
+                            // setEditingReviewId(rev._id);
+                          }}
+                        >
+                          <FaPen />
+                        </Button>
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={async () => {
+                            if (
+                              window.confirm(
+                                "Are you sure you want to delete your review?"
+                              )
+                            ) {
+                              try {
+                                await dispatch(
+                                  deleteProductReview({ productId: id })
+                                ).unwrap();
+                                toast.success("Review deleted");
+
+                                const refreshed = await dispatch(
+                                  getProductById(id)
+                                );
+                                setProduct(refreshed.payload.data);
+                              } catch (err) {
+                                toast.error(
+                                  err?.message || "Error deleting review"
+                                );
+                              }
+                            }
+                          }}
+                        >
+                          <FaTrash />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
             </Col>
           </Row>
 

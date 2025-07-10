@@ -63,11 +63,33 @@ export const getOrdersByUser = createAsyncThunk(
     }
   }
 );
+
 export const getAllOrders = createAsyncThunk(
   "order/getAllOrders",
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/api/order/getAllOrder`);
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getOrderById = createAsyncThunk(
+  "order/getOrderById",
+  async (id, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/api/order/getOrderById/${id}`
+      );
       return response.data;
     } catch (error) {
       const message =

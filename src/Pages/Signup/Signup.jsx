@@ -16,45 +16,111 @@ const Signup = () => {
     confirmPassword: "",
     dateOfBirth: "",
     contact: "",
+    policyAggrement: false,
   });
+  const [errors, setErrors] = useState({});
+
+  const validateField = (name, value) => {
+    let error = "";
+
+    switch (name) {
+      case "fullName":
+        if (!value.trim()) error = "Full name is required";
+        break;
+      case "email":
+        if (!value.trim()) error = "Email is required";
+        else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value))
+          error = "Enter a valid email";
+        break;
+      case "password":
+        if (!value.trim()) error = "Password is required";
+        else if (
+          !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(value)
+        )
+          error = "Password must be alphanumeric and at least 8 characters";
+        break;
+      case "confirmPassword":
+        if (value !== formData.password) error = "Passwords do not match";
+        break;
+      case "policyAggrement":
+        if (!value) error = "You must accept the terms and privacy policy";
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    const fieldValue = type === "checkbox" ? checked : value;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: fieldValue,
     }));
+
+    // Trigger validation on each keystroke
+    validateField(name, fieldValue);
   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      return toast.error("Password and confirm password must match", {
+    // Revalidate everything before submit
+    Object.entries(formData).forEach(([key, value]) =>
+      validateField(key, value)
+    );
+
+    // Check for any errors
+    const hasErrors = Object.values(errors).some((error) => error);
+    if (hasErrors) {
+      return toast.error("Please fix the highlighted fields.", {
         position: "bottom-right",
       });
     }
 
+    const newErrors = {};
+
+    // Basic validations
+    if (!formData.fullName) newErrors.fullName = "Full name is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.password) newErrors.password = "Password is required";
+    if (formData.password !== formData.confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+    if (!formData.policyAggrement)
+      newErrors.policyAggrement =
+        "You must accept the terms and privacy policy";
+
     if (
+      formData.password &&
       !formData.password.match(
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
       )
     ) {
-      return toast.error(
-        "password must be alphanumeric with upto 8 characters",
-        {
-          position: "bottom-right",
-        }
-      );
+      newErrors.password =
+        "Password must be alphanumeric and at least 8 characters";
     }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return toast.error("Please fix the highlighted fields.", {
+        position: "bottom-right",
+      });
+    }
+
+    setErrors({}); // Clear errors if no validation issues
 
     const response = await dispatch(register(formData));
     if (response.meta.requestStatus === "fulfilled") {
       toast.success("User Registration successful");
       return navigate("/login");
     }
+
     toast.error("User Registration Failed");
   };
+
   const handleGoogleSignup = () => {
     window.location.href = `${
       import.meta.env.VITE_SERVER_ROUTE
@@ -68,6 +134,7 @@ const Signup = () => {
           className="shadow d-flex flex-column p-4 justify-content-center "
           style={{ width: "600px", height: "auto" }}
         >
+          <h3 className="w-100  py-2 text-primary">Signup</h3>
           <div className="flex justify-content-center">
             <button
               style={{
@@ -101,8 +168,6 @@ const Signup = () => {
             </button>
           </div>
           <Form onSubmit={handleSignup}>
-            <h3 className="w-100  py-2 text-primary">Signup</h3>
-
             <Form.Group className="mb-3" controlId="Name">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -113,6 +178,9 @@ const Signup = () => {
                 onChange={handleChange}
                 required
               />
+              {errors.fullName && (
+                <Form.Text className="text-danger">{errors.fullName}</Form.Text>
+              )}
             </Form.Group>
             <Form.Group className="mb-3" controlId="email">
               <Form.Label>Email</Form.Label>
@@ -127,6 +195,10 @@ const Signup = () => {
               <Form.Text className="text-muted">
                 We will never share your email with anyone else.
               </Form.Text>
+              <br />
+              {errors.email && (
+                <Form.Text className="text-danger">{errors.email}</Form.Text>
+              )}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="password">
@@ -139,6 +211,9 @@ const Signup = () => {
                 onChange={handleChange}
                 required
               />
+              {errors.password && (
+                <Form.Text className="text-danger">{errors.password}</Form.Text>
+              )}
             </Form.Group>
             <Form.Group className="mb-3" controlId="confirmPassword">
               <Form.Label>Confirm Password</Form.Label>
@@ -150,6 +225,11 @@ const Signup = () => {
                 onChange={handleChange}
                 required
               />
+              {errors.confirmPassword && (
+                <Form.Text className="text-danger">
+                  {errors.confirmPassword}
+                </Form.Text>
+              )}
             </Form.Group>
             <Form.Group className="mb-2">
               <div className="d-flex w-100">
@@ -161,7 +241,6 @@ const Signup = () => {
                     value={formData.dateOfBirth}
                     placeholder="Date Of Birth"
                     onChange={handleChange}
-                    required
                   />
                 </div>
                 <div className="d-flex flex-column w-100">
@@ -172,11 +251,43 @@ const Signup = () => {
                     value={formData.contact}
                     placeholder="Enter Contact"
                     onChange={handleChange}
-                    required
                   />
                 </div>
               </div>
             </Form.Group>
+            <Form.Group className="mb-3" controlId="policyAggrement">
+              <Form.Check
+                type="checkbox"
+                className=""
+                name="policyAggrement"
+                checked={formData.policyAggrement}
+                onChange={handleChange}
+                required
+                label={
+                  <>
+                    I agree to the{" "}
+                    <a href="/terms" target="_blank" rel="noopener noreferrer">
+                      Terms of Service
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      href="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Privacy Policy
+                    </a>
+                    .
+                  </>
+                }
+              />
+              {errors.policyAggrement && (
+                <Form.Text className="text-danger">
+                  {errors.policyAggrement}
+                </Form.Text>
+              )}
+            </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Text>
                 Already Have An Account?{" "}

@@ -4,6 +4,7 @@ import {
   addOrder,
   deleteOrder,
   getAllOrders,
+  getOrderById,
   getOrdersByUser,
 } from "../Services/orderServices";
 
@@ -62,6 +63,17 @@ const orderSlice = createSlice({
         state.isError = true;
       })
       .addCase(deleteOrder.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(getOrderById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getOrderById.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(getOrderById.fulfilled, (state) => {
         state.isLoading = false;
         state.isError = false;
       });

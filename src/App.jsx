@@ -31,6 +31,7 @@ import axios from "axios";
 import ProtectedRoute from "./Components/ProtectedRoutesComponent/ProtectedRoutesComponent";
 import Spinner from "react-bootstrap/Spinner";
 import Payment from "./Pages/Payment/Payment";
+import ShowUserOrderDetails from "./Pages/ShowUserOrderDetails/ShowUserOrderDetails";
 
 axios.defaults.withCredentials = true;
 
@@ -107,6 +108,10 @@ function App() {
           <Route
             path="/products/category/:category"
             element={<CategoryPage />}
+          />
+          <Route
+            path="/products/oder/userOrderDetails/:orderId"
+            element={<ShowUserOrderDetails />}
           />
 
           <Route
