@@ -13,7 +13,7 @@ const UserOrder = () => {
   useEffect(() => {
     const fetchOrderById = async () => {
       const response = await dispatch(getOrderById(orderId));
-      console.log(response.payload.data.userOrderById);
+      // console.log(response.payload.data.userOrderById);
       if (response.meta.requestStatus === "fulfilled") {
         setOrder(response.payload.data.userOrderById);
         return;
@@ -21,7 +21,7 @@ const UserOrder = () => {
       toast.error("failed to fetch Order Summary");
     };
     fetchOrderById();
-  }, [dispatch]);
+  }, [dispatch, orderId]);
 
   return (
     <Container className="py-4">
@@ -48,13 +48,13 @@ const UserOrder = () => {
               />
             </Col>
             <Col sm={12} md={6} lg={6} xl={6}>
-              <p className="fw-semibold my-2">{order.productId.name}</p>
+              <p className="fw-semibold my-2">{order?.productId?.name}</p>
               <p className="">
                 PKR:{" "}
-                <span className="fw-bold m-0">{order.productId.price}</span>
+                <span className="fw-bold m-0">{order?.productId?.price}</span>
               </p>
               <p>
-                Quantity <span>{order.quantity}</span>
+                Quantity <span>{order?.quantity}</span>
               </p>
             </Col>
           </Row>
@@ -67,7 +67,7 @@ const UserOrder = () => {
             </Col>
             <Col sm={12} md={6} lg={6} xl={6}>
               <p className="fw-semibold my-2">
-                PKR {order.productId.price * order.quantity}
+                PKR {order?.productId?.price * order?.quantity}
               </p>
             </Col>
           </Row>
@@ -80,7 +80,9 @@ const UserOrder = () => {
             </Col>
             <Col sm={12} md={6} lg={6} xl={6}>
               <p className="my-2">
-                PKR {order.productId.price - order.productId.discountedPrice}
+                PKR{" "}
+                {order?.productId?.price * order?.quantity -
+                  order?.productId?.discountedPrice}
               </p>
             </Col>
           </Row>
@@ -93,7 +95,9 @@ const UserOrder = () => {
             </Col>
             <Col sm={12} md={6} lg={6} xl={6}>
               <p className="my-2">
-                PKR {order.productId.price - order.productId.discountedPrice}
+                PKR{" "}
+                {order?.productId?.price * order?.quantity -
+                  order?.productId?.discountedPrice}
               </p>
             </Col>
           </Row>

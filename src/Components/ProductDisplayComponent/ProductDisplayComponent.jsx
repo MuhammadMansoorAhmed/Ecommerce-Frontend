@@ -59,7 +59,6 @@ const ProductDisplayComponent = () => {
     }
   };
 
-  console.log(product);
 
   return (
     <Container className="py-5">
@@ -126,7 +125,8 @@ const ProductDisplayComponent = () => {
                       </Button>
                     </ButtonGroup>
                     <span className="text-muted">
-                      / {product?.totalStockRemaining} in stock
+                      {product?.totalStockRemaining} /{product?.totalStock} in
+                      stock
                     </span>
                   </div>
 
@@ -143,7 +143,9 @@ const ProductDisplayComponent = () => {
 
                 <div>
                   <h6 className="fw-semibold mb-1">Availability:</h6>
-                  <p className="text-muted">{product?.totalStock} units</p>
+                  <p className="text-muted">
+                    {product?.totalStockRemaining} units
+                  </p>
                 </div>
               </div>
             </Col>
