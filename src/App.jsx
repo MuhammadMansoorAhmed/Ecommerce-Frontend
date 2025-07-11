@@ -32,6 +32,7 @@ import ProtectedRoute from "./Components/ProtectedRoutesComponent/ProtectedRoute
 import Spinner from "react-bootstrap/Spinner";
 import Payment from "./Pages/Payment/Payment";
 import ShowUserOrderDetails from "./Pages/ShowUserOrderDetails/ShowUserOrderDetails";
+import Profile from "./Pages/Profile/Profile";
 
 axios.defaults.withCredentials = true;
 
@@ -79,6 +80,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/user-profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forget-password" element={<ForgetPassword />} />

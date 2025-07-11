@@ -1,7 +1,13 @@
+import NavbarComponent from "../../Components/Navbar/NavbarComponent";
 import PaymentLayout from "../../Components/PaymentComponents/PaymentLayout";
 
 const Payment = () => {
-  return <PaymentLayout />;
+  return (
+    <>
+      <NavbarComponent />
+      <PaymentLayout />
+    </>
+  );
 };
 
 export default Payment;

@@ -239,11 +239,10 @@ export const changePassword = createAsyncThunk(
 );
 export const getCurrentUser = createAsyncThunk(
   "user/getCurrentUser",
-  async (formData, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/api/auth/getCurrentUser`,
-        formData
+      const response = await axios.get(
+        `${API_BASE_URL}/api/auth/getCurrentUser`
       );
       return response.data;
     } catch (error) {

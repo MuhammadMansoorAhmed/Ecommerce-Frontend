@@ -1,9 +1,12 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { GoPlus } from "react-icons/go";
-import { RiBloggerLine, RiContactsBook3Line } from "react-icons/ri";
+import {
+  RiBloggerLine,
+  RiContactsBook3Line,
+  RiShoppingBag4Line,
+} from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa6";
 import { PiSignInThin, PiSignOutThin } from "react-icons/pi";
-import { GoHome } from "react-icons/go";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../Redux/Services/authServices";
@@ -66,7 +69,7 @@ const NavBar = () => {
                   }`
                 }
               >
-                <GoHome size={20} /> Home
+                <RiShoppingBag4Line size={20} /> Shop
               </NavLink>
               <NavLink
                 to="/blog"
