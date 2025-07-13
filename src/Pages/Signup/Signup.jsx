@@ -265,15 +265,22 @@ const Signup = () => {
                 required
                 label={
                   <>
-                    I agree to the{" "}
-                    <a href="/terms" target="_blank" rel="noopener noreferrer">
+                    I agree to the
+                    <a
+                      href={`/policies/${"terms-of-services"}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-decoration-none"
+                    >
+                      {" "}
                       Terms of Service
                     </a>{" "}
                     and{" "}
                     <a
-                      href="/privacy"
+                      href={`/privacy/${"privacy-policy"}`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      className="text-decoration-none"
                     >
                       Privacy Policy
                     </a>

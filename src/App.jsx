@@ -33,6 +33,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Payment from "./Pages/Payment/Payment";
 import ShowUserOrderDetails from "./Pages/ShowUserOrderDetails/ShowUserOrderDetails";
 import Profile from "./Pages/Profile/Profile";
+import Policies from "./Pages/Policies/Policies";
 
 axios.defaults.withCredentials = true;
 
@@ -78,6 +79,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/policies/:policyName" element={<Policies />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/user-profile" element={<Profile />} />

@@ -7,8 +7,10 @@ import {
   FaXTwitter,
 } from "react-icons/fa6";
 import "./HomeFooter.css";
+import { useNavigate } from "react-router-dom";
 
 const HomeFooter = () => {
+  const navigate = useNavigate();
   return (
     <footer className="bg-light border-top pt-4 mt-5">
       <Container>
@@ -36,13 +38,45 @@ const HomeFooter = () => {
           </Col>
 
           {/* Column 3 */}
-          <Col xs={12} md={3}>
+          <Col xs={12} md={3} className="d-flex flex-column">
             <h6 className="fw-semibold mb-3">Support</h6>
             <ul className="list-unstyled text-muted small">
-              <li className="mb-1">Shipping Policy</li>
-              <li className="mb-1">Return Policy</li>
-              <li className="mb-1">Privacy Policy</li>
-              <li className="mb-1">Terms of Service</li>
+              <li
+                className="mb-1"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  navigate(`/policies/${"return-and-refund-policy"}`);
+                }}
+              >
+                Shipping Policy
+              </li>
+              <li
+                onClick={() => {
+                  navigate(`/policies/${"return-and-refund-policy"}`);
+                }}
+                className="mb-1 "
+                style={{ cursor: "pointer" }}
+              >
+                Return Policy
+              </li>
+              <li
+                className="mb-1"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  navigate(`/policies/${"privacy-policy"}`);
+                }}
+              >
+                Privacy Policy
+              </li>
+              <li
+                className="mb-1"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  navigate(`/policies/${"terms-of-services"}`);
+                }}
+              >
+                Terms of Service
+              </li>
             </ul>
           </Col>
 
