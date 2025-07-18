@@ -70,7 +70,10 @@ const BlurHashImageComponent = ({ product }) => {
   );
 
   return (
-    <div className="product-image-wrapper d-flex flex-column h-100">
+    <div
+      className="product-image-wrapper d-flex flex-column h-100  p-2 shadow-animation"
+      style={{ borderRadius: "12px" }}
+    >
       <div className="image-container position-relative">
         {!imageLoaded ? (
           <Blurhash
@@ -156,7 +159,7 @@ const BlurHashImageComponent = ({ product }) => {
                   height: "18px",
                   backgroundColor: color,
                   borderRadius: "50%",
-                  border: "1px solid #ddd",
+                  // border: "1px solid #ddd",
                 }}
                 title={color}
               />

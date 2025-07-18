@@ -61,6 +61,8 @@
   display: none;
 }
 
+
+
 @keyframes SubitemAnimation {
   0% {
     opacity: 0%;
@@ -72,6 +74,7 @@
     opacity: 100%;
   }
 }
+
 
 @media only screen and (max-width: 776px) {
   .mainDashboard {
@@ -87,3 +90,4 @@
     display: block;
   }
 }
+

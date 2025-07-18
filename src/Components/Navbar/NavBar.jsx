@@ -40,7 +40,7 @@ const NavBar = () => {
     <Navbar
       expand="lg"
       className="sticky-top shadow-sm border-bottom bg-white/90"
-      style={{ backdropFilter: "blur(10px)" }}
+      style={{ backdropFilter: "blur(12px)", padding: "16px" }}
     >
       <Container fluid className="px-4 py-2">
         {/* Toggler for Mobile */}
@@ -65,11 +65,11 @@ const NavBar = () => {
                 to="/"
                 className={({ isActive }) =>
                   `text-decoration-none d-flex align-items-center gap-1 navHover ${
-                    isActive ? "text-primary fw-semibold" : "text-dark"
+                    isActive && "text-primary fw-semibold"
                   }`
                 }
               >
-                <RiShoppingBag4Line size={20} /> Shop
+                <RiShoppingBag4Line size={18} /> Shop
               </NavLink>
               <NavLink
                 to="/blog"
@@ -79,7 +79,7 @@ const NavBar = () => {
                   }`
                 }
               >
-                <RiBloggerLine size={20} /> Blog
+                <RiBloggerLine size={18} /> Blog
               </NavLink>
               <NavLink
                 to="/contact"
@@ -89,7 +89,7 @@ const NavBar = () => {
                   }`
                 }
               >
-                <RiContactsBook3Line size={20} /> Contact
+                <RiContactsBook3Line size={18} /> Contact
               </NavLink>
             </Nav>
 
@@ -101,13 +101,13 @@ const NavBar = () => {
                     onClick={handleLogout}
                     className="btn btn-link text-decoration-none text-dark navHover "
                   >
-                    <PiSignOutThin size={20} /> Logout
+                    <PiSignOutThin size={18} /> Logout
                   </button>
                   <button
                     onClick={() => setShowUserOptions(!showUserOptions)}
                     className="btn btn-link text-dark text-decoration-none navHover"
                   >
-                    <FaRegUser size={20} />
+                    <FaRegUser size={18} />
                   </button>
                   {showUserOptions && (
                     <div
@@ -136,7 +136,7 @@ const NavBar = () => {
                       }`
                     }
                   >
-                    <PiSignInThin size={20} /> Login
+                    <PiSignInThin size={18} /> Login
                   </NavLink>
                   <NavLink
                     to="/signup"
@@ -146,7 +146,7 @@ const NavBar = () => {
                       }`
                     }
                   >
-                    <GoPlus size={20} /> Signup
+                    <GoPlus size={18} /> Signup
                   </NavLink>
                 </>
               )}

@@ -6,7 +6,6 @@
   transition: all .4s;
 }
 .order-btn{
-  border: 1px solid rgba(196, 204, 216, 0.70);
   background-color:  rgba(196, 204, 216, 0.70);
   border-radius: 4px;
   margin-top: 14px;
@@ -43,7 +42,13 @@
   color: #41434688;
 }
 
-
+.shadow-animation{
+  box-shadow: 0px 0px 0px #fff;
+  transition: all .4s;
+}
+.shadow-animation:hover{
+  box-shadow: -5px 5px 24px #d3d3d3;
+}
 
 @media screen and (max-width: 800px){
   .add-to-cart{
@@ -75,14 +80,14 @@
   }
  
 }
-
+/* 
 .product-image-wrapper {
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.8s ease;
 }
 
 .product-image-wrapper:hover {
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-}
+} */
 
 .checkedIcon {
   color: #4caf50;
