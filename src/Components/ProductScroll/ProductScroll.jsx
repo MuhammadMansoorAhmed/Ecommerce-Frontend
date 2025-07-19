@@ -11,7 +11,6 @@ export default function ProductScroll({ scrollDirection, category }) {
   const scrollRef = useRef(null);
   const [products, setProducts] = useState([]);
 
-  console.log(products);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -45,7 +44,7 @@ export default function ProductScroll({ scrollDirection, category }) {
   return (
     <>
       {products.length > 0 && (
-        <div className="container-fluid py-4 bg-light rounded shadow-sm">
+        <div className="container-fluid py-4 bg-light rounded shadow-sm px-2">
           <h4 className="border-0 mb-3 pb-0">{category.toUpperCase()}</h4>
 
           <div

@@ -91,7 +91,7 @@ const BlurHashImageComponent = ({ product }) => {
             style={{
               width: "100%",
               height: "250px",
-              objectFit: "cover",
+              objectFit: "contain",
               borderRadius: "6px",
             }}
           />

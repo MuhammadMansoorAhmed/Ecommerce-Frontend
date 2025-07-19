@@ -22,6 +22,22 @@ const AddProductForm = ({ closeForm }) => {
     colors: [],
   });
 
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      description: "",
+      sku: "",
+      category: "",
+      price: "",
+      totalStock: "",
+      discount: "",
+      discountedPrice: "",
+      images: [],
+      colors: [],
+    });
+    setErrors({});
+  };
+
   const [errors, setErrors] = useState({});
   const [categories, setCategories] = useState([]);
   const dispatch = useDispatch();
@@ -75,6 +91,7 @@ const AddProductForm = ({ closeForm }) => {
 
   const validateForm = () => {
     const newErrors = {};
+
     if (!formData.name) newErrors.name = "Product name is required";
     else if (formData.name.length > 100)
       newErrors.name = "Name can't exceed 100 characters";
@@ -89,26 +106,8 @@ const AddProductForm = ({ closeForm }) => {
     if (!formData.price || formData.price <= 0)
       newErrors.price = "Price must be positive";
 
-    if (formData.discount && (formData.discount < 0 || formData.discount > 100))
-      newErrors.discount = "Discount must be between 0 and 100";
-
-    if (formData.discountedPrice <= 0)
-      newErrors.discountedPrice = "Discounted price must be positive";
-
     if (!formData.totalStock || formData.totalStock <= 0)
       newErrors.totalStock = "Total stock must be positive";
-
-    if (!formData.images.length) newErrors.images = "Images are required";
-    if (formData.images.length > 3)
-      newErrors.images = "Maximum 3 images allowed";
-
-    if (
-      !formData.colors ||
-      formData.colors.length === 0 ||
-      formData.colors.every((c) => c.trim() === "")
-    ) {
-      newErrors.colors = "At least one color is required";
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -152,6 +151,7 @@ const AddProductForm = ({ closeForm }) => {
 
       await dispatch(addProduct(data));
       toast.success("Product Added");
+      resetForm();
     } catch (error) {
       console.log("Error while adding product", error);
     }

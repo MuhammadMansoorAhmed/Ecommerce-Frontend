@@ -1,8 +1,13 @@
 .product-scroll-wrapper {
+  scrollbar-width: none;
+  -ms-text-overflow: none;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
 }
-
+.product-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
 .product-card {
   scroll-snap-align: start;
   width: 250px;

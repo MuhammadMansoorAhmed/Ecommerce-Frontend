@@ -23,10 +23,14 @@ const Home = () => {
       {/* <CategoryCards /> */}
       {/* <PopularProducts popularProducts={popularProducts} /> */}
       <div className="container-fluid">
-        <CategoryPageComponent />
+        <CategoryPageComponent category={"all"} />
       </div>{" "}
-      <ProductScroll scrollDirection={"right"} category={"cloths"} />
-      <ProductScroll scrollDirection={"left"} category={"perfumes"} />
+      <div className="p-2">
+        <ProductScroll scrollDirection={"right"} category={"cloths"} />
+      </div>
+      <div className="p-2">
+        <ProductScroll scrollDirection={"left"} category={"ravaah perfumes"} />
+      </div>
       <HomeFooter />
     </div>
   );
