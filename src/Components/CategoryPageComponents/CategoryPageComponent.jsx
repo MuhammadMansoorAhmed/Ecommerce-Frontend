@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import {
   getAllProducts,
-  getProductsWithCategory,
+  getProductsWithCategoryId,
 } from "../../Redux/Services/productServices";
 import {
   selectIsLoading,
@@ -32,7 +32,7 @@ const CategoryPageComponent = () => {
         if (location.pathname === "/" || category === "all") {
           response = await dispatch(getAllProducts());
         } else if (category && category !== "undefined") {
-          response = await dispatch(getProductsWithCategory(category));
+          response = await dispatch(getProductsWithCategoryId(category));
         }
 
         if (response?.payload?.data) {

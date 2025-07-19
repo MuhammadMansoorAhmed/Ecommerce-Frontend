@@ -68,9 +68,6 @@ export const updateProduct = createAsyncThunk(
   }
 );
 
-
-
-
 export const updateProductImages = createAsyncThunk(
   "product/updateProductImages",
   async ({ id, formData }, thunkAPI) => {
@@ -153,7 +150,8 @@ export const getAllProducts = createAsyncThunk(
     }
   }
 );
-export const getProductsWithCategory = createAsyncThunk(
+
+export const getProductsWithCategoryId = createAsyncThunk(
   "product/getProductsByCategory",
   async (category, thunkAPI) => {
     try {
@@ -173,6 +171,27 @@ export const getProductsWithCategory = createAsyncThunk(
     }
   }
 );
+export const getProductsWithCategoryName = createAsyncThunk(
+  "product/getProductsByCategoryName",
+  async (categoryName, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/api/product/getProductByCategoryName/${categoryName}`
+      );
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const getTotalProductsStats = createAsyncThunk(
   "product/getTotalProductsStats",
   async (_, thunkAPI) => {

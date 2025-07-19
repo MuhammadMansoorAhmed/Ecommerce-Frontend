@@ -39,8 +39,8 @@ const CategoryNavigation = () => {
           className="px-2 py-2 border-top border-bottom"
           ref={containerRef}
           style={{
-            backgroundColor: "#fafafa",
-
+            background: "linear-gradient(to bottom right, #012142, #115D7B)",
+            color: "#f1f1f1",
             overflowX: "auto",
             WebkitOverflowScrolling: "touch",
           }}
@@ -67,12 +67,20 @@ const CategoryNavigation = () => {
                   fontWeight: 500,
                   fontSize: 13,
                   px: 2,
-                  minWidth: "max-content", // prevent tab from shrinking
+                  minWidth: "max-content",
+                  transition: "all 0.3s ease",
                 },
                 [`& .${tabClasses.root}[aria-selected="true"]`]: {
                   bgcolor: "#b3e1f5",
-                  color: "#222",
+                  color: "#012142",
                   borderRadius: "6px",
+                },
+                [`& .${tabClasses.root}:hover`]: {
+                  backgroundColor: "#ffffff11", // subtle hover background
+                  color: "#f1f1f1", // soft light text
+                  transform: "translateY(-2px)", // jumpy effect
+                  cursor: "pointer",
+                  transition: "all 0.3s ease-in-out", // smooth animation
                 },
               }}
             >
@@ -81,7 +89,7 @@ const CategoryNavigation = () => {
                   key={category._id}
                   disableIndicator
                   value={category._id}
-                  className="text-uppercase d-flex align-items-center gap-1 text-dark"
+                  className="text-uppercase d-flex align-items-center gap-1 text-light "
                   // style={{ color: "#628281" }}
                 >
                   <GoDotFill size={6} />

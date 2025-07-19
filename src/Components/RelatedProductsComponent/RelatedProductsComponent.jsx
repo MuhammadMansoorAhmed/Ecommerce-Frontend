@@ -2,13 +2,13 @@
 import { Col, Row } from "react-bootstrap";
 import BlurHashImageComponent from "../HomeComponent/PopularProduct/BlurHashImageComponent";
 import { useEffect, useState } from "react";
-import { getProductsWithCategory } from "../../Redux/Services/productServices";
+import { getProductsWithCategoryId } from "../../Redux/Services/productServices";
 
 const RelatedProductsComponent = ({ category, dispatch }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   useEffect(() => {
     const getProductByCategory = async () => {
-      const response = await dispatch(getProductsWithCategory(category));
+      const response = await dispatch(getProductsWithCategoryId(category));
       setRelatedProducts(response?.payload?.data);
     };
     getProductByCategory();

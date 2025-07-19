@@ -4,7 +4,8 @@ import {
   deleteProduct,
   getAllProducts,
   getProductById,
-  getProductsWithCategory,
+  getProductsWithCategoryId,
+  getProductsWithCategoryName,
   getTotalProductsCategoryStats,
   getTotalProductsStats,
   updateProduct,
@@ -39,15 +40,15 @@ const productSlice = createSlice({
         state.isSuccess = true;
         state.products = action.payload;
       })
-      .addCase(getProductsWithCategory.pending, (state) => {
+      .addCase(getProductsWithCategoryId.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getProductsWithCategory.rejected, (state) => {
+      .addCase(getProductsWithCategoryId.rejected, (state) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;
       })
-      .addCase(getProductsWithCategory.fulfilled, (state) => {
+      .addCase(getProductsWithCategoryId.fulfilled, (state) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
@@ -152,6 +153,19 @@ const productSlice = createSlice({
         state.isError = true;
       })
       .addCase(getProductById.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+      })
+      .addCase(getProductsWithCategoryName.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProductsWithCategoryName.rejected, (state) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+      })
+      .addCase(getProductsWithCategoryName.fulfilled, (state) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
