@@ -21,6 +21,7 @@ import {
   deleteProductReview,
   updateProductReview,
 } from "../../Redux/Services/productReviewServices";
+import namer from "color-namer";
 
 const ProductDisplayComponent = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,9 @@ const ProductDisplayComponent = () => {
   const [editing, setEditing] = useState(false);
   // const [editingReviewId, setEditingReviewId] = useState(null);
   const [hover, setHover] = useState(0);
+  const [selectedColor, setSelectedColor] = useState(
+    product?.colors?.[0] || ""
+  );
 
   const user = useSelector((state) => state.auth.user); // adjust based on your store
 
@@ -58,7 +62,6 @@ const ProductDisplayComponent = () => {
       setQuantity((prev) => prev - 1);
     }
   };
-
 
   return (
     <Container className="py-5">
@@ -129,9 +132,43 @@ const ProductDisplayComponent = () => {
                       stock
                     </span>
                   </div>
+                  {product?.colors?.length > 0 && (
+                    <div className="my-3">
+                      <span className="fw-semibold">Choose Color:</span>
+                      <div className="d-flex gap-2 mt-2 flex-wrap">
+                        {product.colors.map((color, idx) => {
+                          const name = namer(color).basic[0].name;
+                          return (
+                            <div
+                              key={idx}
+                              title={name}
+                              onClick={() => setSelectedColor(color)}
+                              style={{
+                                width: 24,
+                                height: 24,
+                                borderRadius: "50%",
+                                backgroundColor: color,
+                                border:
+                                  selectedColor === color
+                                    ? "2px solid black"
+                                    : "1px solid #ccc",
+                                cursor: "pointer",
+                              }}
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
 
                   <Button
-                    onClick={() => navigate(`/${id}/order/${quantity}`)}
+                    onClick={() =>
+                      navigate(
+                        `/${id}/order/${quantity}?color=${encodeURIComponent(
+                          selectedColor
+                        )}`
+                      )
+                    }
                     className="w-100 mt-3 modern-order-btn"
                     size="lg"
                   >

@@ -11,6 +11,7 @@ import {
 } from "../../../Redux/Services/cartServices";
 import { toast } from "react-toastify";
 import TooltipWrapper from "../../TooltipWrapper";
+import namer from "color-namer";
 import "./BlurHashImageComponent.css";
 
 const BlurHashImageComponent = ({ product }) => {
@@ -151,19 +152,22 @@ const BlurHashImageComponent = ({ product }) => {
         {/* Color Circles */}
         {colors.length > 0 && (
           <div className="d-flex gap-2 mt-2 mx-1 flex-wrap">
-            {colors.map((color, index) => (
-              <span
-                key={index}
-                style={{
-                  width: "18px",
-                  height: "18px",
-                  backgroundColor: color,
-                  borderRadius: "50%",
-                  // border: "1px solid #ddd",
-                }}
-                title={color}
-              />
-            ))}
+            {colors.map((color, index) => {
+              const colorName = namer(color).basic[0].name;
+              return (
+                <span
+                  key={index}
+                  style={{
+                    width: "18px",
+                    height: "18px",
+                    backgroundColor: color,
+                    borderRadius: "50%",
+                    cursor: "default",
+                  }}
+                  title={colorName}
+                />
+              );
+            })}
           </div>
         )}
       </div>

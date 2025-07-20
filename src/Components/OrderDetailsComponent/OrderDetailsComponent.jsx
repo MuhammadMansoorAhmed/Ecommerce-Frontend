@@ -18,6 +18,9 @@ const OrderDetailsComponent = () => {
   const isError = useSelector(selectIsError);
 
   const { productId, quantity } = useParams();
+const params = new URLSearchParams(location.search);
+const color = params.get("color");
+
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -54,6 +57,7 @@ const OrderDetailsComponent = () => {
 
   const handleOrderSubmit = async (values) => {
     values.quantity = quantity;
+    values.color = color;
     const response = await dispatch(
       addOrder({ formData: values, productId: productId })
     );

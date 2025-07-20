@@ -1,14 +1,36 @@
 .product-scroll-wrapper {
-  scrollbar-width: none;
-  -ms-text-overflow: none;
+  display: flex;
+  overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  overflow-x: scroll;
+  scrollbar-width: none;
 }
+
 .product-scroll-wrapper::-webkit-scrollbar {
   display: none;
 }
+
+.product-scroll-inner {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
 .product-card {
   scroll-snap-align: start;
+  flex-shrink: 0;
   width: 250px;
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .product-card {
+    width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .product-card {
+    width: 160px;
+  }
 }
