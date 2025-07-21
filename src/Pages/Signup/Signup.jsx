@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { register } from "../../Redux/Services/authServices";
 import { useNavigate } from "react-router-dom";
+import logo from "../../../public/Ravaah.png";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -131,10 +132,13 @@ const Signup = () => {
       <NavBar />
       <div className="d-flex justify-content-center align-items-center container h-100 py-3">
         <div
-          className="shadow d-flex flex-column p-4 justify-content-center "
+          className="shadow d-flex flex-column p-5 justify-content-center "
           style={{ width: "600px", height: "auto" }}
         >
-          <h3 className="w-100  py-2 text-primary">Signup</h3>
+          <img src={logo} alt="company" style={{ maxWidth: "100px" }} />
+          <h5 className="w-100  py-2 " style={{ color: "#0A557E" }}>
+            Signup
+          </h5>
           <div className="flex justify-content-center">
             <button
               style={{
@@ -271,6 +275,7 @@ const Signup = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-decoration-none"
+                      style={{ color: "#0A557E" }}
                     >
                       {" "}
                       Terms of Service
@@ -281,6 +286,7 @@ const Signup = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-decoration-none"
+                      style={{ color: "#0A557E" }}
                     >
                       Privacy Policy
                     </a>
@@ -299,7 +305,11 @@ const Signup = () => {
               <Form.Text>
                 Already Have An Account?{" "}
                 <span>
-                  <a className="link" href="/login">
+                  <a
+                    className="link"
+                    href="/login"
+                    style={{ color: "#0A557E" }}
+                  >
                     Login
                   </a>
                 </span>
