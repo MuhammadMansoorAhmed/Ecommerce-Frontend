@@ -1,21 +1,67 @@
-import { useState } from "react";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
-import { BsShieldLockFill } from "react-icons/bs";
-import { FaCcVisa, FaCcMastercard, FaCcAmex, FaPaypal } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  FormGroup,
+} from "react-bootstrap";
+import { BsCashCoin, BsShieldLockFill } from "react-icons/bs";
+import { FaCcVisa, FaCcMastercard, FaCcAmex } from "react-icons/fa";
 import "./PaymentLayout.css";
 import { toast } from "react-toastify";
+import * as Yup from "yup";
+import { Formik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { addOrder } from "../../Redux/Services/orderServices";
+import {
+  selectIsError,
+  selectIsLoading,
+} from "../../Redux/Features/orderSlice";
+import { getAllCartItemsByUserId } from "../../Redux/Services/cartServices";
+
+const totalPrice = (products) => {
+  let total = 0;
+  products.forEach((product) => {
+    total += product.productId.price;
+  });
+  return total;
+};
 
 const PaymentLayout = () => {
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLoading = useSelector(selectIsLoading);
+  const isError = useSelector(selectIsError);
+  const [cartProducts, setCartProducts] = useState([]);
+
+  // Get params for order details
+  const { productId, quantity } = useParams();
+  const params = new URLSearchParams(location.search);
+  const color = params.get("color");
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      const res = await dispatch(getAllCartItemsByUserId());
+      setCartProducts(res.payload.data);
+    };
+    fetchCart();
+  }, [dispatch]);
+
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [cardDetails, setCardDetails] = useState({
     number: "",
     cvv: "",
     expiry: "",
     name: "",
   });
-  const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
+  const [cardErrors, setCardErrors] = useState({});
+
+  const handleCardChange = (e) => {
     const { name, value } = e.target;
     setCardDetails((prev) => ({
       ...prev,
@@ -25,10 +71,10 @@ const PaymentLayout = () => {
 
   const handlePaymentMethodChange = (method) => {
     setPaymentMethod(method);
-    setErrors({});
+    setCardErrors({});
   };
 
-  const validateForm = () => {
+  const validateCardForm = () => {
     const errs = {};
     if (paymentMethod === "card") {
       if (!cardDetails.number.match(/^\d{16}$/)) {
@@ -44,18 +90,67 @@ const PaymentLayout = () => {
         errs.name = "Cardholder name is required";
       }
     }
-    setErrors(errs);
+    setCardErrors(errs);
     return Object.keys(errs).length === 0;
   };
 
-  const handleCheckout = () => {
-    if (!validateForm()) return;
+  const handleCardCheckout = () => {
+    if (!validateCardForm()) return;
     const payload = {
       method: paymentMethod,
       ...(paymentMethod === "card" ? cardDetails : {}),
     };
     console.log("Sending payment data:", payload);
     toast.success("✅ Payment processed successfully (mock)!");
+  };
+
+  // Validation schema for COD order details
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .required("First Name is required")
+      .max(16, "First Name must be at most 16 characters"),
+    lastName: Yup.string()
+      .required("Last Name is required")
+      .max(16, "Last Name must be at most 16 characters"),
+    address: Yup.string()
+      .required("Address is required")
+      .max(80, "Address must be at most 80 characters"),
+    city: Yup.string()
+      .required("City is required")
+      .max(16, "City must be at most 16 characters"),
+    state: Yup.string()
+      .required("State is required")
+      .max(20, "State must be at most 20 characters"),
+    postalCode: Yup.string()
+      .required("Postal code is required")
+      .matches(/^[0-9]{5,6}$/, "Postal code must be 5 or 6 digits"),
+    contactNumber: Yup.string()
+      .required("Contact Number is required")
+      .matches(
+        /^03[0-9]{9}$/,
+        "Must be a valid Pakistani number (e.g., 03123456789)"
+      ),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+  });
+
+  // Handle COD order submission
+  const handleOrderSubmit = async (values) => {
+    values.quantity = quantity;
+    values.color = color;
+    values.paymentMethod = paymentMethod; // Add payment method to order
+
+    const response = await dispatch(
+      addOrder({ formData: values, productId: productId })
+    );
+
+    if (response.meta.requestStatus === "fulfilled") {
+      toast.success("Order Placed Successfully");
+      return response.payload.data.createdOrder;
+    } else {
+      throw new Error("Order submission failed");
+    }
   };
 
   return (
@@ -65,39 +160,271 @@ const PaymentLayout = () => {
         <Col md={7} className="mb-4">
           <h3 className="mb-4 fw-bold">Payment Details</h3>
 
-          {/* Payment Method Switch */}
+          {/* COD Payment Method */}
           <Card className="mb-3 shadow-sm">
             <Card.Body>
               <Form.Check
                 type="radio"
-                id="paypal"
-                name="payment"
-                checked={paymentMethod === "paypal"}
-                onChange={() => handlePaymentMethodChange("paypal")}
+                id="cod"
+                name="paymentMethod"
+                checked={paymentMethod === "cod"}
+                onChange={() => handlePaymentMethodChange("cod")}
                 label={
                   <div>
                     <strong>
-                      <FaPaypal className="me-2 text-primary" size={18} />
-                      PayPal
+                      <BsCashCoin className="me-2 text-primary" size={18} />
+                      Cash On Delivery (COD)
                     </strong>
                     <p
                       className="text-muted mb-0"
                       style={{ fontSize: "0.9rem" }}
                     >
-                      Secure checkout via PayPal.
+                      Pay once you receive the package
                     </p>
                   </div>
                 }
               />
+
+              {/* COD Order Details Form */}
+              {paymentMethod === "cod" && (
+                <div className="mt-4">
+                  <h5 className="mb-3">Shipping Information</h5>
+                  <Formik
+                    initialValues={{
+                      firstName: "",
+                      lastName: "",
+                      country: "",
+                      address: "",
+                      city: "",
+                      state: "",
+                      postalCode: "",
+                      contactNumber: "",
+                      email: "",
+                    }}
+                    validationSchema={validationSchema}
+                    onSubmit={async (values, { setSubmitting }) => {
+                      setSubmitting(true);
+
+                      try {
+                        const order = await handleOrderSubmit(values);
+                        if (order && order._id) {
+                          console.log(order);
+                          navigate(
+                            `/products/oder/userOrderDetails/${order._id}`
+                          );
+                        } else {
+                          toast.error(
+                            "Something went wrong while placing your order."
+                          );
+                        }
+                      } catch (error) {
+                        console.error("Order submission failed:", error);
+                        toast.error("Failed to place order. Please try again.");
+                      } finally {
+                        setSubmitting(false);
+                      }
+                    }}
+                  >
+                    {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      isSubmitting,
+                    }) => (
+                      <Form
+                        className="modern-order-form"
+                        onSubmit={handleSubmit}
+                      >
+                        <Row>
+                          <Col md={6}>
+                            <FormGroup className="mb-3">
+                              <Form.Label>First Name *</Form.Label>
+                              <Form.Control
+                                type="text"
+                                name="firstName"
+                                value={values.firstName}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={
+                                  touched.firstName && errors.firstName
+                                }
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.firstName}
+                              </Form.Control.Feedback>
+                            </FormGroup>
+                          </Col>
+
+                          <Col md={6}>
+                            <FormGroup className="mb-3">
+                              <Form.Label>Last Name *</Form.Label>
+                              <Form.Control
+                                type="text"
+                                name="lastName"
+                                value={values.lastName}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.lastName && errors.lastName}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.lastName}
+                              </Form.Control.Feedback>
+                            </FormGroup>
+                          </Col>
+                        </Row>
+
+                        <FormGroup className="mb-3">
+                          <Form.Label>Country</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="country"
+                            value={values.country}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isInvalid={touched.country && errors.country}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.country}
+                          </Form.Control.Feedback>
+                        </FormGroup>
+
+                        <FormGroup className="mb-3">
+                          <Form.Label>Address *</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="address"
+                            value={values.address}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isInvalid={touched.address && errors.address}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.address}
+                          </Form.Control.Feedback>
+                        </FormGroup>
+
+                        <Row>
+                          <Col md={6}>
+                            <FormGroup className="mb-3">
+                              <Form.Label>City *</Form.Label>
+                              <Form.Control
+                                type="text"
+                                name="city"
+                                value={values.city}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.city && errors.city}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.city}
+                              </Form.Control.Feedback>
+                            </FormGroup>
+                          </Col>
+
+                          <Col md={6}>
+                            <FormGroup className="mb-3">
+                              <Form.Label>State *</Form.Label>
+                              <Form.Control
+                                type="text"
+                                name="state"
+                                value={values.state}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.state && errors.state}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.state}
+                              </Form.Control.Feedback>
+                            </FormGroup>
+                          </Col>
+                        </Row>
+
+                        <FormGroup className="mb-3">
+                          <Form.Label>Postal Code *</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="postalCode"
+                            value={values.postalCode}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isInvalid={touched.postalCode && errors.postalCode}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.postalCode}
+                          </Form.Control.Feedback>
+                        </FormGroup>
+
+                        <Row>
+                          <Col md={6}>
+                            <FormGroup className="mb-3">
+                              <Form.Label>Contact Number *</Form.Label>
+                              <Form.Control
+                                type="text"
+                                name="contactNumber"
+                                value={values.contactNumber}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={
+                                  touched.contactNumber && errors.contactNumber
+                                }
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.contactNumber}
+                              </Form.Control.Feedback>
+                            </FormGroup>
+                          </Col>
+
+                          <Col md={6}>
+                            <FormGroup className="mb-3">
+                              <Form.Label>Email *</Form.Label>
+                              <Form.Control
+                                type="email"
+                                name="email"
+                                value={values.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.email && errors.email}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.email}
+                              </Form.Control.Feedback>
+                            </FormGroup>
+                          </Col>
+                        </Row>
+
+                        <Button
+                          type="submit"
+                          className="modern-submit-btn mt-3 w-100"
+                          disabled={isSubmitting || isLoading}
+                        >
+                          {isLoading || isSubmitting
+                            ? "Placing Order..."
+                            : "Place COD Order"}
+                        </Button>
+
+                        {isError && (
+                          <p className="text-danger mt-2">
+                            Something went wrong. Please try again.
+                          </p>
+                        )}
+                      </Form>
+                    )}
+                  </Formik>
+                </div>
+              )}
             </Card.Body>
           </Card>
 
+          {/* Credit/Debit Card Payment Method */}
           <Card className="shadow-sm">
             <Card.Body>
               <Form.Check
                 type="radio"
                 id="card"
-                name="payment"
+                name="paymentMethod"
                 checked={paymentMethod === "card"}
                 onChange={() => handlePaymentMethodChange("card")}
                 label={
@@ -127,11 +454,11 @@ const PaymentLayout = () => {
                       name="number"
                       placeholder="1234 5678 9012 3456"
                       value={cardDetails.number}
-                      onChange={handleChange}
-                      isInvalid={!!errors.number}
+                      onChange={handleCardChange}
+                      isInvalid={!!cardErrors.number}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.number}
+                      {cardErrors.number}
                     </Form.Control.Feedback>
                   </Form.Group>
 
@@ -144,11 +471,11 @@ const PaymentLayout = () => {
                           name="cvv"
                           placeholder="123"
                           value={cardDetails.cvv}
-                          onChange={handleChange}
-                          isInvalid={!!errors.cvv}
+                          onChange={handleCardChange}
+                          isInvalid={!!cardErrors.cvv}
                         />
                         <Form.Control.Feedback type="invalid">
-                          {errors.cvv}
+                          {cardErrors.cvv}
                         </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
@@ -160,11 +487,11 @@ const PaymentLayout = () => {
                           name="expiry"
                           placeholder="MM/YY"
                           value={cardDetails.expiry}
-                          onChange={handleChange}
-                          isInvalid={!!errors.expiry}
+                          onChange={handleCardChange}
+                          isInvalid={!!cardErrors.expiry}
                         />
                         <Form.Control.Feedback type="invalid">
-                          {errors.expiry}
+                          {cardErrors.expiry}
                         </Form.Control.Feedback>
                       </Form.Group>
                     </Col>
@@ -177,11 +504,11 @@ const PaymentLayout = () => {
                       name="name"
                       placeholder="John Doe"
                       value={cardDetails.name}
-                      onChange={handleChange}
-                      isInvalid={!!errors.name}
+                      onChange={handleCardChange}
+                      isInvalid={!!cardErrors.name}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.name}
+                      {cardErrors.name}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Form>
@@ -196,10 +523,16 @@ const PaymentLayout = () => {
 
           <Card className="shadow-sm mb-3">
             <Card.Body>
-              <div className="d-flex justify-content-between mb-2">
-                <span>Subtotal</span>
-                <span>PKR 5,999</span>
-              </div>
+              {cartProducts &&
+                cartProducts?.map((product) => (
+                  <div
+                    key={product.productId._id}
+                    className="d-flex justify-content-between mb-3"
+                  >
+                    <span>{product.productId.name}</span>
+                    <span>{product.productId.price}</span>
+                  </div>
+                ))}
               <div className="d-flex justify-content-between mb-2">
                 <span>Shipping</span>
                 <span>PKR 200</span>
@@ -207,7 +540,9 @@ const PaymentLayout = () => {
               <hr />
               <div className="d-flex justify-content-between">
                 <strong>Total</strong>
-                <strong style={{ color: "green" }}>PKR 6,199</strong>
+                <strong style={{ color: "green" }}>
+                  {totalPrice(cartProducts || []) + 200}
+                </strong>
               </div>
             </Card.Body>
           </Card>
@@ -217,27 +552,44 @@ const PaymentLayout = () => {
             Your payment is secured with end-to-end encryption.
           </div>
 
-          <Button
-            className="checkout-btn w-100 py-2 fw-semibold"
-            onClick={handleCheckout}
-          >
-            Checkout {"->"}
-          </Button>
+          {/* Show checkout button only for card payments */}
+          {paymentMethod === "card" && (
+            <>
+              <Button
+                className="checkout-btn w-100 py-2 fw-semibold"
+                onClick={handleCardCheckout}
+              >
+                Checkout {"->"}
+              </Button>
 
-          <div
-            className="text-center text-muted mt-3"
-            style={{ fontSize: "0.85rem" }}
-          >
-            By continuing, you agree to our{" "}
-            <a href="#" className="text-decoration-underline">
-              terms & conditions
-            </a>{" "}
-            and{" "}
-            <a href="#" className="text-decoration-underline">
-              refund policy
-            </a>
-            .
-          </div>
+              <div
+                className="text-center text-muted mt-3"
+                style={{ fontSize: "0.85rem" }}
+              >
+                By continuing, you agree to our{" "}
+                <a href="#" className="text-decoration-underline">
+                  terms & conditions
+                </a>{" "}
+                and{" "}
+                <a href="#" className="text-decoration-underline">
+                  refund policy
+                </a>
+                .
+              </div>
+            </>
+          )}
+
+          {/* Show message for COD */}
+          {paymentMethod === "cod" && (
+            <div className="text-center text-muted">
+              <p className="mb-2">
+                Fill in your shipping details above to place your COD order.
+              </p>
+              <small>
+                You&apos;ll pay when the package is delivered to your address.
+              </small>
+            </div>
+          )}
         </Col>
       </Row>
     </Container>

@@ -18,9 +18,8 @@ const OrderDetailsComponent = () => {
   const isError = useSelector(selectIsError);
 
   const { productId, quantity } = useParams();
-const params = new URLSearchParams(location.search);
-const color = params.get("color");
-
+  const params = new URLSearchParams(location.search);
+  const color = params.get("color");
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -29,9 +28,6 @@ const color = params.get("color");
     lastName: Yup.string()
       .required("Last Name is required")
       .max(16, "Last Name must be at most 16 characters"),
-    country: Yup.string()
-      .required("Country is required")
-      .max(24, "Country must be at most 24 characters"),
     address: Yup.string()
       .required("Address is required")
       .max(80, "Address must be at most 80 characters"),
@@ -152,7 +148,7 @@ const color = params.get("color");
                 </Row>
 
                 <FormGroup className="mb-3">
-                  <Form.Label>Country *</Form.Label>
+                  <Form.Label>Country </Form.Label>
                   <Form.Control
                     type="text"
                     name="country"

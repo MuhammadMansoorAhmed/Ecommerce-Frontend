@@ -103,7 +103,7 @@ const Cart = () => {
                 </div>
                 <button
                   className="checkout-btn w-100 mt-3"
-                  onClick={() => navigate("/payment")}
+                  onClick={() => navigate("/payment?")}
                 >
                   Proceed to Checkout
                 </button>

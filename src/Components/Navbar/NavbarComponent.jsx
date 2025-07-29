@@ -1,6 +1,7 @@
 import "./NavbarCSS.css";
 import CategoryNavigation from "./CategoryNavigation";
 import NavBar from "./NavBar";
+import React from "react";
 
 const NavbarComponent = () => {
   return (
@@ -11,4 +12,4 @@ const NavbarComponent = () => {
   );
 };
 
-export default NavbarComponent;
+export default React.memo(NavbarComponent);
