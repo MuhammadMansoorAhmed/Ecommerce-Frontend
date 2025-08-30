@@ -175,22 +175,40 @@ export const getProductsWithCategoryName = createAsyncThunk(
   "product/getProductsByCategoryName",
   async (categoryName, thunkAPI) => {
     try {
+      // Safely handle spaces/special chars; does not change logic/contract
+      const encoded = encodeURIComponent(categoryName ?? "");
+
+      // Pass RTK's abort signal to Axios so in-flight requests are canceled on unmount/re-dispatch
       const response = await axios.get(
-        `${API_BASE_URL}/api/product/getProductByCategoryName/${categoryName}`
+        `${API_BASE_URL}/api/product/getProductByCategoryName/${encoded}`,
+        { signal: thunkAPI.signal, timeout: 15000 } // timeout is a safety net
       );
+
+      // Keep your original return contract
       return response.data;
     } catch (error) {
+      // If aborted, surface a consistent, lightweight message (still goes to rejected)
+      if (
+        axios.isCancel?.(error) ||
+        error.name === "CanceledError" ||
+        error.code === "ERR_CANCELED"
+      ) {
+        return thunkAPI.rejectWithValue("Request canceled");
+      }
+
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
+
       console.log(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
+
 
 export const getTotalProductsStats = createAsyncThunk(
   "product/getTotalProductsStats",

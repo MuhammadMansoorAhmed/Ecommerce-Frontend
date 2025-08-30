@@ -13,20 +13,31 @@ export default function ProductScroll({
   const dispatch = useDispatch();
   const scrollRef = useRef(null);
   const [products, setProducts] = useState([]);
+  console.log(products);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchProducts = async () => {
       try {
         const response = await dispatch(getProductsWithCategoryName(category));
+        if (!isMounted) return;
         if (response?.payload?.data) {
           setProducts(response.payload.data.slice(0, 10));
+        } else {
+          setProducts([]);
         }
       } catch (error) {
         console.error("Error fetching products:", error);
         toast.error("Error fetching products");
+        if (isMounted) setProducts([]);
       }
     };
     fetchProducts();
+
+    return () => {
+      isMounted = false;
+    };
   }, [category, dispatch]);
 
   useEffect(() => {
@@ -40,7 +51,7 @@ export default function ProductScroll({
     const scrollLeftLoop = () => {
       if (container.scrollLeft <= 0) {
         // 1. Instantly scroll to end
-        container.scrollLeft = container.scrollWidth - container.offsetWidth;
+        container.scrollLeft = container.scrollWidth - container.clientWidth;
 
         // 2. Delay the next scroll so the reset takes effect visually
         setTimeout(() => {
@@ -53,7 +64,7 @@ export default function ProductScroll({
 
     const scrollRightLoop = () => {
       if (
-        container.scrollLeft + container.offsetWidth >=
+        container.scrollLeft + container.clientWidth >=
         container.scrollWidth - 1
       ) {
         container.scrollTo({ left: 0, behavior: "smooth" });
@@ -63,6 +74,8 @@ export default function ProductScroll({
     };
 
     const startAutoScroll = () => {
+      // Clear any existing interval before starting a new one
+      if (scrollIntervalId) clearInterval(scrollIntervalId);
       scrollIntervalId = setInterval(() => {
         if (!container) return;
 
@@ -75,13 +88,16 @@ export default function ProductScroll({
     };
 
     const stopAutoScroll = () => {
-      if (scrollIntervalId) clearInterval(scrollIntervalId);
+      if (scrollIntervalId) {
+        clearInterval(scrollIntervalId);
+        scrollIntervalId = null;
+      }
     };
 
     const scrollToEndIfLeft = () => {
       if (scrollDirection === "left") {
         // Ensure we always start from the rightmost end
-        container.scrollLeft = container.scrollWidth - container.offsetWidth;
+        container.scrollLeft = container.scrollWidth - container.clientWidth;
       }
     };
 

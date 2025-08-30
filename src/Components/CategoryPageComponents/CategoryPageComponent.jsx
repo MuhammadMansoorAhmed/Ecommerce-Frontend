@@ -1,82 +1,134 @@
 /* eslint-disable react/prop-types */
-import BlurHashImageComponent from "../HomeComponent/PopularProduct/BlurHashImageComponent";
-import Spinner from "react-bootstrap/Spinner";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import Spinner from "react-bootstrap/Spinner";
+import { toast } from "react-toastify";
+
+import BlurHashImageComponent from "../HomeComponent/PopularProduct/BlurHashImageComponent";
+import PaginationComponent from "../pagination/PaginationComponent";
+
 import {
   getAllProducts,
   getProductsWithCategoryId,
 } from "../../Redux/Services/productServices";
-import {
-  selectIsLoading,
-  // selectIsSuccess,
-} from "../../Redux/Features/productSlice";
-import { toast } from "react-toastify";
-import PaginationComponent from "../pagination/PaginationComponent";
+import { selectIsLoading } from "../../Redux/Features/productSlice";
 
 const ITEMS_PER_PAGE = 12;
 
+const areListsEqualShallow = (a = [], b = []) => {
+  if (a === b) return true;
+  if (a.length !== b.length) return false;
+  // Compare by id to avoid expensive deep checks
+  for (let i = 0; i < a.length; i++) {
+    if (a[i]?._id !== b[i]?._id) return false;
+  }
+  return true;
+};
+
 const CategoryPageComponent = ({ category }) => {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
+
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isFetched, setIsFetched] = useState(false); // ✅ Track fetch status manually
+  const [isFetched, setIsFetched] = useState(false);
 
-  const isLoading = useSelector(selectIsLoading);
-  // const isSuccess = useSelector(selectIsSuccess);
+  // Only re-render when the boolean actually changes
+  const isLoading = useSelector(selectIsLoading, shallowEqual);
+
+  // Keep a ref of last data to do cheap equality checks
+  const lastProductsRef = useRef(products);
+
+  // Decide source once, memoized
+  const isHome = useMemo(
+    () => pathname === "/" || category === "all",
+    [pathname, category]
+  );
 
   useEffect(() => {
+    let aborted = false;
+    const ctrl = new AbortController();
+
     const fetchProducts = async () => {
-      setIsFetched(false); // Reset before new fetch
+      setIsFetched(false);
+
       try {
-        let response;
-        if (location.pathname === "/" || category === "all") {
-          response = await dispatch(getAllProducts());
+        let action;
+        if (isHome) {
+          action = await dispatch(getAllProducts());
         } else if (category && category !== "undefined") {
-          response = await dispatch(getProductsWithCategoryId(category));
+          action = await dispatch(getProductsWithCategoryId(category));
+        } else {
+          // No valid category, treat as empty
+          if (!aborted) {
+            if (!areListsEqualShallow([], lastProductsRef.current)) {
+              setProducts([]);
+              lastProductsRef.current = [];
+            }
+            setCurrentPage(1);
+          }
+          return;
         }
 
-        if (response?.payload?.data) {
-          setProducts(response.payload.data);
-          setCurrentPage(1); // Reset pagination
-        } else {
-          setProducts([]); // Ensure fallback if no data
+        if (aborted || ctrl.signal.aborted) return;
+
+        const incoming = action?.payload?.data ?? [];
+        // Only update state if data actually changed
+        if (!areListsEqualShallow(incoming, lastProductsRef.current)) {
+          setProducts(incoming);
+          lastProductsRef.current = incoming;
+          setCurrentPage(1); // reset pagination only when list changes
         }
-      } catch (error) {
-        toast.error("Error fetching products");
-        setProducts([]);
+      } catch (err) {
+        if (!aborted) {
+          toast.error("Error fetching products");
+          if (!areListsEqualShallow([], lastProductsRef.current)) {
+            setProducts([]);
+            lastProductsRef.current = [];
+          }
+        }
       } finally {
-        setIsFetched(true); // ✅ Mark as done
+        if (!aborted) setIsFetched(true);
       }
     };
 
     fetchProducts();
-  }, [category, dispatch]);
 
-  // Pagination logic
-  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedProducts = products.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
+    return () => {
+      aborted = true;
+      ctrl.abort();
+    };
+  }, [dispatch, isHome, category]); // includes pathname via isHome
+
+  // Derived values memoized
+  const totalPages = useMemo(
+    () => Math.ceil(products.length / ITEMS_PER_PAGE) || 0,
+    [products.length]
   );
 
-  const handlePageChange = (pageNumber) => {
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return products.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [products, currentPage]);
+
+  const handlePageChange = useCallback((pageNumber) => {
     setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+    // Keep scroll behavior snappy but not blocking
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }, []);
 
   return (
     <Container className="my-4">
       <Row className="justify-content-center g-3 p-2">
         {!isFetched || isLoading ? (
-          // ✅ Show spinner while fetching
           <div className="text-center py-5">
             <Spinner animation="grow" />
           </div>
         ) : paginatedProducts.length > 0 ? (
-          // ✅ Show products
           paginatedProducts.map((product) => (
             <Col key={product._id} xs={12} sm={6} md={4} lg={3}>
               <div className="h-100 d-flex flex-column justify-content-between">
@@ -85,7 +137,6 @@ const CategoryPageComponent = ({ category }) => {
             </Col>
           ))
         ) : (
-          // ✅ No product message after fetch
           <div className="text-center py-4">No Product Found</div>
         )}
       </Row>
@@ -101,4 +152,4 @@ const CategoryPageComponent = ({ category }) => {
   );
 };
 
-export default CategoryPageComponent;
+export default memo(CategoryPageComponent);
