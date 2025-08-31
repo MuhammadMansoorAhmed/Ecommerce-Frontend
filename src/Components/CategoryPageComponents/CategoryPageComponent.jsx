@@ -20,7 +20,6 @@ const ITEMS_PER_PAGE = 12;
 const areListsEqualShallow = (a = [], b = []) => {
   if (a === b) return true;
   if (a.length !== b.length) return false;
-  // Compare by id to avoid expensive deep checks
   for (let i = 0; i < a.length; i++) {
     if (a[i]?._id !== b[i]?._id) return false;
   }
@@ -35,17 +34,26 @@ const CategoryPageComponent = ({ category }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isFetched, setIsFetched] = useState(false);
 
-  // Only re-render when the boolean actually changes
-  const isLoading = useSelector(selectIsLoading, shallowEqual);
-
-  // Keep a ref of last data to do cheap equality checks
+  // Keep last list to avoid unnecessary re-renders
   const lastProductsRef = useRef(products);
 
-  // Decide source once, memoized
+  // Loading flag from store (unchanged)
+  const isLoading = useSelector(selectIsLoading, shallowEqual);
+
+  // Home route shows "all"
   const isHome = useMemo(
     () => pathname === "/" || category === "all",
     [pathname, category]
   );
+
+  // Server pagination meta when headers are present
+  const [pageMeta, setPageMeta] = useState({
+    totalPages: 0,
+    page: 1,
+    limit: ITEMS_PER_PAGE,
+    hasNext: false,
+    hasPrev: false,
+  });
 
   useEffect(() => {
     let aborted = false;
@@ -56,30 +64,57 @@ const CategoryPageComponent = ({ category }) => {
 
       try {
         let action;
+
         if (isHome) {
-          action = await dispatch(getAllProducts());
+          // Ask server for the requested page. This assumes your thunk supports { page, limit }.
+          action = await dispatch(
+            getAllProducts({ page: currentPage, limit: ITEMS_PER_PAGE })
+          );
         } else if (category && category !== "undefined") {
+          // Existing behavior for non-"all" categories (ID-based)
           action = await dispatch(getProductsWithCategoryId(category));
         } else {
-          // No valid category, treat as empty
+          // No valid category -> clear list
           if (!aborted) {
             if (!areListsEqualShallow([], lastProductsRef.current)) {
               setProducts([]);
               lastProductsRef.current = [];
             }
-            setCurrentPage(1);
           }
           return;
         }
 
         if (aborted || ctrl.signal.aborted) return;
 
+        // Keep original envelope: { statusCode, data, message }
         const incoming = action?.payload?.data ?? [];
-        // Only update state if data actually changed
+
+        // Read pagination headers if backend sent them (non-breaking)
+        const hdr = action?.payload?._headers || {};
+        const serverTotalPages = Number(hdr["x-total-pages"] || 0) || 0;
+
+        if (serverTotalPages) {
+          setPageMeta({
+            totalPages: serverTotalPages,
+            page: Number(hdr["x-page"] || 1) || 1,
+            limit: Number(hdr["x-limit"] || ITEMS_PER_PAGE) || ITEMS_PER_PAGE,
+            hasNext: String(hdr["x-has-next"]).toLowerCase() === "true",
+            hasPrev: String(hdr["x-has-prev"]).toLowerCase() === "true",
+          });
+        } else {
+          // No headers -> fall back to client-side pagination
+          setPageMeta((m) => ({ ...m, totalPages: 0 }));
+        }
+
+        // Only update state if list changed
         if (!areListsEqualShallow(incoming, lastProductsRef.current)) {
           setProducts(incoming);
           lastProductsRef.current = incoming;
-          setCurrentPage(1); // reset pagination only when list changes
+
+          // When NOT using server paging (i.e., non-home), reset page to 1 on list change
+          if (!isHome) {
+            setCurrentPage(1);
+          }
         }
       } catch (err) {
         if (!aborted) {
@@ -88,6 +123,7 @@ const CategoryPageComponent = ({ category }) => {
             setProducts([]);
             lastProductsRef.current = [];
           }
+          setPageMeta((m) => ({ ...m, totalPages: 0 }));
         }
       } finally {
         if (!aborted) setIsFetched(true);
@@ -96,26 +132,34 @@ const CategoryPageComponent = ({ category }) => {
 
     fetchProducts();
 
+    // For server pagination, refetch when currentPage changes
     return () => {
       aborted = true;
       ctrl.abort();
     };
-  }, [dispatch, isHome, category]); // includes pathname via isHome
+  }, [dispatch, isHome, category, currentPage]);
 
-  // Derived values memoized
-  const totalPages = useMemo(
-    () => Math.ceil(products.length / ITEMS_PER_PAGE) || 0,
-    [products.length]
-  );
+  // If server pagination headers exist, use them; otherwise compute locally
+  const usingServerPaging = pageMeta.totalPages > 0;
+
+  const totalPages = useMemo(() => {
+    return usingServerPaging
+      ? pageMeta.totalPages
+      : Math.ceil(products.length / ITEMS_PER_PAGE) || 0;
+  }, [usingServerPaging, pageMeta.totalPages, products.length]);
 
   const paginatedProducts = useMemo(() => {
+    if (usingServerPaging) {
+      // Server already returned exactly the current page
+      return products;
+    }
+    // Client-side slice fallback
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     return products.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [products, currentPage]);
+  }, [usingServerPaging, products, currentPage]);
 
   const handlePageChange = useCallback((pageNumber) => {
     setCurrentPage(pageNumber);
-    // Keep scroll behavior snappy but not blocking
     window.requestAnimationFrame(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });

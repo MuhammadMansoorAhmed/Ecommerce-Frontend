@@ -132,12 +132,29 @@ export const deleteProduct = createAsyncThunk(
 );
 export const getAllProducts = createAsyncThunk(
   "product/getAllProducts",
-  async (_, thunkAPI) => {
+  async (params, thunkAPI) => {
     try {
+      const { page, limit } = params ?? {};
       const response = await axios.get(
-        `${API_BASE_URL}/api/product/getAllProducts`
+        `${API_BASE_URL}/api/product/getAllProducts`,
+        { params: { page, limit }, signal: thunkAPI.signal, timeout: 15000 }
       );
-      return response.data;
+
+      // Keep your original return contract
+      const payload = response.data; // { statusCode, data, message } from ApiResponse
+
+      // Non-breaking: attach headers as a helper field
+      const h = response.headers || {};
+      payload._headers = {
+        "x-total-count": h["x-total-count"],
+        "x-total-pages": h["x-total-pages"],
+        "x-page": h["x-page"],
+        "x-limit": h["x-limit"],
+        "x-has-next": h["x-has-next"],
+        "x-has-prev": h["x-has-prev"],
+      };
+
+      return payload;
     } catch (error) {
       const message =
         (error.response &&
@@ -145,7 +162,6 @@ export const getAllProducts = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      console.log(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -171,23 +187,33 @@ export const getProductsWithCategoryId = createAsyncThunk(
     }
   }
 );
+
 export const getProductsWithCategoryName = createAsyncThunk(
   "product/getProductsByCategoryName",
-  async (categoryName, thunkAPI) => {
+  async (arg, thunkAPI) => {
     try {
-      // Safely handle spaces/special chars; does not change logic/contract
-      const encoded = encodeURIComponent(categoryName ?? "");
+      // Backward-compatible: accept "cloths" OR { categoryName: "cloths", page, limit }
+      const { categoryName, page, limit } =
+        typeof arg === "string" ? { categoryName: arg } : arg || {};
 
-      // Pass RTK's abort signal to Axios so in-flight requests are canceled on unmount/re-dispatch
+      const encoded = encodeURIComponent(categoryName ?? "");
       const response = await axios.get(
         `${API_BASE_URL}/api/product/getProductByCategoryName/${encoded}`,
-        { signal: thunkAPI.signal, timeout: 15000 } // timeout is a safety net
+        { params: { page, limit }, signal: thunkAPI.signal, timeout: 15000 }
       );
 
-      // Keep your original return contract
-      return response.data;
+      const payload = response.data; // original envelope
+      const h = response.headers || {};
+      payload._headers = {
+        "x-total-count": h["x-total-count"],
+        "x-total-pages": h["x-total-pages"],
+        "x-page": h["x-page"],
+        "x-limit": h["x-limit"],
+        "x-has-next": h["x-has-next"],
+        "x-has-prev": h["x-has-prev"],
+      };
+      return payload;
     } catch (error) {
-      // If aborted, surface a consistent, lightweight message (still goes to rejected)
       if (
         axios.isCancel?.(error) ||
         error.name === "CanceledError" ||
@@ -195,19 +221,17 @@ export const getProductsWithCategoryName = createAsyncThunk(
       ) {
         return thunkAPI.rejectWithValue("Request canceled");
       }
-
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
-
-      console.log(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
+
 
 
 export const getTotalProductsStats = createAsyncThunk(
