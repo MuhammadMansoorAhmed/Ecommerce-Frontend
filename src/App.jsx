@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Home from "./Pages/Home/Home";
+import LandingPage from "./Pages/LandingPage/LandingPage";
 import Contact from "./Pages/Contact/Contact";
 import About from "./Pages/About/About";
 import Layout from "./Components/CategoryPageComponents/Layout";
@@ -78,7 +79,8 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/shop" element={<Home />} />
           <Route path="/policies/:policyName" element={<Policies />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />

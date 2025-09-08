@@ -75,8 +75,8 @@ const ManageProductsComponent = () => {
   return (
     <Container
       fluid
-      className="bg-dark text-white py-4 px-3"
-      style={{ minHeight: "100vh" }}
+      className="py-4 px-3"
+      style={{ minHeight: "100vh", background: "var(--background-gradient)", color: "var(--text-dark)" }}
     >
       {show && (
         <Modal show onHide={() => setShow(false)} centered>
@@ -124,7 +124,7 @@ const ManageProductsComponent = () => {
 
           <Row>
             <Col>
-              <Table bordered hover variant="dark" responsive>
+              <Table bordered hover responsive className="tableLayout">
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -184,7 +184,7 @@ const ManageProductsComponent = () => {
                   ) : (
                     <tr>
                       <td colSpan="5" className="text-center">
-                        <Spinner animation="border" variant="light" />
+                        <Spinner animation="border" />
                       </td>
                     </tr>
                   )}

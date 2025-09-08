@@ -31,8 +31,8 @@ const AdminDashboardSidebar = ({ children }) => {
             key={index}
             action
             onClick={() => navigate(item.path)}
-            className="bg-transparent text-white ps-4 py-2 border-0"
-            style={{ fontSize: "14px" }}
+            className="bg-transparent ps-4 py-2 border-0"
+            style={{ fontSize: "14px", color: "var(--text-dark)" }}
           >
             <PiDotOutlineFill size={16} className="me-2" /> {item.label}
           </ListGroup.Item>
@@ -155,8 +155,14 @@ const AdminDashboardSidebar = ({ children }) => {
     <Container fluid className="px-0 d-flex" style={{ height: "100vh" }}>
       <Col
         md={3}
-        className="bg-dark text-white py-3 px-2 d-flex flex-column"
-        style={{ minWidth: "250px", maxWidth: "280px" }}
+        className="py-3 px-2 d-flex flex-column"
+        style={{
+          minWidth: "250px",
+          maxWidth: "280px",
+          background: "var(--white)",
+          color: "var(--text-dark)",
+          boxShadow: "var(--shadow-light)",
+        }}
       >
         <div
           className="d-flex justify-content-between align-items-center mb-4 px-2"
@@ -173,8 +179,9 @@ const AdminDashboardSidebar = ({ children }) => {
               <ListGroup.Item
                 action
                 onClick={() => handleMenuClick(key)}
-                className="bg-transparent text-white fw-semibold border-0"
+                className="bg-transparent fw-semibold border-0"
                 key={key}
+                style={{ color: "var(--text-dark)" }}
               >
                 {label}
               </ListGroup.Item>
@@ -185,16 +192,19 @@ const AdminDashboardSidebar = ({ children }) => {
 
         <div className="mt-auto">
           <Button
-            variant="outline-light"
+            variant="light"
             className="w-100 mt-3"
             onClick={handleLogout}
+            style={{ color: "var(--text-dark)" }}
           >
             Logout
           </Button>
         </div>
       </Col>
 
-      <Col className="bg-dark overflow-auto ">{children}</Col>
+      <Col className="overflow-auto " style={{ background: "var(--background-gradient)" }}>
+        {children}
+      </Col>
     </Container>
   );
 };

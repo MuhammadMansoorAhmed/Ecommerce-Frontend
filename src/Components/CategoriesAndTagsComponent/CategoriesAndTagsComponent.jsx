@@ -61,38 +61,17 @@ const CategoriesAndTagsComponent = () => {
           onHide={() => setShowDeleteModal(false)}
           variant="dark"
         >
-          <Modal.Header
-            className=""
-            closeButton
-            style={{
-              backgroundColor: "#1C4240",
-              borderRadius: "0px 0px 0px 0px",
-            }}
-          >
-            <Modal.Title className="text-warning">Warning</Modal.Title>
+          <Modal.Header className="" closeButton style={{ background: "var(--white)", color: "var(--text-dark)" }}>
+            <Modal.Title>Warning</Modal.Title>
           </Modal.Header>
-          <Modal.Body
-            className="text-white"
-            style={{ backgroundColor: "#1C4240" }}
-          >
+          <Modal.Body className="" style={{ background: "var(--white)", color: "var(--text-dark)" }}>
             Are you sure you want to delete this category?
           </Modal.Body>
-          <Modal.Footer
-            style={{
-              backgroundColor: "#1C4240",
-              borderRadius: "0px 0px 0px 0px",
-            }}
-          >
-            <Button
-              variant="secondary"
-              onClick={() => setShowDeleteModal(false)}
-            >
+          <Modal.Footer style={{ background: "var(--white)" }}>
+            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
               Close
             </Button>
-            <Button
-              variant="danger"
-              onClick={() => handleDeleteCategory(selectedCategory)}
-            >
+            <Button variant="danger" onClick={() => handleDeleteCategory(selectedCategory)}>
               Delete Category
             </Button>
           </Modal.Footer>
@@ -158,7 +137,7 @@ const CategoriesAndTagsComponent = () => {
                     <td className="border p-1">
                       <MdOutlineDeleteOutline
                         size={20}
-                        style={{ color: "lightCoral", cursor: "pointer" }}
+                        style={{ color: "#dc3545", cursor: "pointer" }}
                         onClick={() => {
                           setShowDeleteModal(true);
                           setSelectedCategory(categoryItem._id);

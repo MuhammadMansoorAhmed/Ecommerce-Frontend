@@ -1,5 +1,5 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { GoPlus } from "react-icons/go";
+import { GoHome, GoPlus } from "react-icons/go";
 import {
   RiBloggerLine,
   RiContactsBook3Line,
@@ -67,10 +67,19 @@ const NavBar = () => {
                   color: isActive ? "#012142" : "inherit",
                 })}
               >
+                <GoHome size={18} /> Home
+              </NavLink>
+              <NavLink
+                to="/shop"
+                className="text-decoration-none d-flex align-items-center gap-1 navHover"
+                style={({ isActive }) => ({
+                  color: isActive ? "#012142" : "inherit",
+                })}
+              >
                 <RiShoppingBag4Line size={18} /> Shop
               </NavLink>
               <NavLink
-                to="/"
+                to="/blog"
                 className="text-decoration-none d-flex align-items-center gap-1 navHover"
                 style={({ isActive }) => ({
                   color: isActive ? "#012142" : "inherit",
@@ -79,7 +88,7 @@ const NavBar = () => {
                 <RiBloggerLine size={18} /> Blog
               </NavLink>
               <NavLink
-                to="/"
+                to="/contact"
                 className="text-decoration-none d-flex align-items-center gap-1 navHover"
                 style={({ isActive }) => ({
                   color: isActive ? "#012142" : "inherit",
@@ -91,7 +100,7 @@ const NavBar = () => {
 
             {/* Right: Auth Links */}
             <Nav className="d-flex flex-row align-items-center gap-2 gap-lg-3">
-              {isLoggedIn === "true" ? (
+              {/* {isLoggedIn === "true" ? (
                 <div
                   className="d-flex align-items-center position-relative gap-2"
                   ref={dropdownRef}
@@ -155,7 +164,7 @@ const NavBar = () => {
                     <GoPlus size={18} /> Signup
                   </NavLink>
                 </>
-              )}
+              )} */}
             </Nav>
           </div>
         </Navbar.Collapse>

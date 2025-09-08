@@ -1,0 +1,70 @@
+.brand-description {
+  padding: 20px;
+}
+
+.brand-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #333;
+  font-family: 'Inter', sans-serif;
+}
+
+.brand-tagline {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 25px;
+  color: #666;
+  font-style: italic;
+}
+
+.brand-description-text {
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.shop-now-btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 5px 15px rgba(110, 142, 251, 0.4);
+  transition: all 0.3s ease;
+}
+
+.shop-now-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(110, 142, 251, 0.6);
+  color: white;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .brand-title {
+    font-size: 2.5rem;
+  }
+  
+  .brand-tagline {
+    font-size: 1.2rem;
+  }
+  
+  .brand-description-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .brand-title {
+    font-size: 2rem;
+  }
+  
+  .brand-tagline {
+    font-size: 1rem;
+  }
+}

@@ -1,37 +1,95 @@
 .navActive {
-  color: #012142;
-  border-bottom: 1.5px solid #628281;
-  transition: all 0.4s;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--secondary-color);
+  transition: var(--transition-medium);
   border-width: 100%;
 }
+
 .navHover {
-  transition: all 0.25s ease;
+  transition: var(--transition-fast);
   display: inline-flex;
   align-items: center;
   cursor: pointer;
+  font-weight: 500;
+  padding: 5px 0;
 }
 
 .navHover:hover {
   transform: translateY(-3px);
-  color: #012142; /* Optional: reinforce hover color */
+  color: var(--primary-color);
 }
 
 .navHover:hover {
-  color: #012142;
-  border-bottom: 1px solid #012142;
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--primary-color);
 }
+
 .category-item {
   cursor: pointer;
-  color: #000;
-  transition: all 0.4s;
+  color: var(--text-dark);
+  transition: var(--transition-medium);
+  padding: 8px 15px;
+  border-radius: var(--border-radius-sm);
 }
+
 .category-item:hover {
-  color: #012142;
+  color: var(--primary-color);
+  background-color: rgba(110, 142, 251, 0.1);
 }
 
 @media only screen and (max-width: 991px) {
   .shopDropdownListPage {
     width: 75%;
   }
+  
+  .navHover {
+    padding: 8px 0;
+  }
+  
+  .category-item {
+    padding: 10px;
+  }
+}
+
+/* Navbar container styling */
+.navbar {
+  background-color: var(--white);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 15px 0;
+}
+
+/* Navbar brand styling */
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text-dark);
+}
+
+/* Navbar toggler */
+.navbar-toggler {
+  border: none;
+  padding: 0;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* Dropdown styling */
+.dropdown-menu {
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-light);
+  border: none;
+  padding: 10px 0;
+}
+
+.dropdown-item {
+  padding: 8px 20px;
+  transition: var(--transition-fast);
+}
+
+.dropdown-item:hover {
+  background-color: rgba(110, 142, 251, 0.1);
+  color: var(--primary-color);
 }
 

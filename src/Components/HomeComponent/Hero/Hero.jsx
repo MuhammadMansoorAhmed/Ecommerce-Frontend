@@ -1,5 +1,6 @@
 import { Carousel } from "react-bootstrap";
 
+
 const Hero = () => {
   return (
     <Carousel fade>

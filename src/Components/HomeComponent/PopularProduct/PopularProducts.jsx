@@ -23,7 +23,7 @@ const PopularProducts = ({ popularProducts }) => {
             />
             <div className="mt-3">
               <h6>{product?.name}</h6>
-              <p className="fw-bold" style={{ fontSize: "16px" }}>
+              <p className="fw-bold text-primary" style={{ fontSize: "var(--text-regular)" }}>
                 ${product?.price}
               </p>
             </div>

@@ -1,27 +1,67 @@
-/* #FFFFFF
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import './theme.css';
 
-#DADDE2
-
-#B1BDC5
-
-#889FA5
-
-#628281
-
-#43655A */
-@font-face {
-  font-family: Inter;
-  src: url("../public/Inter-VariableFont_opsz\,wght.ttf");
-}
 * {
-  font-family: inter;
-  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
+body {
+  font-family: var(--font-family);
+  font-weight: 400;
+  color: var(--text-dark);
+  background-color: var(--background-light);
+  overflow-x: hidden;
 }
 
 #root {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-html,body{
+
+html, body {
   width: 100%;
   height: 100%;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+h1 { font-size: var(--heading-large); }
+h2 { font-size: var(--heading-medium); }
+h3 { font-size: var(--heading-small); }
+
+p {
+  line-height: 1.6;
+  color: var(--text-medium);
+}
+
+/* Links */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+a:hover {
+  color: var(--secondary-color);
+}
+
+/* Focus styles for accessibility */
+:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--primary-color);
+  color: var(--white);
 }

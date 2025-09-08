@@ -144,7 +144,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
   return (
     <Form
       onSubmit={handleSubmit}
-      className="bg-dark text-white p-4 rounded shadow"
+      className="p-4 rounded shadow form-container"
     >
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4>Edit Product</h4>
@@ -165,6 +165,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
+              className="form-control"
             />
           </FloatingLabel>
           {errors.name && (
@@ -179,6 +180,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
               name="category"
               value={formData.category}
               onChange={handleChange}
+              className="form-select"
             >
               <option value="">Select a category</option>
               {categories.map((cat) => (
@@ -203,6 +205,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
           name="description"
           value={formData.description}
           onChange={handleChange}
+          className="form-control"
           style={{ height: "100px" }}
         />
       </FloatingLabel>
@@ -214,7 +217,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
 
       {/* SKU (read-only) */}
       <FloatingLabel label="SKU (unchangeable)" className="text-dark mb-3">
-        <Form.Control type="text" name="sku" value={formData.sku} disabled />
+        <Form.Control type="text" name="sku" value={formData.sku} disabled className="form-control" />
       </FloatingLabel>
 
       {/* Price + Stock */}
@@ -226,6 +229,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
               name="price"
               value={formData.price}
               onChange={handleChange}
+              className="form-control"
             />
           </FloatingLabel>
           {errors.price && (
@@ -241,6 +245,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
               name="totalStock"
               value={formData.totalStock}
               onChange={handleChange}
+              className="form-control"
             />
           </FloatingLabel>
           {errors.totalStock && (
@@ -260,6 +265,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
               name="discount"
               value={formData.discount}
               onChange={handleChange}
+              className="form-control"
             />
           </FloatingLabel>
           {errors.discount && (
@@ -275,7 +281,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
               name="discountedPrice"
               value={formData.discountedPrice}
               readOnly
-              style={{ backgroundColor: "#696969", color: "#f1f1f1" }}
+              className="form-control"
             />
           </FloatingLabel>
           {errors.discountedPrice && (
@@ -288,12 +294,13 @@ const UpdateProductForm = ({ product, closeForm }) => {
 
       {/* Images */}
       <Form.Group className="mb-3">
-        <Form.Label>Images (Max 3)</Form.Label>
+        <Form.Label className="form-label">Images (Max 3)</Form.Label>
         <Form.Control
           type="file"
           name="images"
           multiple
           onChange={handleFileChange}
+          className="form-control"
         />
         {errors.images && (
           <Alert variant="danger" className="mt-1 py-1">
@@ -304,7 +311,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
 
       {/* Colors */}
       <Form.Group className="mb-3">
-        <Form.Label className="text-white">Colors</Form.Label>
+        <Form.Label className="form-label">Colors</Form.Label>
         {formData.colors.map((color, index) => (
           <div key={index} className="d-flex align-items-center gap-2 mb-2">
             <Form.Control
@@ -353,7 +360,7 @@ const UpdateProductForm = ({ product, closeForm }) => {
         )}
       </Form.Group>
 
-      <Button type="submit" variant="light" className="mt-3 w-100">
+      <Button type="submit" className="btn-primary mt-3 w-100">
         Update Product
       </Button>
     </Form>

@@ -1,0 +1,42 @@
+.perfume-card {
+  background-color: #ffffff;
+  border-radius: 15px;
+  overflow: hidden;
+  height: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.perfume-card-image {
+  height: 200px;
+  overflow: hidden;
+}
+
+.perfume-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.perfume-card:hover .perfume-card-image img {
+  transform: scale(1.1);
+}
+
+.perfume-card-content {
+  padding: 20px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,1) 100%);
+}
+
+.perfume-card-content h3 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.perfume-card-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}

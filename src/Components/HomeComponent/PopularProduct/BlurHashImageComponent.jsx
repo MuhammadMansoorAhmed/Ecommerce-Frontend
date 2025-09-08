@@ -71,10 +71,7 @@ const BlurHashImageComponent = ({ product }) => {
   );
 
   return (
-    <div
-      className="product-image-wrapper d-flex flex-column h-100  p-2 shadow-animation"
-      style={{ borderRadius: "12px" }}
-    >
+    <div className="product-card product-image-wrapper d-flex flex-column h-100 p-2">
       <div className="image-container position-relative">
         {!imageLoaded ? (
           <Blurhash
@@ -89,23 +86,13 @@ const BlurHashImageComponent = ({ product }) => {
           <img
             src={imgSrc}
             alt="Product"
-            style={{
-              width: "100%",
-              height: "250px",
-              objectFit: "contain",
-              borderRadius: "6px",
-            }}
+            className="product-image"
           />
         )}
 
         {isLoggedIn && (
           <div
-            className="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2"
-            style={{
-              backgroundColor: "rgba(255,255,255,0.85)",
-              padding: "6px",
-              borderRadius: "6px",
-            }}
+            className="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2 overlay-actions"
           >
             <TooltipWrapper
               tooltip={isProductInCart ? "Already in cart" : "Add to Cart"}
@@ -114,7 +101,6 @@ const BlurHashImageComponent = ({ product }) => {
                 size={18}
                 className={isProductInCart ? "checkedIcon" : "hoverIcon"}
                 onClick={addProductToCart}
-                style={{ cursor: "pointer" }}
               />
             </TooltipWrapper>
             <TooltipWrapper tooltip="Go to Cart">
@@ -122,7 +108,6 @@ const BlurHashImageComponent = ({ product }) => {
                 size={18}
                 className="hoverIcon"
                 onClick={() => navigate("/cart")}
-                style={{ cursor: "pointer" }}
               />
             </TooltipWrapper>
           </div>
@@ -138,12 +123,10 @@ const BlurHashImageComponent = ({ product }) => {
         </h6>
 
         {discount > 0 ? (
-          <div className="d-flex mx-1 gap-2 align-items-center">
-            <span className="text-success fw-bold">Rs {discountedPrice}</span>
-            <small className="text-danger text-decoration-line-through">
-              Rs {price}
-            </small>
-            <span className="badge bg-success">{discount}% off</span>
+          <div className="price-wrapper mx-1">
+            <span className="price-current">Rs {discountedPrice}</span>
+            <small className="price-original">Rs {price}</small>
+            <span className="discount-badge">{discount}% off</span>
           </div>
         ) : (
           <div className="fw-bold mx-1 d-flex text-primary">Rs {price}</div>
@@ -151,21 +134,11 @@ const BlurHashImageComponent = ({ product }) => {
 
         {/* Color Circles */}
         {colors.length > 0 && (
-          <div className="d-flex gap-2 mt-2 mx-1 flex-wrap">
+          <div className="color-dots mt-2 mx-1">
             {colors.map((color, index) => {
               const colorName = namer(color).basic[0].name;
               return (
-                <span
-                  key={index}
-                  style={{
-                    width: "18px",
-                    height: "18px",
-                    backgroundColor: color,
-                    borderRadius: "50%",
-                    cursor: "default",
-                  }}
-                  title={colorName}
-                />
+                <span key={index} className="color-dot" style={{ backgroundColor: color }} title={colorName} />
               );
             })}
           </div>

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import "../../Components/ManageProductsComponent/form.css";
 import * as Yup from "yup";
 
 import { BsXCircle } from "react-icons/bs";
@@ -75,64 +76,59 @@ const UpdateOrderForm = ({ order, closeForm }) => {
       onSubmit={handleSubmit}
     >
       {() => (
-        <Form className="d-flex justify-content-center flex-column w-100 p-4">
+        <Form className="d-flex justify-content-center flex-column w-100 p-4 form-container">
           <div className="d-flex justify-content-between w-100">
             <h4>Update Order</h4>
             <BsXCircle size={20} onClick={closeForm} className="closeBtn" />
           </div>
           <div className="w-100">
-            <label>First Name</label>
-            <Field className="inputFields" name="firstName" type="text" />
-            <ErrorMessage name="firstName" component="div" className="error" />
+            <label className="form-label">First Name</label>
+            <Field className="form-control" name="firstName" type="text" />
+            <ErrorMessage name="firstName" component="div" className="text-danger mt-1" />
           </div>
           <div className="w-100">
-            <label>Last Name</label>
-            <Field className="inputFields" name="lastName" type="text" />
-            <ErrorMessage name="lastName" component="div" className="error" />
+            <label className="form-label">Last Name</label>
+            <Field className="form-control" name="lastName" type="text" />
+            <ErrorMessage name="lastName" component="div" className="text-danger mt-1" />
           </div>
           <div className="w-100">
-            <label>Email</label>
-            <Field className="inputFields" name="email" type="email" />
-            <ErrorMessage name="email" component="div" className="error" />
+            <label className="form-label">Email</label>
+            <Field className="form-control" name="email" type="email" />
+            <ErrorMessage name="email" component="div" className="text-danger mt-1" />
           </div>
           <div className="w-100">
-            <label>Address</label>
-            <Field className="inputFields" name="address" type="text" />
-            <ErrorMessage name="address" component="div" className="error" />
+            <label className="form-label">Address</label>
+            <Field className="form-control" name="address" type="text" />
+            <ErrorMessage name="address" component="div" className="text-danger mt-1" />
           </div>
           <div className="w-100">
-            <label>Country</label>
-            <Field className="inputFields" name="country" type="text" />
-            <ErrorMessage name="country" component="div" className="error" />
+            <label className="form-label">Country</label>
+            <Field className="form-control" name="country" type="text" />
+            <ErrorMessage name="country" component="div" className="text-danger mt-1" />
           </div>
           <div className="w-100">
-            <label>State</label>
-            <Field className="inputFields" name="state" type="text" />
-            <ErrorMessage name="state" component="div" className="error" />
+            <label className="form-label">State</label>
+            <Field className="form-control" name="state" type="text" />
+            <ErrorMessage name="state" component="div" className="text-danger mt-1" />
           </div>
           <div className="w-100">
-            <label>City</label>
-            <Field className="inputFields" name="city" type="text" />
-            <ErrorMessage name="city" component="div" className="error" />
+            <label className="form-label">City</label>
+            <Field className="form-control" name="city" type="text" />
+            <ErrorMessage name="city" component="div" className="text-danger mt-1" />
           </div>
           <div className="w-100">
-            <label>Postal Code</label>
-            <Field className="inputFields" name="postalCode" type="text" />
-            <ErrorMessage name="postalCode" component="div" className="error" />
+            <label className="form-label">Postal Code</label>
+            <Field className="form-control" name="postalCode" type="text" />
+            <ErrorMessage name="postalCode" component="div" className="text-danger mt-1" />
           </div>
           <div className="w-100">
-            <label>Contact Number</label>
-            <Field className="inputFields" name="contactNumber" type="text" />
-            <ErrorMessage
-              name="contactNumber"
-              component="div"
-              className="error"
-            />
+            <label className="form-label">Contact Number</label>
+            <Field className="form-control" name="contactNumber" type="text" />
+            <ErrorMessage name="contactNumber" component="div" className="text-danger mt-1" />
           </div>
           <button
             type="submit"
-            className="btn addProductBtn"
-            style={{ backgroundColor: "#1F3A56" }}
+            className="btn btn-primary"
           >
             Update Order
           </button>

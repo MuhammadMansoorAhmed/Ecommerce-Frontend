@@ -1,14 +1,16 @@
+/* Dashboard Cards aligned with theme */
 .Card1 {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100px;
-  background: linear-gradient(to top right, #1c3f3d, #19706d);
-  border-radius: 14px;
-  padding: 8px;
-  color: #b1bdc5;
-  transition: all 0.2s ease-in-out;
-  margin-bottom: 6px;
+  background: var(--primary-gradient);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm);
+  color: var(--white);
+  box-shadow: var(--shadow-light);
+  transition: var(--transition-medium);
+  margin-bottom: var(--spacing-xs);
 }
 
 .Card2 {
@@ -16,38 +18,59 @@
   justify-content: center;
   align-items: center;
   height: 100px;
-  background: linear-gradient(to top right, #004362, #00379b);
-  border-radius: 14px;
-  padding: 4px;
-  color: #b1bdc5;
-  transition: all 0.2s ease-in-out;
-  margin-bottom: 6px;
+  background: linear-gradient(135deg, rgba(110,142,251,0.12), rgba(167,119,227,0.12));
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xs);
+  color: var(--text-dark);
+  border: 1px solid rgba(110,142,251,0.25);
+  box-shadow: var(--shadow-light);
+  transition: var(--transition-medium);
+  margin-bottom: var(--spacing-xs);
 }
 .Card3 {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100px;
-  background: linear-gradient(to top right, #670295, #42299c);
-  border-radius: 14px;
-  padding: 4px;
-  color: #b1bdc5;
-  transition: all 0.2s ease-in-out;
-  margin-bottom: 6px;
+  background: var(--white);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xs);
+  color: var(--text-dark);
+  border: 1px solid #e4e8f0;
+  box-shadow: var(--shadow-light);
+  transition: var(--transition-medium);
+  margin-bottom: var(--spacing-xs);
 }
 .Card1:hover,
 .Card2:hover,
 .Card3:hover {
-  color: #fff;
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-dark);
 }
 .tableLayout {
   table-layout: fixed;
   width: 100%;
-  scroll-behavior: auto;
+  background-color: var(--white);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-light);
 }
 
 .tableLayout> * {
-    text-wrap: wrap;
- word-wrap: wrap;  
-  
+  text-wrap: wrap;
+  word-wrap: wrap;
+}
+
+/* Table enhancements */
+.tableLayout thead {
+  background: linear-gradient(135deg, rgba(110,142,251,0.08), rgba(167,119,227,0.08));
+}
+
+.tableLayout th,
+.tableLayout td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e4e8f0;
+}
+
+.tableLayout tbody tr:hover {
+  background-color: #f8faff;
 }

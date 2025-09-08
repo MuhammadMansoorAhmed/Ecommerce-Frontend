@@ -37,20 +37,19 @@ const AddCategoryForm = ({ closeForm, setCategories }) => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      <Form className="d-flex justify-content-center flex-column w-100 p-4">
+      <Form className="d-flex justify-content-center flex-column w-100 p-4 form-container">
         <div className="d-flex justify-content-between w-100">
           <h4>Add Category</h4>
           <BsXCircle size={20} onClick={closeForm} className="closeBtn" />
         </div>
         <div className="w-100">
-          <label>Category Name</label>
-          <Field className="inputFields" name="category" type="text" />
-          <ErrorMessage name="category" component="div" className="error" />
+          <label className="form-label">Category Name</label>
+          <Field className="form-control" name="category" type="text" />
+          <ErrorMessage name="category" component="div" className="text-danger mt-1" />
         </div>
         <button
           type="submit"
-          className="btn addProductBtn mt-3"
-          style={{ backgroundColor: "#1F3A56" }}
+          className="btn btn-primary mt-3"
         >
           Add Category
         </button>

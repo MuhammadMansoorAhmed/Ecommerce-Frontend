@@ -71,33 +71,20 @@ const ManageOrdersComponent = () => {
         overflow: "auto",
         paddingBottom: "12px",
         paddingRight: "0px",
-        backgroundColor: "#212529",
+        background: "var(--background-gradient)",
+        color: "var(--text-dark)",
       }}
     >
       {show ? (
         <>
-          <Modal show={show} onHide={() => setShow(false)} variant="dark">
-            <Modal.Header
-              closeButton
-              style={{
-                backgroundColor: "#1C4240",
-                borderRadius: "0px 0px 0px 0px",
-              }}
-            >
-              <Modal.Title className="text-warning">Warning</Modal.Title>
+          <Modal show={show} onHide={() => setShow(false)}>
+            <Modal.Header closeButton style={{ background: "var(--white)", color: "var(--text-dark)" }}>
+              <Modal.Title>Warning</Modal.Title>
             </Modal.Header>
-            <Modal.Body
-              className="text-white"
-              style={{ backgroundColor: "#1C4240" }}
-            >
+            <Modal.Body style={{ background: "var(--white)", color: "var(--text-dark)" }}>
               Are you sure you want to delete this order?
             </Modal.Body>
-            <Modal.Footer
-              style={{
-                backgroundColor: "#1C4240",
-                borderRadius: "0px 0px 0px 0px",
-              }}
-            >
+            <Modal.Footer style={{ background: "var(--white)" }}>
               <Button variant="secondary" onClick={() => setShow(false)}>
                 Close
               </Button>
@@ -121,11 +108,7 @@ const ManageOrdersComponent = () => {
           </h2>
 
           <div className="d-flex justify-content-end my-3 mx-2 ">
-            <Button
-              style={{ borderRadius: "8px" }}
-              variant="primary"
-              onClick={() => setAddOrderForm(true)}
-            >
+            <Button className="btn-primary" onClick={() => setAddOrderForm(true)}>
               Add Order
             </Button>
           </div>
@@ -133,11 +116,11 @@ const ManageOrdersComponent = () => {
           <table className="tableLayout">
             <thead>
               <tr>
-                <th className="border border-white p-1">Product ID</th>
-                <th className="border border-white p-1">Customer Name</th>
-                <th className="border border-white p-1">Contact Number</th>
-                <th className="border border-white p-1">Order Status</th>
-                <th className="border border-white p-1">Options</th>
+                <th className="border p-1">Product ID</th>
+                <th className="border p-1">Customer Name</th>
+                <th className="border p-1">Contact Number</th>
+                <th className="border p-1">Order Status</th>
+                <th className="border p-1">Options</th>
               </tr>
             </thead>
             <tbody>
@@ -146,25 +129,25 @@ const ManageOrdersComponent = () => {
                   orders.map((order) => (
                     <tr key={order?._id}>
                       <td
-                        className="border border-white p-1"
+                        className="border p-1"
                         style={{ wordBreak: "break-all" }}
                       >
                         {order?.productId}
                       </td>
-                      <td className="border border-white p-1">
+                      <td className="border p-1">
                         {order?.firstName} {order?.lastName}
                       </td>
-                      <td className="border border-white p-1">
+                      <td className="border p-1">
                         {order?.contactNumber}
                       </td>
-                      <td className="border border-white p-1">
+                      <td className="border p-1">
                         {order?.status}
                       </td>
-                      <td className="border border-white p-1">
+                      <td className="border p-1">
                         {visibility ? (
                           <MdOutlineVisibility
                             size={20}
-                            style={{ color: "white", cursor: "pointer" }}
+                            style={{ color: "var(--primary-color)", cursor: "pointer" }}
                             onClick={handleVisibilityClick}
                           />
                         ) : (
@@ -176,12 +159,12 @@ const ManageOrdersComponent = () => {
                         )}
                         <MdOutlineDeleteOutline
                           size={20}
-                          style={{ color: "lightCoral", cursor: "pointer" }}
+                          style={{ color: "#dc3545", cursor: "pointer" }}
                           onClick={() => handleShow(order._id)}
                         />
                         <FaRegEdit
                           size={20}
-                          style={{ color: "seaGreen", cursor: "pointer" }}
+                          style={{ color: "#198754", cursor: "pointer" }}
                           onClick={() => handleEditOrder(order)}
                         />
                       </td>

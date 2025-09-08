@@ -1,28 +1,30 @@
-/* AdminDashboardSidebar.css */
+/* AdminDashboardSidebar.css - aligned with theme variables */
 
 .list-group-item {
-    transition: all 0.3s ease;
-    border-radius: 4px;
+    transition: var(--transition-medium);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-dark);
   }
   
   .list-group-item:hover {
-    background-color: #343a40 !important; /* dark gray */
+    background: linear-gradient(135deg, rgba(110,142,251,0.12), rgba(167,119,227,0.12)) !important;
     transform: translateX(4px);
-    color: #00d1ff !important;
+    color: var(--primary-color) !important;
   }
   
   .list-group-item.active {
-    background-color: #495057 !important;
-    font-weight: bold;
-    color: #ffffff !important;
+    background: var(--primary-gradient) !important;
+    font-weight: 600;
+    color: var(--white) !important;
+    box-shadow: 0 4px 14px rgba(110,142,251,0.35);
   }
   
   .dashboard-header {
-    transition: all 0.2s ease;
+    transition: var(--transition-fast);
   }
   
   .dashboard-header:hover {
-    color: #00d1ff;
+    color: var(--primary-color);
     transform: scale(1.02);
   }
   

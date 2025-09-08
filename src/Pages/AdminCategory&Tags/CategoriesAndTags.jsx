@@ -4,8 +4,8 @@ const CategoriesAndTags = () => {
   return (
     <div
       style={{
-        backgroundColor: "#212529",
-        color: "white",
+        background: "var(--background-gradient)",
+        color: "var(--text-dark)",
         height: "100dvh",
         width: "100dvw",
         padding: "12px",

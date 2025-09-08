@@ -160,7 +160,7 @@ const AddProductForm = ({ closeForm }) => {
   return (
     <Form
       onSubmit={handleSubmit}
-      className="bg-dark text-white p-4 rounded shadow"
+      className="p-4 rounded shadow form-container"
     >
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4>Add New Product</h4>
@@ -175,14 +175,14 @@ const AddProductForm = ({ closeForm }) => {
       {/* Name & Category */}
       <Row className="mb-3">
         <Col>
-          <FloatingLabel label="Product Name" className="text-white ">
+          <FloatingLabel label="Product Name" className="text-dark ">
             <Form.Control
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
               placeholder="Product Name"
-              style={{ backgroundColor: "#696969", color: "#f1f1f1" }}
+              className="form-control"
             />
           </FloatingLabel>
           {errors.name && (
@@ -192,11 +192,12 @@ const AddProductForm = ({ closeForm }) => {
           )}
         </Col>
         <Col>
-          <FloatingLabel label="Category" className="text-white ">
+          <FloatingLabel label="Category" className="text-dark ">
             <Form.Select
               name="category"
               value={formData.category}
               onChange={handleChange}
+              className="form-select"
             >
               <option value=""></option>
               {categories.map((cat) => (
@@ -215,12 +216,13 @@ const AddProductForm = ({ closeForm }) => {
       </Row>
 
       {/* Description */}
-      <FloatingLabel label="Description" className="text-white mb-3">
+      <FloatingLabel label="Description" className="text-dark mb-3">
         <Form.Control
           as="textarea"
           name="description"
           value={formData.description}
           onChange={handleChange}
+          className="form-control"
           style={{ height: "100px" }}
         />
       </FloatingLabel>
@@ -233,13 +235,13 @@ const AddProductForm = ({ closeForm }) => {
       {/* Price, Stock */}
       <Row className="mb-3">
         <Col>
-          <FloatingLabel label="Price" className="text-white">
+          <FloatingLabel label="Price" className="text-dark">
             <Form.Control
               type="number"
               name="price"
               value={formData.price}
               onChange={handleChange}
-              style={{ backgroundColor: "#696969", color: "#f1f1f1" }}
+              className="form-control"
             />
           </FloatingLabel>
           {errors.price && (
@@ -249,12 +251,13 @@ const AddProductForm = ({ closeForm }) => {
           )}
         </Col>
         <Col>
-          <FloatingLabel label="Total Stock" className="text-white">
+          <FloatingLabel label="Total Stock" className="text-dark">
             <Form.Control
               type="number"
               name="totalStock"
               value={formData.totalStock}
               onChange={handleChange}
+              className="form-control"
             />
           </FloatingLabel>
           {errors.totalStock && (
@@ -268,12 +271,13 @@ const AddProductForm = ({ closeForm }) => {
       {/* Discount */}
       <Row className="mb-3">
         <Col>
-          <FloatingLabel label="Discount (%)" className="text-white">
+          <FloatingLabel label="Discount (%)" className="text-dark">
             <Form.Control
               type="number"
               name="discount"
               value={formData.discount}
               onChange={handleChange}
+              className="form-control"
             />
           </FloatingLabel>
           {errors.discount && (
@@ -283,14 +287,14 @@ const AddProductForm = ({ closeForm }) => {
           )}
         </Col>
         <Col>
-          <FloatingLabel label="Discounted Price" className="text-white">
+          <FloatingLabel label="Discounted Price" className="text-dark">
             <Form.Control
               type="number"
               readOnly
               name="discountedPrice"
               value={formData.discountedPrice}
               placeholder="Auto-calculated"
-              style={{ backgroundColor: "#696969", color: "#f1f1f1" }}
+              className="form-control"
             />
           </FloatingLabel>
           {errors.discountedPrice && (
@@ -303,12 +307,13 @@ const AddProductForm = ({ closeForm }) => {
 
       {/* Images */}
       <Form.Group className="mb-3">
-        <Form.Label>Images (Max 3)</Form.Label>
+        <Form.Label className="form-label">Images (Max 3)</Form.Label>
         <Form.Control
           type="file"
           name="images"
           multiple
           onChange={handleFileChange}
+          className="form-control"
         />
         {errors.images && (
           <Alert variant="danger" className="mt-1 py-1">
@@ -319,7 +324,7 @@ const AddProductForm = ({ closeForm }) => {
 
       {/* Colors */}
       <Form.Group className="mb-3">
-        <Form.Label className="text-white">Colors</Form.Label>
+        <Form.Label className="form-label">Colors</Form.Label>
         {formData.colors.map((color, index) => (
           <div key={index} className="d-flex align-items-center gap-2 mb-2">
             <Form.Control
@@ -353,7 +358,7 @@ const AddProductForm = ({ closeForm }) => {
         ))}
 
         <Button
-          variant="outline-light"
+          variant="secondary"
           size="sm"
           onClick={() =>
             setFormData((prev) => ({
@@ -373,7 +378,7 @@ const AddProductForm = ({ closeForm }) => {
       )}
 
       {/* Submit */}
-      <Button type="submit" variant="secondary" className="mt-3 w-100">
+      <Button type="submit" className="btn-primary mt-3 w-100">
         Add Product
       </Button>
     </Form>
