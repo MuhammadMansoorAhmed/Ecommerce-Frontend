@@ -1,27 +1,27 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import './BestPerfumes.css';
-import perfume1 from "../../../assets/Hero1.png";
-import perfume2 from "../../../assets/Hero2.png";
-import perfume3 from "../../../assets/Catelog3.png";
+import perfume1 from "../../../assets/Ravaah.png";
+import perfume2 from "../../../assets/Janan.jpg";
+import perfume3 from "../../../assets/King.png";
 
 const BestPerfumes = () => {
   const perfumes = [
     {
       id: 1,
-      name: 'Midnight Elegance',
+      name: 'Ravaah',
       description: 'A sophisticated blend of amber and vanilla with woody undertones.',
       image: perfume1
-    },
+    },  
     {
       id: 2,
-      name: 'Ocean Breeze',
+      name: 'Janan',
       description: 'Fresh citrus notes combined with sea salt and light musk.',
       image: perfume2
     },
     {
       id: 3,
-      name: 'Floral Symphony',
+      name: 'King',
       description: 'A delicate arrangement of jasmine, rose, and lily of the valley.',
       image: perfume3
     }

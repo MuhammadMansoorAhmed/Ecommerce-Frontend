@@ -96,10 +96,10 @@ const HomeFooter = () => {
             </div>
 
             <div className="d-flex gap-3 mt-3 justify-content-start">
-              <FaInstagram className="footer-icon" />
-              <FaFacebook className="footer-icon" />
+              <FaInstagram className="footer-icon" onClick={() => window.open("https://www.instagram.com/ravaahscents/", "_blank")}/>
+              <FaFacebook className="footer-icon" onClick={() => window.open("https://www.facebook.com/profile.php?id=61578224380180", "_blank")} />
               <FaXTwitter className="footer-icon" />
-              <FaTiktok className="footer-icon" />
+              <FaTiktok className="footer-icon" onClick={() => window.open("https://www.tiktok.com/@ravaahstore?_r=1&_d=edbflg1h404emg&sec_uid=MS4wLjABAAAAS337-2UvYAEFNQafcQLBMzZIJOp5P6FDunb48L24YHm4MjV2fHa-u7TZGmGkYev9&share_author_id=7528166952020214800&sharer_language=en&source=h5_m&u_code=e883a0i7bi5ka9&timestamp=1757697626&user_id=7239590894089290757&sec_user_id=MS4wLjABAAAAO0QJg4n9ilzf71V7bm6h4BUvSpcxoXqr-MqYSI5xsLVCaKJtpcq6bRhDd9WfesiJ&item_author_type=2&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7549090565889246994&share_link_id=06cc0898-a409-48f4-96b2-9f9705b58f5a&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b6880%2Cb5836&social_share_type=5&enable_checksum=1", "_blank")} />
               <FaPinterest className="footer-icon" />
             </div>
           </Col>

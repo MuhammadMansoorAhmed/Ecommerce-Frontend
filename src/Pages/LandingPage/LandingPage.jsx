@@ -9,11 +9,12 @@ import Reviews from '../../Components/LandingPageComponents/Reviews/Reviews';
 import perfume1 from "../../assets/Hero1.png";
 import perfume2 from "../../assets/Hero2.png";
 import './LandingPage.css';
+import NavBar from '../../Components/Navbar/NavBar';
 
 const LandingPage = () => {
   return (
     <div className="landing-page">
-      <NavbarComponent />
+      <NavBar />
       
       {/* Hero Section with Brand Description and Perfume Cards */}
       <section className="hero-section">

@@ -6,22 +6,22 @@ const Reviews = () => {
   const reviews = [
     {
       id: 1,
-      name: 'Sarah Johnson',
-      review: 'The Midnight Elegance perfume has become my signature scent. I receive compliments everywhere I go!',
+      name: 'Muhammad Junaid',
+      review: 'The Ravaah perfume has become my signature scent. I receive compliments everywhere I go!',
       rating: 5,
       image: 'https://randomuser.me/api/portraits/women/44.jpg'
     },
     {
       id: 2,
-      name: 'Michael Chen',
-      review: 'Ocean Breeze is perfect for daily wear. Fresh, long-lasting, and not overpowering.',
+      name: 'Sara Akram',
+      review: 'Janan is perfect for daily wear. Fresh, long-lasting, and not overpowering.',
       rating: 4,
       image: 'https://randomuser.me/api/portraits/men/32.jpg'
     },
     {
       id: 3,
-      name: 'Emily Rodriguez',
-      review: 'Floral Symphony is absolutely divine! The scent evolves beautifully throughout the day.',
+      name: 'Muhammad Ali',
+      review: 'King is absolutely divine! The scent evolves beautifully throughout the day.',
       rating: 5,
       image: 'https://randomuser.me/api/portraits/women/68.jpg'
     }
