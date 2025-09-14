@@ -1,30 +1,32 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import './Reviews.css';
+import { motion } from "framer-motion";
+import "./Reviews.css";
 
 const Reviews = () => {
   const reviews = [
     {
       id: 1,
-      name: 'Muhammad Junaid',
-      review: 'The Ravaah perfume has become my signature scent. I receive compliments everywhere I go!',
+      name: "Muhammad Junaid",
+      review:
+        "The Ravaah perfume has become my signature scent. I receive compliments everywhere I go!",
       rating: 5,
-      image: 'https://randomuser.me/api/portraits/women/44.jpg'
+      image: "https://randomuser.me/api/portraits/women/44.jpg",
     },
     {
       id: 2,
-      name: 'Sara Akram',
-      review: 'Janan is perfect for daily wear. Fresh, long-lasting, and not overpowering.',
+      name: "Sara Akram",
+      review:
+        "Janan is perfect for daily wear. Fresh, long-lasting, and not overpowering.",
       rating: 4,
-      image: 'https://randomuser.me/api/portraits/men/32.jpg'
+      image: "https://randomuser.me/api/portraits/women/68.jpg",
     },
     {
       id: 3,
-      name: 'Muhammad Ali',
-      review: 'King is absolutely divine! The scent evolves beautifully throughout the day.',
+      name: "Muhammad Ali",
+      review:
+        "King is absolutely divine! The scent evolves beautifully throughout the day.",
       rating: 5,
-      image: 'https://randomuser.me/api/portraits/women/68.jpg'
-    }
+      image: "https://randomuser.me/api/portraits/men/32.jpg",
+    },
   ];
 
   const containerVariants = {
@@ -32,9 +34,9 @@ const Reviews = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3
-      }
-    }
+        staggerChildren: 0.3,
+      },
+    },
   };
 
   const itemVariants = {
@@ -42,13 +44,13 @@ const Reviews = () => {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.6, ease: 'easeOut' }
-    }
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   return (
     <div className="container reviews-container">
-      <motion.h2 
+      <motion.h2
         className="section-title text-center mb-5"
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -57,8 +59,8 @@ const Reviews = () => {
       >
         What Our Customers Say
       </motion.h2>
-      
-      <motion.div 
+
+      <motion.div
         className="row"
         variants={containerVariants}
         initial="hidden"
@@ -66,8 +68,8 @@ const Reviews = () => {
         viewport={{ once: true }}
       >
         {reviews.map((review) => (
-          <motion.div 
-            key={review.id} 
+          <motion.div
+            key={review.id}
             className="col-lg-4 col-md-6 mb-4"
             variants={itemVariants}
           >
@@ -80,7 +82,10 @@ const Reviews = () => {
                   <h4>{review.name}</h4>
                   <div className="rating">
                     {[...Array(5)].map((_, i) => (
-                      <span key={i} className={i < review.rating ? 'star filled' : 'star'}>
+                      <span
+                        key={i}
+                        className={i < review.rating ? "star filled" : "star"}
+                      >
                         ★
                       </span>
                     ))}
@@ -88,7 +93,7 @@ const Reviews = () => {
                 </div>
               </div>
               <div className="review-content">
-                <p>"{review.review}"</p>
+                <p>&quot;{review.review}&quot;</p>
               </div>
             </div>
           </motion.div>
