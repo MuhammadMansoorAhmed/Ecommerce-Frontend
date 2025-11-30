@@ -74,26 +74,30 @@ const BlurHashImageComponent = ({ product }) => {
     <div className="product-card product-image-wrapper d-flex flex-column h-100 p-2">
       <div className="image-container position-relative">
         {!imageLoaded ? (
-          <Blurhash
-            hash={hash}
-            width="100%"
-            height={250}
-            resolutionX={32}
-            resolutionY={32}
-            punch={1}
-          />
+          hash && hash.length > 5 ? (
+            <Blurhash
+              hash={hash}
+              width="100%"
+              height={250}
+              resolutionX={32}
+              resolutionY={32}
+              punch={1}
+            />
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                height: 250,
+                background: "#eee",
+              }}
+            />
+          )
         ) : (
-          <img
-            src={imgSrc}
-            alt="Product"
-            className="product-image"
-          />
+          <img src={imgSrc} alt="Product" className="product-image" />
         )}
 
         {isLoggedIn && (
-          <div
-            className="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2 overlay-actions"
-          >
+          <div className="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2 overlay-actions">
             <TooltipWrapper
               tooltip={isProductInCart ? "Already in cart" : "Add to Cart"}
             >
@@ -138,7 +142,12 @@ const BlurHashImageComponent = ({ product }) => {
             {colors.map((color, index) => {
               const colorName = namer(color).basic[0].name;
               return (
-                <span key={index} className="color-dot" style={{ backgroundColor: color }} title={colorName} />
+                <span
+                  key={index}
+                  className="color-dot"
+                  style={{ backgroundColor: color }}
+                  title={colorName}
+                />
               );
             })}
           </div>
@@ -147,7 +156,7 @@ const BlurHashImageComponent = ({ product }) => {
 
       <div className="mt-2">
         <button
-          className="btn btn-outline-primary btn-sm w-100"
+          className="btn btn-primary btn-sm w-100"
           onClick={() => navigate(`/product/${productId}`)}
         >
           Product Details

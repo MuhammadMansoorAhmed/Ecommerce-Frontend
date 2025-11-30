@@ -1,12 +1,10 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { GoHome, GoPlus } from "react-icons/go";
+import { GoHome } from "react-icons/go";
 import {
   RiBloggerLine,
   RiContactsBook3Line,
   RiShoppingBag4Line,
 } from "react-icons/ri";
-import { FaRegUser } from "react-icons/fa6";
-import { PiSignInThin, PiSignOutThin } from "react-icons/pi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../Redux/Services/authServices";
@@ -17,7 +15,7 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showUserOptions, setShowUserOptions] = useState(false);
-  const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+
   const dropdownRef = useRef();
 
   const handleLogout = async () => {

@@ -80,7 +80,7 @@ export const getAllCartItemsByUserId = createAsyncThunk(
         error.message ||
         error.toString();
       console.log(message);
-      toast.error("Failed To fetch Cart data by User Id");
+      toast.error("Failed To fetch Cart data");
       return thunkAPI.rejectWithValue(message);
     }
   }
